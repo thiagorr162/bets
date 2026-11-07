@@ -80,7 +80,8 @@ def _processar_ftp(args) -> str:
         dados = {c: [] for c in cols}
         for reg in tabela:
             for c in cols:
-                dados[c].append(reg[c])
+                v = reg[c]  # campos numéricos do DBF (ex.: IDADE no SIH) viram texto, como os demais
+                dados[c].append(v if v is None or isinstance(v, str) else str(v))
         df = pl.DataFrame(dados, schema={c: pl.String for c in cols})
     saida = agregador(df)
     # o agregador pode devolver várias tabelas: {"nome": df} -> <pasta>/<nome>/<arquivo>.parquet
