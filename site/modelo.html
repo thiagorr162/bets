@@ -18,6 +18,7 @@
   --s1-soft: #9ec5f4;     /* mesma família: parte "já estava no CAPS" */
   --s2: #eb6834;          /* série: busca por apostas (gráfico próprio) */
   --ref: #9a9c9e;         /* referência: placebo / saúde mental */
+  --s7: #6250d6;          /* destaque: mulheres de 35 a 44 anos (suicídio) */
   --band-pand: rgba(120,124,128,.13);
   --mark: #c8352f;        /* marcos regulatórios */
   --f-display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
@@ -27,11 +28,11 @@
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #0f1112; --surface: #17191a; --ink: #eef0f0; --ink-2: #c2c6c8; --muted: #8a8e91; --rule: #2a2d2f; --axis: #3a3e40;
-  --accent: #7fb2f0; --s1: #3987e5; --s1-soft: #1c5cab; --s2: #d95926; --ref: #7c8083;
+  --accent: #7fb2f0; --s1: #3987e5; --s1-soft: #1c5cab; --s2: #d95926; --ref: #7c8083; --s7: #9085e9;
   --band-pand: rgba(160,165,170,.12); --mark: #e66767; color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #0f1112; --surface: #17191a; --ink: #eef0f0; --ink-2: #c2c6c8; --muted: #8a8e91; --rule: #2a2d2f; --axis: #3a3e40;
-  --accent: #7fb2f0; --s1: #3987e5; --s1-soft: #1c5cab; --s2: #d95926; --ref: #7c8083;
+  --accent: #7fb2f0; --s1: #3987e5; --s1-soft: #1c5cab; --s2: #d95926; --ref: #7c8083; --s7: #9085e9;
   --band-pand: rgba(160,165,170,.12); --mark: #e66767; color-scheme: dark }
 
 * { box-sizing: border-box }
@@ -152,19 +153,42 @@ footer { padding-top: 2rem; border-top: 1px solid var(--rule); font-size: var(--
   </div>
 </section>
 
+<section id="suicidio">
+  <div class="prose">
+    <h2>Suicídio entre mulheres de 35 a 44 anos</h2>
+    <p>A taxa de suicídio no Brasil subiu de 2018 a 2023 e depois estabilizou. Quase todos os grupos de idade e sexo desaceleraram a partir de 2022. A exceção foram as <b>mulheres de 35 a 44 anos</b>: a taxa delas continuou subindo cerca de 7% ao ano e, desde 2023, é a mais alta entre as mulheres. É o mesmo grupo em que o atendimento por jogo patológico mais cresceu.</p>
+    <p>Isso é uma coincidência que vale acompanhar, não uma prova de que o jogo cause essas mortes. São cerca de 100 suicídios a mais por ano num grupo de 17 milhões de mulheres, e endividamento, violência doméstica e outros problemas de saúde mental afetam esse mesmo grupo. A declaração de óbito quase nunca registra o jogo, e os dados públicos não permitem ligar uma morte a um atendimento no CAPS.</p>
+  </div>
+  <div class="duo">
+    <div class="fig">
+      <div class="fig-title">Suicídio entre mulheres, por 100 mil, por idade</div>
+      <div class="legend"><span><i style="background:var(--s7)"></i>35 a 44 anos</span><span><i style="background:var(--ref)"></i>Outras idades (rótulo no fim da linha)</span><span><i style="background:repeating-linear-gradient(90deg,var(--ink-2) 0 4px,transparent 4px 7px)"></i>2025 preliminar</span></div>
+      <div id="ch-suic"></div>
+      <p class="small" style="margin:0">Óbitos com causa básica X60–X84 (SIM/DATASUS). População: projeção do IBGE por sexo e idade.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-title">Mulheres de 35 a 44 anos atendidas por jogo patológico nos CAPS</div>
+      <div class="legend"><span><i class="box" style="background:var(--s1)"></i>Pessoas distintas no ano, <span class="cid">F63.0</span></span></div>
+      <div id="ch-f63m"></div>
+      <p class="small" style="margin:0">Anos com menos de 5 pessoas aparecem como "&lt;5". 2026 vai só até junho.</p>
+    </div>
+  </div>
+</section>
+
 <section id="metodo">
   <h2>Como foi feito e limites</h2>
   <ul class="limites">
     <li><b>Fonte.</b> Microdados do SIA-PS (RAAS), a produção dos CAPS no SUS, baixados do FTP do DATASUS para todos os estados, jan/2018 a jun/2026. Pessoas contadas pelo código do cartão SUS, que o DATASUS já publica criptografado.</li>
     <li><b>Diagnóstico.</b> <span class="cid">F63.0</span> (jogo patológico) como CID principal ou associado. Os códigos <span class="cid">F63.8</span> e <span class="cid">F63.9</span> ficam de fora porque mais de um terço dos registros com eles são de menores de idade, em que indicam outros transtornos de impulso.</li>
     <li><b>Atendimento, não prevalência.</b> Os dados contam quem chegou ao CAPS. Não separam mais casos de mais procura, e não incluem a rede privada, a atenção básica nem quem não procura ajuda.</li>
+    <li><b>Suicídio.</b> Declarações de óbito do SIM (DATASUS), causa básica X60–X84. 2018–2024 definitivos; 2025 preliminar, ainda sujeito a revisão. Taxas calculadas com a projeção de população do IBGE por sexo e idade (edição 2018).</li>
     <li><b>Busca e aposta.</b> Google Trends (cesta de termos: bet, apostas, betano, bet365, tigrinho) e DataSenado, Panorama Político 2024 (proporção de mulheres entre os apostadores).</li>
     <li><b>Privacidade.</b> A página só contém totais. Toda contagem com menos de 5 pessoas é suprimida. Os dados de pacientes usados no cálculo ficam fora da página, com código pseudonimizado de novo, idade em faixas e localização só por estado.</li>
     <li><b>Resultados preliminares,</b> sem revisão por pares.</li>
   </ul>
 </section>
 
-<footer>Dados: DATASUS (SIA-PS), Google Trends, DataSenado. <span id="rodape"></span></footer>
+<footer>Dados: DATASUS (SIA-PS e SIM), IBGE, Google Trends, DataSenado. <span id="rodape"></span></footer>
 </div>
 
 <script>const D = /*__DADOS__*/null;</script>
@@ -330,6 +354,65 @@ const linhas = [cA, cB].map(ch => s("line", { y1: ch.m.t, y2: ch.H - ch.m.b, str
     hit.addEventListener("pointermove", ev => { const fr = fig.getBoundingClientRect();
       tip.show(`<div><b>${d.sexo === "F" ? "Mulheres" : "Homens"}, ${d.faixa.replace("-", "–")} anos</b></div><div><span class="k">Jogo patológico:</span> <b>${d.cresc_f630 == null ? "base pequena" : fmt(d.cresc_f630, 1) + "×"}</b></div><div><span class="k">Saúde mental:</span> <b>${fmt(d.cresc_mental, 1)}×</b></div>`, ev.clientX - fr.left, ev.clientY - fr.top); });
     hit.addEventListener("pointerleave", () => tip.hide());
+  });
+})();
+
+/* ---------- suicídio: mulheres por idade ---------- */
+(function suic() {
+  const el = document.getElementById("ch-suic");
+  const T = D.suicidio.taxas, anos = [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
+  const W = 520, H = 300, m = { l: 34, r: 56, t: 14, b: 24 };
+  const yMin = 2.5, yMax = 5;
+  const x = a => m.l + (a - 2018) / 7 * (W - m.l - m.r);
+  const y = v => H - m.b - (v - yMin) / (yMax - yMin) * (H - m.t - m.b);
+  const svg = s("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Taxa de suicídio entre mulheres por idade" }, el);
+  const fig = el.closest(".fig"), tip = tipFor(fig);
+  for (const v of [3, 4, 5]) { s("line", { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: "var(--rule)" }, svg);
+    const t = s("text", { x: m.l - 6, y: y(v) + 4, "text-anchor": "end", class: "tnum" }, svg); t.textContent = fmt(v); }
+  for (const a of anos) { const t = s("text", { x: x(a), y: H - 6, "text-anchor": "middle" }, svg); t.textContent = "'" + String(a).slice(2); }
+  // divisória antes/depois
+  s("line", { x1: x(2022), x2: x(2022), y1: m.t, y2: H - m.b, stroke: "var(--axis)", "stroke-dasharray": "2 3" }, svg);
+  const tl = s("text", { x: x(2022) + 4, y: m.t + 10, class: "lbl", style: "font-size:10px" }, svg); tl.textContent = "a partir de 2022";
+  const ordem = ["18-24", "25-34", "45-59", "35-44"];  // destaque desenhado por último
+  for (const f of ordem) {
+    const cor = f === "35-44" ? "var(--s7)" : "var(--ref)", larg = f === "35-44" ? 2.6 : 1.6;
+    const pt = a => `${x(a).toFixed(1)},${y(T[f][a]).toFixed(1)}`;
+    s("path", { d: "M" + anos.slice(0, 7).map(pt).join("L"), fill: "none", stroke: cor, "stroke-width": larg, "stroke-linejoin": "round" }, svg);
+    s("path", { d: `M${pt(2024)}L${pt(2025)}`, fill: "none", stroke: cor, "stroke-width": larg, "stroke-dasharray": "4 3" }, svg);
+    s("circle", { cx: x(2025), cy: y(T[f][2025]), r: f === "35-44" ? 4.5 : 3, fill: cor, stroke: "var(--surface)", "stroke-width": 2 }, svg);
+  }
+  // rótulos no fim das linhas, afastados quando ficam a menos de 12px um do outro
+  const rot = ordem.map(f => ({ f, y: y(T[f][2025]) })).sort((a, b) => a.y - b.y);
+  for (let i = 1; i < rot.length; i++) if (rot[i].y - rot[i - 1].y < 12) rot[i].y = rot[i - 1].y + 12;
+  for (const r of rot) { const lb = s("text", { x: x(2025) + 8, y: r.y + 4, class: r.f === "35-44" ? "strong" : "lbl" }, svg); lb.textContent = r.f.replace("-", "–"); }
+  const hit = s("rect", { x: m.l, y: 0, width: W - m.l - m.r, height: H, fill: "transparent" }, svg);
+  hit.addEventListener("pointermove", ev => {
+    const r = svg.getBoundingClientRect(); const px = (ev.clientX - r.left) / r.width * W;
+    const a = Math.max(2018, Math.min(2025, Math.round(2018 + (px - m.l) / (W - m.l - m.r) * 7))); const fr = fig.getBoundingClientRect();
+    tip.show(`<div><b>${a}${a === 2025 ? " (preliminar)" : ""}</b></div>` + ["35-44", "25-34", "18-24", "45-59"].map(f =>
+      `<div><span class="k">${f.replace("-", "–")} anos:</span> <b>${fmt(T[f][a], 2)}</b></div>`).join("") +
+      `<div class="k">${fmt(D.suicidio.obitos_35_44[a])} óbitos de mulheres de 35–44</div>`, ev.clientX - fr.left, ev.clientY - fr.top);
+  });
+  hit.addEventListener("pointerleave", () => tip.hide());
+})();
+
+/* ---------- F63.0 entre mulheres de 35–44 ---------- */
+(function f63m() {
+  const el = document.getElementById("ch-f63m");
+  const V = D.suicidio.f630_35_44, anos = ["2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026"];
+  const W = 520, H = 300, m = { l: 34, r: 8, t: 22, b: 24 };
+  const max = 125, y = v => H - m.b - v / max * (H - m.t - m.b);
+  const svg = s("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Mulheres de 35 a 44 anos atendidas por jogo patológico" }, el);
+  for (const v of [0, 50, 100]) { s("line", { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: v ? "var(--rule)" : "var(--axis)" }, svg);
+    const t = s("text", { x: m.l - 6, y: y(v) + 4, "text-anchor": "end", class: "tnum" }, svg); t.textContent = fmt(v); }
+  const bw = (W - m.l - m.r) / anos.length;
+  anos.forEach((a, i) => {
+    const x0 = m.l + i * bw + bw * .2, w = bw * .6, v = V[a];
+    const t = s("text", { x: x0 + w / 2, y: H - 6, "text-anchor": "middle" }, svg); t.textContent = "'" + a.slice(2) + (a === "2026" ? "*" : "");
+    if (v == null) { const tt = s("text", { x: x0 + w / 2, y: y(0) - 5, "text-anchor": "middle", style: "font-size:10px" }, svg); tt.textContent = "<5"; return; }
+    const hh = y(0) - y(v);
+    s("path", { d: `M${x0},${y(0)}V${y(v) + 4}q0,-4 4,-4h${w - 8}q4,0 4,4V${y(0)}Z`, fill: "var(--s1)" }, svg);
+    const lb = s("text", { x: x0 + w / 2, y: y(v) - 6, "text-anchor": "middle", class: "lbl tnum" }, svg); lb.textContent = fmt(v);
   });
 })();
 

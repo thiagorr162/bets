@@ -99,13 +99,42 @@ def perfil(r):
 
 
 
+def suicidio(r):
+    """Taxa de suicídio por 100 mil (SIM; 2025 preliminar) para mulheres por faixa etária, e pessoas
+    atendidas por F63.0 entre mulheres de 35–44 anos por ano. População: projeção IBGE por sexo e idade."""
+    import re
+
+    sim = (pl.read_parquet(PROCESSED / "sim_graves.parquet")
+           .with_columns(pl.col("cmp").str.slice(0, 4).cast(pl.Int32, strict=False).alias("ano"))
+           .filter(pl.col("ano").is_between(2018, 2025) & (pl.col("sexo") == "F") & pl.col("faixa").is_not_null())
+           .group_by("ano", "faixa").agg(pl.col("obitos_suicidio").sum()))
+    proj = json.loads((ROOT / "data" / "raw" / "ibge" / "projecao_sexo_idade.json").read_text())[1:]
+    linhas = []
+    for x in proj:
+        m = re.fullmatch(r"(\d+) anos?( ou mais)?", x["D5N"])
+        if m and x["V"].isdigit() and x["D4N"] == "Mulheres":
+            linhas.append({"ano": int(x["D6N"]), "idade": int(m.group(1)), "pop": int(x["V"])})
+    fx = (pl.when(pl.col("idade") <= 17).then(pl.lit("0-17")).when(pl.col("idade") <= 24).then(pl.lit("18-24"))
+          .when(pl.col("idade") <= 34).then(pl.lit("25-34")).when(pl.col("idade") <= 44).then(pl.lit("35-44"))
+          .when(pl.col("idade") <= 59).then(pl.lit("45-59")).otherwise(pl.lit("60+")))
+    pop = pl.DataFrame(linhas).with_columns(fx.alias("faixa")).group_by("ano", "faixa").agg(pl.col("pop").sum())
+    t = sim.join(pop, on=["ano", "faixa"]).with_columns((pl.col("obitos_suicidio") / pl.col("pop") * 1e5).alias("taxa")).sort("faixa", "ano")
+    taxas = {f: {str(d["ano"]): round(d["taxa"], 2) for d in t.filter(pl.col("faixa") == f).to_dicts()}
+             for f in ["18-24", "25-34", "35-44", "45-59"]}
+    obitos_35_44 = {str(d["ano"]): int(d["obitos_suicidio"]) for d in t.filter(pl.col("faixa") == "35-44").to_dicts()}
+    f63 = (r.filter((pl.col("cid") == "F630") & (pl.col("SEXOPAC") == "F") & (pl.col("faixa") == "35-44"))
+           .group_by("ano").agg(pl.col("id").n_unique().alias("n")).sort("ano"))
+    return {"taxas": taxas, "obitos_35_44": obitos_35_44,
+            "f630_35_44": {str(d["ano"]): sup(d["n"]) for d in f63.to_dicts()}}
+
+
 def main():
     r = registros()
     perf, mulheres = perfil(r)
     dados = {
         "corte": CORTE, "choques": CHOQUES, "pandemia": PANDEMIA,
         "serie": serie_nacional(r), "anual": anual(r), "novos": novos(r),
-        "perfil": perf, "mulheres": mulheres,
+        "perfil": perf, "mulheres": mulheres, "suicidio": suicidio(r),
     }
     js = json.dumps(dados, ensure_ascii=False, separators=(",", ":"))
     corpo = (ROOT / "site" / "modelo.html").read_text().replace("/*__DADOS__*/null", js)
