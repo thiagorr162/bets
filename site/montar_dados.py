@@ -18,6 +18,14 @@ sys.path.insert(0, str(ROOT))
 from src.config import CHOQUES, PANDEMIA, PROCESSED  # noqa: E402
 
 MIN = 5
+# Uma notícia por marco regulatório (mesma ordem de src.config.CHOQUES). Trocar aqui para mudar o link.
+NOTICIAS = {
+    "2018-12-12": ("O Povo", "https://www.opovo.com.br/esportes/maisesportes/2018/12/lei-que-libera-apostas-esportivas-no-brasil-e-aprovada.html"),
+    "2023-12-29": ("Agência Gov", "https://agenciagov.ebc.com.br/noticias/202312/presidente-lula-sanciona-lei-que-regulamenta-apostas-esportivas"),
+    "2024-10-01": ("Agência Gov", "https://agenciagov.ebc.com.br/noticias/202410/ministerio-da-fazenda-pede-bloqueio-de-mais-de-dois-mil-sites-de-apostas-ilegais-no-brasil"),
+    "2025-01-01": ("Poder360", "https://www.poder360.com.br/poder-sportsmkt/bets-saiba-como-funcionara-o-mercado-no-brasil-a-partir-de-2025/"),
+    "2026-09-25": ("Poder360", "https://www.poder360.com.br/poder-governo/lula-proibe-bets-no-brasil/"),
+}
 CORTE = "202606"  # último mês do CAPS com envio completo (os 2 últimos disponíveis são descartados)
 
 
@@ -103,7 +111,7 @@ def main():
     r = registros()
     perf, mulheres = perfil(r)
     dados = {
-        "corte": CORTE, "choques": CHOQUES, "pandemia": PANDEMIA,
+        "corte": CORTE, "choques": CHOQUES, "noticias": NOTICIAS, "pandemia": PANDEMIA,
         "serie": serie_nacional(r), "anual": anual(r), "novos": novos(r),
         "perfil": perf, "mulheres": mulheres,
     }

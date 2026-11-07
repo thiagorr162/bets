@@ -75,6 +75,7 @@ svg .strong { fill: var(--ink); font-weight: 700 }
 .axis line, .axis path { stroke: var(--axis) }
 .marcos { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: .3rem 1rem; margin: .4rem 0 0; padding: 0; list-style: none; font-size: var(--s-1); color: var(--ink-2) }
 .marcos b { color: var(--mark); font-family: var(--f-mono); margin-right: .35rem }
+.marcos a { color: var(--accent); white-space: nowrap }
 
 .tip { position: absolute; pointer-events: none; background: var(--surface); color: var(--ink); border: 1px solid var(--rule); box-shadow: 0 4px 14px rgba(0,0,0,.12); border-radius: 8px; padding: .45rem .6rem; font-size: var(--s-1); line-height: 1.4; min-width: 150px; z-index: 5 }
 .tip .k { color: var(--ink-2) }
@@ -210,7 +211,9 @@ function tipFor(fig) {
 const X0 = 0, X1 = idx("202610");
 const marcos = Object.entries(D.choques);
 const olM = document.getElementById("marcos");
-marcos.forEach(([d, rot], i) => olM.appendChild(h("li", {}, `<b>${i + 1}</b>${rot.replace(/ \(/, " (")}, ${mesLabel(d.slice(0, 4) + d.slice(5, 7))}`)));
+marcos.forEach(([d, rot], i) => { const n = D.noticias[d];
+  olM.appendChild(h("li", {}, `<b>${i + 1}</b>${rot}, ${mesLabel(d.slice(0, 4) + d.slice(5, 7))}` +
+    (n ? ` · <a href="${n[1]}" target="_blank" rel="noopener">notícia (${n[0]})</a>` : ""))); });
 
 function serieChart(el, series, { altura, yMax, passoY }) {
   const W = 1000, H = altura, m = { l: 40, r: 12, t: 18, b: 22 };
@@ -230,7 +233,9 @@ function serieChart(el, series, { altura, yMax, passoY }) {
   for (let a = 2018; a <= 2026; a++) { const t = s("text", { x: x((a - 2018) * 12), y: H - 6, "text-anchor": "start" }, svg); t.textContent = a; s("line", { x1: x((a - 2018) * 12), x2: x((a - 2018) * 12), y1: y(0), y2: y(0) + 4, stroke: "var(--axis)" }, svg); }
   // marcos
   marcos.forEach(([d], i) => { const xi = x(idxDate(d)); s("line", { x1: xi, x2: xi, y1: m.t, y2: y(0), stroke: "var(--mark)", "stroke-dasharray": "3 3", "stroke-width": 1 }, svg);
-    const c = s("text", { x: xi, y: m.t - 5, "text-anchor": "middle", fill: "var(--mark)", style: "fill:var(--mark);font-weight:700;font-family:var(--f-mono)" }, svg); c.textContent = i + 1; });
+    const n = D.noticias[d]; const alvo = n ? s("a", { href: n[1], target: "_blank", rel: "noopener" }, svg) : svg;
+    if (n) { const tt = s("title", {}, alvo); tt.textContent = `${marcos[i][1]}: abrir notícia (${n[0]})`; }
+    const c = s("text", { x: xi, y: m.t - 5, "text-anchor": "middle", fill: "var(--mark)", style: "fill:var(--mark);font-weight:700;font-family:var(--f-mono);cursor:pointer;text-decoration:underline" }, alvo); c.textContent = i + 1; });
   // linhas (com quebras onde há supressão)
   for (const se of series) {
     let d = "", aberto = false;
