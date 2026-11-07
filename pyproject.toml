@@ -1,0 +1,26 @@
+[project]
+name = "bets"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "matplotlib>=3.11.2",
+    "pandas>=2.3.3",
+    "polars>=2.1.0",
+    "pyarrow>=26.0.1",
+    "pysus>=2.11.7",
+    "python-bcb>=0.4.1",
+    "pytrends>=4.9.2",
+    "requests>=2.34.2",
+    "seaborn>=0.13.2",
+    "sidrapy>=0.1.4",
+    "tqdm>=4.70.1",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=7.4.0",
+    "nbconvert>=7.17.2",
+    "nbformat>=5.11.1",
+]
