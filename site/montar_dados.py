@@ -20,11 +20,11 @@ from src.config import CHOQUES, PANDEMIA, PROCESSED  # noqa: E402
 MIN = 5
 # Uma notícia por marco regulatório (mesma ordem de src.config.CHOQUES). Trocar aqui para mudar o link.
 NOTICIAS = {
-    "2018-12-12": ("O Povo", "https://www.opovo.com.br/esportes/maisesportes/2018/12/lei-que-libera-apostas-esportivas-no-brasil-e-aprovada.html"),
-    "2023-12-29": ("Agência Gov", "https://agenciagov.ebc.com.br/noticias/202312/presidente-lula-sanciona-lei-que-regulamenta-apostas-esportivas"),
-    "2024-10-01": ("Agência Gov", "https://agenciagov.ebc.com.br/noticias/202410/ministerio-da-fazenda-pede-bloqueio-de-mais-de-dois-mil-sites-de-apostas-ilegais-no-brasil"),
-    "2025-01-01": ("Poder360", "https://www.poder360.com.br/poder-sportsmkt/bets-saiba-como-funcionara-o-mercado-no-brasil-a-partir-de-2025/"),
-    "2026-09-25": ("Poder360", "https://www.poder360.com.br/poder-governo/lula-proibe-bets-no-brasil/"),
+    "2018-12-12": ("Agência Brasil", "https://agenciabrasil.ebc.com.br/politica/noticia/2026-10/origem-das-bets-passa-por-lobby-estrangeiro-e-jabutis-no-congresso"),
+    "2023-12-29": ("Agência Senado", "https://www12.senado.leg.br/noticias/materias/2024/01/05/regras-para-apostas-veja-o-que-muda-com-a-nova-lei"),
+    "2024-10-01": ("Agência Brasil", "https://agenciabrasil.ebc.com.br/economia/noticia/2024-10/bets-nao-autorizadas-serao-suspensas-nesta-terca"),
+    "2025-01-01": ("CNN Brasil", "https://www.cnnbrasil.com.br/economia/money/macroeconomia/mercado-regulado-de-bets-comeca-nesta-quarta-1o-veja-o-que-muda/"),
+    "2026-09-25": ("Agência Brasil", "https://agenciabrasil.ebc.com.br/economia/noticia/2026-09/mp-proibe-bets-no-brasil-e-determina-devolucao-de-saldo-ao-apostador"),
 }
 CORTE = "202606"  # último mês do CAPS com envio completo (os 2 últimos disponíveis são descartados)
 
