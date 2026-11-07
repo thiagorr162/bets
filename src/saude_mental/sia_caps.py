@@ -9,7 +9,7 @@ import argparse
 import polars as pl
 
 from src.config import ANO_FIM, ANO_INICIO, PROCESSED, UFS
-from src.saude_mental._datasus import F63, MENTAL, SUBST, rodar
+from src.saude_mental._datasus import F63, MENTAL, SUBST, rodar_ftp
 from src.utils import juntar
 
 
@@ -38,14 +38,11 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--ufs", nargs="*", default=UFS)
     p.add_argument("--anos", type=int, nargs="*", default=list(range(ANO_INICIO, ANO_FIM + 1)))
+    p.add_argument("--processos", type=int, default=8)
     a = p.parse_args()
-    chamadas = [
-        (f"PS{uf}{ano % 100:02d}{mes:02d}", dict(state=uf, year=ano, month=mes, group="PS"))
-        for uf in a.ufs
-        for ano in a.anos
-        for mes in range(1, 13)
-    ]
-    pasta = rodar("sia", chamadas, agregar)
+    nomes = [f"PS{uf}{ano % 100:02d}{mes:02d}" for uf in a.ufs for ano in a.anos for mes in range(1, 13)]
+    colunas = ["CIDPRI", "PA_QTDAPR", "PA_CMP", "DT_ATEND", "MUNPAC", "CNS_PAC"]
+    pasta = rodar_ftp("sia", "SIASUS/200801_/Dados", nomes, agregar, colunas, a.processos)
     juntar(pasta, PROCESSED / "sia_caps_municipio.parquet")
 
 

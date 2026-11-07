@@ -44,3 +44,71 @@ def rodar(fonte: str, chamadas: list[tuple[str, dict]], agregador: Callable[[pl.
         except Exception as e:
             print(f"  [{i}/{len(chamadas)}] {nome} ! {e}")
     return pasta
+
+
+# --- Download direto do FTP (sem pysus) -------------------------------------------------------
+# O pysus guarda um catálogo DuckDB com trava de arquivo e não aceita vários processos ao mesmo
+# tempo. Baixar o .dbc direto do FTP permite paralelizar. Conferido: o agregado sai idêntico ao do pysus.
+
+FTP = "ftp://ftp.datasus.gov.br/dissemin/publicos"
+
+
+def listar_ftp(diretorio: str) -> list[str]:
+    from urllib.request import urlopen
+
+    with urlopen(f"{FTP}/{diretorio}/", timeout=120) as r:
+        linhas = r.read().decode("latin1").splitlines()
+    return [ln.split()[-1] for ln in linhas if ln.strip()]
+
+
+def _processar_ftp(args) -> str:
+    """Roda num processo separado: baixa, converte .dbc → .dbf, lê só as colunas úteis, agrega, apaga."""
+    import tempfile
+    from urllib.request import urlopen
+
+    from dbfread import DBF
+    from pyreaddbc import dbc2dbf
+
+    url, destino, agregador, colunas = args
+    with tempfile.TemporaryDirectory() as tmp:
+        dbc, dbf = Path(tmp) / "a.dbc", Path(tmp) / "a.dbf"
+        with urlopen(url, timeout=600) as r, open(dbc, "wb") as f:
+            f.write(r.read())
+        dbc2dbf(str(dbc), str(dbf))
+        tabela = DBF(str(dbf), encoding="iso-8859-1", char_decode_errors="replace")
+        cols = [c for c in colunas if c in tabela.field_names]
+        dados = {c: [] for c in cols}
+        for reg in tabela:
+            for c in cols:
+                dados[c].append(reg[c])
+        df = pl.DataFrame(dados, schema={c: pl.String for c in cols})
+    agregador(df).write_parquet(destino)
+    return destino.stem
+
+
+def rodar_ftp(fonte: str, diretorio: str, nomes: list[str], agregador, colunas: list[str], processos: int = 8):
+    """Baixa `nomes` (ex.: 'PSSP2401') de `diretorio` no FTP em paralelo e grava os agregados em
+    data/interim/<fonte>/. Pula o que já existe. Arquivos divididos em partes (PSSP2401a, b...) são
+    agregados juntos e somados."""
+    from concurrent.futures import ProcessPoolExecutor, as_completed
+
+    pasta = INTERIM / fonte
+    pasta.mkdir(parents=True, exist_ok=True)
+    disponiveis = {n.rsplit(".", 1)[0].upper(): n for n in listar_ftp(diretorio) if n.lower().endswith(".dbc")}
+    tarefas = []
+    for nome in nomes:
+        if any(pasta.glob(f"{nome}*.parquet")):
+            continue
+        partes = [arq for base, arq in disponiveis.items() if base == nome or (base[:-1] == nome and base[-1].isalpha())]
+        for arq in partes:
+            sufixo = "" if len(partes) == 1 else "_" + arq.rsplit(".", 1)[0][-1]
+            tarefas.append((f"{FTP}/{diretorio}/{arq}", pasta / f"{nome}{sufixo}.parquet", agregador, colunas))
+    print(f"  {len(tarefas)} arquivos a baixar ({len(nomes)} pedidos, {processos} processos)")
+    with ProcessPoolExecutor(processos) as ex:
+        futuros = {ex.submit(_processar_ftp, t): t for t in tarefas}
+        for i, f in enumerate(as_completed(futuros), 1):
+            try:
+                print(f"  [{i}/{len(tarefas)}] {f.result()} ✓", flush=True)
+            except Exception as e:
+                print(f"  [{i}/{len(tarefas)}] {futuros[f][1].stem} ! {e}", flush=True)
+    return pasta
