@@ -39,6 +39,7 @@ Os microdados do DATASUS são baixados direto do FTP (`ftp.datasus.gov.br`), em 
 | `f63_pacientes.ipynb` | Pacientes com F63: subcódigos, novos × reclassificados, perfil por sexo e idade, comorbidade, regiões |
 | `f63_comorbidade.ipynb` | Outros diagnósticos dos pacientes com F63.0 por ano e sexo (depressão, ansiedade, substâncias) |
 | `suicidio.ipynb` | Suicídio (SIM) por sexo e idade, taxas por 100 mil, antes e depois de 2022 |
+| `mp1394_emendas.ipynb` | As 99 emendas à MP 1.394 (proibição): quem propôs afrouxar ou reforçar, por parlamentar e partido |
 
 As decisões metodológicas estão explicadas nos próprios notebooks.
 
