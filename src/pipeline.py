@@ -1,7 +1,7 @@
-"""Roda todas as etapas em sequência (sempre a partir da raiz do projeto).
+"""Roda todas as etapas da parte de saúde mental, em sequência (sempre a partir da raiz do projeto).
 
-uv run python -m src.pipeline            # etapas leves (APIs): minutos
-uv run python -m src.pipeline --pesado   # + SCR, Bolsa Família e DATASUS: horas, dezenas de GB
+uv run python -m src.pipeline            # exposição (Trends, DataSenado, população): minutos
+uv run python -m src.pipeline --pesado   # + DATASUS (CAPS, pacientes com F63, internações e óbitos): ~1–2 h
 """
 
 import argparse
@@ -9,19 +9,14 @@ import runpy
 import sys
 
 LEVES = [
-    "src.exposicao.municipios",
-    "src.endividamento.sgs_familias",
-    "src.inadimplencia.sgs_inadimplencia",
-    "src.consumo.pmc_pms",
-    "src.exposicao.pix_municipio",
-    "src.exposicao.google_trends",
+    "src.exposicao.municipios",  # população por município (taxas por milhão)
+    "src.exposicao.google_trends",  # busca por apostas por UF e mês
+    "src.exposicao.datasenado",  # % que aposta por UF (jun/2024)
 ]
 PESADAS = [
-    "src.inadimplencia.scr_uf",
-    "src.exposicao.bolsa_familia",
-    "src.saude_mental.sih_internacoes",
-    "src.saude_mental.sia_caps",
-    "src.saude_mental.sim_suicidio",
+    "src.saude_mental.sia_caps",  # CAPS agregado por município
+    "src.saude_mental.sia_f63_pacientes",  # pacientes com F63 (pseudonimizado no fim)
+    "src.saude_mental.graves_f63",  # internações (SIH) e óbitos (SIM)
 ]
 
 
