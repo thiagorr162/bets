@@ -79,3 +79,20 @@ def painel(outcome: pl.DataFrame, inicio="2022-01-01", fim="2026-08-01") -> pl.D
         .filter(pl.col("data").is_between(ini, f))
         .sort("uf", "data")
     )
+
+
+def estimar(dados, y="inad", x="trends_l6", controles="selic_x_pobreza", fe="uf + mes", pesos=None, rotulo=None):
+    """TWFE com EP clusterizado por UF + p-valor de wild cluster bootstrap (Rademacher, 9.999 réplicas, seed 42).
+
+    `dados` é um pandas.DataFrame vindo de `painel(...).to_pandas()`.
+    """
+    import pyfixest as pf
+
+    fml = f"{y} ~ {x}" + (f" + {controles}" if controles else "") + f" | {fe}"
+    d = dados.dropna(subset=[y, x])
+    fit = pf.feols(fml, data=d, vcov={"CRV1": "uf_id"}, weights=pesos)
+    t = fit.tidy().loc[x]
+    # wild bootstrap não é suportado com pesos (WLS): nesse caso fica só o EP clusterizado
+    p_boot = float("nan") if pesos else float(fit.wildboottest(param=x, reps=9999, seed=42)["Pr(>|t|)"])
+    return {"modelo": rotulo or fml, "β": t["Estimate"], "ep": t["Std. Error"], "p": t["Pr(>|t|)"],
+            "p_boot": p_boot, "n": fit._N}

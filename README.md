@@ -22,12 +22,22 @@ uv run jupyter lab notebooks/            # análise rápida
 | | `pix_municipio` | BCB Olinda, Pix por município | `pix_municipio` |
 | | `bolsa_familia` | Portal da Transparência (CGU) | `bolsa_familia_municipio` |
 | | `google_trends` | Google Trends (busca por apostas, UF × mês) | `google_trends_uf` |
+| | `datasenado` | DataSenado 2024 (% que apostou e % com dívida em atraso, por UF) | `datasenado_uf_2024` |
 | `src/saude_mental` | `sih_internacoes` | DATASUS SIH-RD (F63, F, F1x, X60–X84) | `sih_mental_municipio` |
 | | `sia_caps` | DATASUS SIA-PS (RAAS/CAPS) | `sia_caps_municipio` |
 | | `sim_suicidio` | DATASUS SIM (X60–X84) | `sim_suicidio_municipio` |
 
 Cada script aceita filtros (`--anos`, `--ufs`, `--meses`; veja o docstring). Os scripts pesados guardam
 agregados por arquivo em `data/interim/`, então dá para interromper e retomar.
-As decisões metodológicas estão explicadas nos notebooks: `notebooks/analise.ipynb` (geral),
-`notebooks/google_trends.ipynb` (exposição) e `notebooks/inadimplencia_painel.ipynb` (painel UF × mês,
-montado por `src/painel.py`).
+As decisões metodológicas estão explicadas nos notebooks:
+
+| Notebook | Conteúdo |
+|---|---|
+| `analise.ipynb` | Visão geral, linha do tempo, pandemia, deflator |
+| `google_trends.ipynb` | Exposição: busca por apostas por UF e mês |
+| `validacao_trends.ipynb` | Trends × DataSenado; apostadores × dívidas |
+| `inadimplencia_painel.ipynb` | Painel UF × mês: Trends × inadimplência (SCR) |
+| `consumo_painel.ipynb` | Painel UF × mês: Trends × varejo e serviços (PMC/PMS) |
+| `saude_mental.ipynb` | Jogo patológico (F63) nos CAPS: tendência e painel |
+
+Os painéis são montados por `src/painel.py`.
