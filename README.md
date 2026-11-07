@@ -26,6 +26,7 @@ uv run jupyter lab notebooks/            # análise rápida
 | `src/saude_mental` | `sih_internacoes` | DATASUS SIH-RD (F63, F, F1x, X60–X84) | `sih_mental_municipio` |
 | | `sia_caps` | DATASUS SIA-PS (RAAS/CAPS) | `sia_caps_municipio` |
 | | `sim_suicidio` | DATASUS SIM (X60–X84) | `sim_suicidio_municipio` |
+| | `sia_f63_pacientes` | DATASUS SIA-PS, pacientes com F63 (pseudonimizado por `minimizar_f63`) | `sia_f63_registros`, `sia_f63_historico`, `sia_perfil` |
 
 Cada script aceita filtros (`--anos`, `--ufs`, `--meses`; veja o docstring). Os scripts pesados guardam
 agregados por arquivo em `data/interim/`, então dá para interromper e retomar.
@@ -39,5 +40,6 @@ As decisões metodológicas estão explicadas nos notebooks:
 | `inadimplencia_painel.ipynb` | Painel UF × mês: Trends × inadimplência (SCR) |
 | `consumo_painel.ipynb` | Painel UF × mês: Trends × varejo e serviços (PMC/PMS) |
 | `saude_mental.ipynb` | Jogo patológico (F63) nos CAPS: tendência e painel |
+| `f63_pacientes.ipynb` | Pacientes com F63: subcódigos, novos × reclassificados, perfil, comorbidade |
 
 Os painéis são montados por `src/painel.py`.

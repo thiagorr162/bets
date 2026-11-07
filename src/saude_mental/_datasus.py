@@ -82,7 +82,14 @@ def _processar_ftp(args) -> str:
             for c in cols:
                 dados[c].append(reg[c])
         df = pl.DataFrame(dados, schema={c: pl.String for c in cols})
-    agregador(df).write_parquet(destino)
+    saida = agregador(df)
+    # o agregador pode devolver várias tabelas: {"nome": df} -> <pasta>/<nome>/<arquivo>.parquet
+    if isinstance(saida, dict):
+        for k, v in saida.items():
+            (destino.parent / k).mkdir(parents=True, exist_ok=True)
+            v.write_parquet(destino.parent / k / destino.name)
+    else:
+        saida.write_parquet(destino)
     return destino.stem
 
 
@@ -97,14 +104,18 @@ def rodar_ftp(fonte: str, diretorio: str, nomes: list[str], agregador, colunas: 
     disponiveis = {n.rsplit(".", 1)[0].upper(): n for n in listar_ftp(diretorio) if n.lower().endswith(".dbc")}
     tarefas = []
     for nome in nomes:
-        if any(pasta.glob(f"{nome}*.parquet")):
+        if any(pasta.rglob(f"{nome}*.parquet")):
             continue
         partes = [arq for base, arq in disponiveis.items() if base == nome or (base[:-1] == nome and base[-1].isalpha())]
         for arq in partes:
             sufixo = "" if len(partes) == 1 else "_" + arq.rsplit(".", 1)[0][-1]
             tarefas.append((f"{FTP}/{diretorio}/{arq}", pasta / f"{nome}{sufixo}.parquet", agregador, colunas))
     print(f"  {len(tarefas)} arquivos a baixar ({len(nomes)} pedidos, {processos} processos)")
-    with ProcessPoolExecutor(processos) as ex:
+    # "spawn", não "fork": se o processo pai já usou o polars (que tem pool de threads), um fork pode
+    # deixar os filhos travados para sempre (aconteceu na passada 2 do sia_f63_pacientes)
+    import multiprocessing
+
+    with ProcessPoolExecutor(processos, mp_context=multiprocessing.get_context("spawn")) as ex:
         futuros = {ex.submit(_processar_ftp, t): t for t in tarefas}
         for i, f in enumerate(as_completed(futuros), 1):
             try:
