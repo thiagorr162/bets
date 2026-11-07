@@ -37,6 +37,14 @@ CHOQUES = {
 PANDEMIA = ("2020-03-01", "2021-12-31")
 PANDEMIA_LONGA = ("2020-03-01", "2022-04-30")
 
+# Copas do Mundo masculinas: picos de apostas e de busca. Não são choques regulatórios, mas
+# podem confundir janelas curtas (ex.: jun–jul/2026 fica logo antes da MP 1.394).
+COPAS = {
+    "Copa 2018": ("2018-06-14", "2018-07-15"),
+    "Copa 2022": ("2022-11-20", "2022-12-18"),
+    "Copa 2026": ("2026-06-11", "2026-07-19"),
+}
+
 
 def meses(inicio: str, fim: str | None = None) -> list[str]:
     """Lista de meses 'YYYYMM' de `inicio` até `fim` (padrão: mês corrente)."""
