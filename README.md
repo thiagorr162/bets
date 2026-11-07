@@ -28,4 +28,6 @@ uv run jupyter lab notebooks/            # análise rápida
 
 Cada script aceita filtros (`--anos`, `--ufs`, `--meses`; veja o docstring). Os scripts pesados guardam
 agregados por arquivo em `data/interim/`, então dá para interromper e retomar.
-As decisões metodológicas estão explicadas nos notebooks: `notebooks/analise.ipynb` (geral) e `notebooks/google_trends.ipynb`.
+As decisões metodológicas estão explicadas nos notebooks: `notebooks/analise.ipynb` (geral),
+`notebooks/google_trends.ipynb` (exposição) e `notebooks/inadimplencia_painel.ipynb` (painel UF × mês,
+montado por `src/painel.py`).

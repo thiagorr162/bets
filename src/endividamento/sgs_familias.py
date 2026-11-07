@@ -17,6 +17,7 @@ SERIES = {
     "saldo_credito_pf": 20541,  # saldo da carteira PF (R$ milhões)
     "concessoes_pf": 20633,  # concessões de crédito PF (R$ milhões)
     "ipca_mensal": 433,  # IPCA var. % mensal — usado para deflacionar séries nominais
+    "selic": 4189,  # Selic acumulada no mês, anualizada (% a.a.) — controle de juros
 }
 
 

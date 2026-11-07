@@ -9,6 +9,7 @@ dependencies = [
     "pandas>=2.3.3",
     "polars>=2.1.0",
     "pyarrow>=26.0.1",
+    "pyfixest>=0.60.0",
     "pysus>=2.11.7",
     "python-bcb>=0.4.1",
     "pytrends>=4.9.2",
@@ -16,6 +17,7 @@ dependencies = [
     "seaborn>=0.13.2",
     "sidrapy>=0.1.4",
     "tqdm>=4.70.1",
+    "wildboottest>=0.3.2",
 ]
 
 [dependency-groups]
