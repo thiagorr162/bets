@@ -18,6 +18,8 @@
   --s1-soft: #9ec5f4;     /* mesma família: parte "já estava no CAPS" */
   --s2: #eb6834;          /* série: busca por apostas (gráfico próprio) */
   --ref: #9a9c9e;         /* referência: placebo / saúde mental */
+  --pro: #1baf7a;          /* Congresso: tirar o cassino / reforça a proibição */
+  --contra: #eda100;       /* Congresso: manter o cassino / afrouxa a proibição */
   --band-pand: rgba(120,124,128,.13);
   --mark: #c8352f;        /* marcos regulatórios */
   --f-display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
@@ -27,11 +29,11 @@
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #0f1112; --surface: #17191a; --ink: #eef0f0; --ink-2: #c2c6c8; --muted: #8a8e91; --rule: #2a2d2f; --axis: #3a3e40;
-  --accent: #7fb2f0; --s1: #3987e5; --s1-soft: #1c5cab; --s2: #d95926; --ref: #7c8083;
+  --accent: #7fb2f0; --s1: #3987e5; --s1-soft: #1c5cab; --s2: #d95926; --ref: #7c8083; --pro: #199e70; --contra: #c98500;
   --band-pand: rgba(160,165,170,.12); --mark: #e66767; color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #0f1112; --surface: #17191a; --ink: #eef0f0; --ink-2: #c2c6c8; --muted: #8a8e91; --rule: #2a2d2f; --axis: #3a3e40;
-  --accent: #7fb2f0; --s1: #3987e5; --s1-soft: #1c5cab; --s2: #d95926; --ref: #7c8083;
+  --accent: #7fb2f0; --s1: #3987e5; --s1-soft: #1c5cab; --s2: #d95926; --ref: #7c8083; --pro: #199e70; --contra: #c98500;
   --band-pand: rgba(160,165,170,.12); --mark: #e66767; color-scheme: dark }
 
 * { box-sizing: border-box }
@@ -86,8 +88,23 @@ svg .strong { fill: var(--ink); font-weight: 700 }
 
 .nota { font-size: var(--s-1); color: var(--ink-2); border-left: 3px solid var(--rule); padding-left: .7rem; margin: 0 }
 
+.limites code { overflow-wrap: anywhere }
 .limites { padding-left: 1.1rem; margin: 0; display: grid; gap: .45rem; max-width: 72ch }
 footer { padding-top: 2rem; border-top: 1px solid var(--rule); font-size: var(--s-1); color: var(--ink-2) }
+.cong-busca { display: grid; gap: .5rem; max-width: 640px }
+.cong-busca input { width: 100%; font: inherit; padding: .65rem .85rem; border: 1px solid var(--axis); border-radius: 8px; background: var(--surface); color: var(--ink) }
+.sug2 { list-style: none; margin: 0; padding: 0; border: 1px solid var(--rule); border-radius: 8px; background: var(--surface); max-height: 260px; overflow: auto }
+.sug2 button { all: unset; box-sizing: border-box; display: flex; justify-content: space-between; gap: 1rem; width: 100%; padding: .45rem .8rem; cursor: pointer }
+.sug2 button:hover, .sug2 button:focus-visible { background: color-mix(in srgb, var(--pro) 12%, transparent) }
+.ficha { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 1rem 1.1rem; display: grid; gap: .6rem }
+.ficha h3 { font-size: var(--s2t) }
+.ficha ul { margin: 0; padding-left: 1.1rem; display: grid; gap: .3rem }
+.chip { display: inline-block; font-size: var(--s-1); font-weight: 700; padding: .1rem .5rem; border-radius: 999px; border: 1.5px solid currentColor }
+.chip.pro { color: var(--pro) } .chip.contra { color: var(--contra) } .chip.neutro { color: var(--muted) }
+.tbl { width: 100%; border-collapse: collapse; font-size: .92rem }
+.tbl th, .tbl td { text-align: left; padding: .4rem .5rem; border-bottom: 1px solid var(--rule); vertical-align: top }
+.tbl th { color: var(--ink-2); font-size: var(--s-1) }
+.tbl-wrap { overflow-x: auto }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important } }
 </style>
 
@@ -153,19 +170,72 @@ footer { padding-top: 2rem; border-top: 1px solid var(--rule); font-size: var(--
   </div>
 </section>
 
+<section id="congresso">
+  <div class="prose">
+    <h2>O que o Congresso decidiu e propõe</h2>
+    <p>As bets chegaram ao Brasil por decisão do Congresso, e é lá que a proibição de 2026 será confirmada ou mudada. Três registros públicos mostram a posição de cada parlamentar: a votação de 2023 que manteve o cassino online na lei, as emendas apresentadas à MP 1.394 e os projetos de lei para proibir as apostas.</p>
+  </div>
+
+  <div class="prose">
+    <h3>2023: o cassino online entrou na lei</h3>
+    <p>O projeto que virou a Lei 14.790 regulamentava as apostas esportivas e os jogos online, como o "tigrinho". Em 12/12/2023, o Senado aprovou por 37 a 27 uma emenda do senador Carlos Portinho (PL-RJ) para <b>tirar o cassino online</b> e deixar só as apostas em eventos esportivos. Em 21/12/2023, a Câmara rejeitou a mudança por 261 a 120, e <b>o cassino online ficou na lei</b>. Desde 2025, quando o mercado regulado começou, ele funciona legalmente.</p>
+  </div>
+  <div class="duo">
+    <div class="fig">
+      <div class="fig-title">Câmara, 21/12/2023: votos por partido</div>
+      <div class="legend"><span><i class="box" style="background:var(--pro)"></i>Votou para tirar o cassino online</span><span><i class="box" style="background:var(--contra)"></i>Votou para manter</span></div>
+      <div id="ch-camara"></div>
+      <p class="small" style="margin:0">Partidos com pelo menos 3 votos. Partido na data da votação.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-title">Senado, 12/12/2023: votos por partido</div>
+      <div class="legend"><span><i class="box" style="background:var(--pro)"></i>Votou para tirar o cassino online</span><span><i class="box" style="background:var(--contra)"></i>Votou para manter</span></div>
+      <div id="ch-senado"></div>
+      <p class="small" style="margin:0">17 senadores não votaram (ausentes, em missão ou presidente da sessão).</p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <h3>2026: as emendas à proibição</h3>
+    <p>A MP 1.394 ainda não foi votada. Até agora, 25 parlamentares apresentaram 99 emendas a ela. Cerca de metade afrouxa a proibição: algumas derrubam a MP, várias trocam a proibição total por uma proibição só do cassino online e mantêm as apostas esportivas, outras devolvem dinheiro às empresas ou criam prazos de transição. Cerca de um terço reforça a proibição. As demais tratam de saúde ou de ajustes técnicos.</p>
+  </div>
+  <div class="fig">
+    <div class="fig-title">Emendas por autor: quantas afrouxam e quantas reforçam a proibição</div>
+    <div class="legend"><span><i class="box" style="background:var(--contra)"></i>Afrouxa</span><span><i class="box" style="background:var(--pro)"></i>Reforça</span><span>Emendas de saúde ou técnicas não aparecem no gráfico.</span></div>
+    <div id="ch-emendas"></div>
+    <p class="small" style="margin:0">Classificação feita lendo o texto de cada emenda (dados abertos do Senado). Passe o mouse para ver os tipos. Emenda não é voto: mostra o que o parlamentar propôs mudar.</p>
+  </div>
+
+  <div class="prose">
+    <h3>Projetos de lei para proibir as bets</h3>
+    <p>Antes da MP, deputados de vários partidos já tinham apresentado projetos para proibir as apostas. Nenhum foi votado.</p>
+  </div>
+  <div class="fig tbl-wrap"><table class="tbl" id="tbl-pls"><thead><tr><th>Projeto</th><th>Apresentado</th><th>Proíbe</th><th>Autoria</th></tr></thead><tbody></tbody></table>
+    <p class="small" style="margin:.5rem 0 0">Câmara dos Deputados. Partido atual do deputado, que pode ser diferente do partido na data do projeto.</p></div>
+
+  <div class="cong-busca">
+    <label for="q-parl" class="eyebrow">Buscar um deputado ou senador</label>
+    <input id="q-parl" type="search" autocomplete="off" placeholder="Digite um nome, por exemplo: Portinho, Tabata, Alden">
+    <ul class="sug2" id="sug-parl" hidden></ul>
+  </div>
+  <div id="ficha-parl"></div>
+  <p class="nota">Votar para manter o cassino online, ou propor afrouxar a proibição, não equivale a defender o vício em apostas: os argumentos incluem regular um mercado que já existia na ilegalidade, arrecadar impostos e proteger o apostador. O site registra posições, sem julgá-las.</p>
+</section>
+
 <section id="metodo">
   <h2>Como foi feito e limites</h2>
   <ul class="limites">
     <li><b>Fonte.</b> Microdados do SIA-PS (RAAS), a produção dos CAPS no SUS, baixados do FTP do DATASUS para todos os estados, jan/2018 a jun/2026. Pessoas contadas pelo código do cartão SUS, que o DATASUS já publica criptografado.</li>
     <li><b>Diagnóstico.</b> <span class="cid">F63.0</span> (jogo patológico) como CID principal ou associado. Os códigos <span class="cid">F63.8</span> e <span class="cid">F63.9</span> ficam de fora porque mais de um terço dos registros com eles são de menores de idade, em que indicam outros transtornos de impulso.</li>
     <li><b>Atendimento, não prevalência.</b> Os dados contam quem chegou ao CAPS. Não separam mais casos de mais procura, e não incluem a rede privada, a atenção básica nem quem não procura ajuda.</li>
+    <li><b>Congresso.</b> Votos nominais das APIs de dados abertos da Câmara (votação 2374400-121) e do Senado (votação 6797, emenda nº 139 ao PL 3.626/2023). Emendas à MP 1.394 e projetos de lei também dos dados abertos. A classificação das emendas foi feita lendo o texto de cada uma, e está em <code>src/politica/classificacao_mp1394.csv</code>.</li>
     <li><b>Busca e aposta.</b> Google Trends (cesta de termos: bet, apostas, betano, bet365, tigrinho) e DataSenado, Panorama Político 2024 (proporção de mulheres entre os apostadores).</li>
     <li><b>Privacidade.</b> A página só contém totais. Toda contagem com menos de 5 pessoas é suprimida. Os dados de pacientes usados no cálculo ficam fora da página, com código pseudonimizado de novo, idade em faixas e localização só por estado.</li>
     <li><b>Resultados preliminares,</b> sem revisão por pares.</li>
   </ul>
 </section>
 
-<footer>Dados: DATASUS (SIA-PS), Google Trends, DataSenado. <span id="rodape"></span></footer>
+<footer>Dados: DATASUS (SIA-PS), Google Trends, DataSenado, Câmara dos Deputados e Senado Federal. <span id="rodape"></span></footer>
 </div>
 
 <script>const D = /*__DADOS__*/null;</script>
@@ -336,6 +406,109 @@ const linhas = [cA, cB].map(ch => s("line", { y1: ch.m.t, y2: ch.H - ch.m.b, str
       tip.show(`<div><b>${d.sexo === "F" ? "Mulheres" : "Homens"}, ${d.faixa.replace("-", "–")} anos</b></div><div><span class="k">Jogo patológico:</span> <b>${d.cresc_f630 == null ? "base pequena" : fmt(d.cresc_f630, 1) + "×"}</b></div><div><span class="k">Saúde mental:</span> <b>${fmt(d.cresc_mental, 1)}×</b></div>`, ev.clientX - fr.left, ev.clientY - fr.top); });
     hit.addEventListener("pointerleave", () => tip.hide());
   });
+})();
+
+/* ---------- Congresso ---------- */
+(function congresso() {
+  const C = D.congresso;
+  const TIPOS = {1: "derruba ou esvazia a proibição", 2: "proíbe só o cassino online", 3: "mantém o cassino online, com regras",
+    4: "ameniza para empresas e esporte", 5: "regras que pressupõem o mercado funcionando", 6: "endurece a proibição",
+    7: "salvaguardas se alguma aposta for readmitida", 8: "saúde e destino dos recursos", 9: "técnica"};
+  const POS = c => c <= 5 ? "contra" : c <= 7 ? "pro" : "neutro";
+
+  // barras empilhadas por partido
+  function porPartido(el, casa, minimo) {
+    const cont = {};
+    for (const [cs, , partido, , tirar] of C.votos) { if (cs !== casa) continue; const k = partido || "sem partido"; cont[k] = cont[k] || [0, 0]; cont[k][tirar ? 0 : 1]++; }
+    const linhas = Object.entries(cont).filter(([, v]) => v[0] + v[1] >= minimo).sort((a, b) => (b[1][0] + b[1][1]) - (a[1][0] + a[1][1]));
+    const max = Math.max(...linhas.map(([, v]) => v[0] + v[1]));
+    const W = 520, rowH = 24, m = { l: 96, r: 44, t: 4, b: 4 }, H = m.t + m.b + linhas.length * rowH;
+    const x = v => v / max * (W - m.l - m.r);
+    const svg = s("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": `Votos por partido, ${casa}` }, el);
+    const fig = el.closest(".fig"), tip = tipFor(fig);
+    linhas.forEach(([pt, [a, b]], i) => {
+      const y = m.t + i * rowH;
+      const t = s("text", { x: m.l - 8, y: y + rowH / 2 + 4, "text-anchor": "end", class: "lbl" }, svg); t.textContent = pt;
+      if (a) s("rect", { x: m.l, y: y + 4, width: x(a), height: rowH - 8, rx: 3, fill: "var(--pro)" }, svg);
+      if (b) s("rect", { x: m.l + x(a) + (a ? 2 : 0), y: y + 4, width: x(b), height: rowH - 8, rx: 3, fill: "var(--contra)" }, svg);
+      const v = s("text", { x: m.l + x(a + b) + 6, y: y + rowH / 2 + 4, class: "lbl tnum" }, svg); v.textContent = `${a} × ${b}`;
+      const hit = s("rect", { x: 0, y, width: W, height: rowH, fill: "transparent" }, svg);
+      hit.addEventListener("pointermove", ev => { const fr = fig.getBoundingClientRect();
+        tip.show(`<div><b>${pt}</b></div><div><span class="k">Tirar o cassino:</span> <b>${a}</b></div><div><span class="k">Manter:</span> <b>${b}</b></div>`, ev.clientX - fr.left, ev.clientY - fr.top); });
+      hit.addEventListener("pointerleave", () => tip.hide());
+    });
+  }
+  porPartido(document.getElementById("ch-camara"), "Câmara", 3);
+  porPartido(document.getElementById("ch-senado"), "Senado", 1);
+
+  // emendas por autor (barras divergentes)
+  (function () {
+    const el = document.getElementById("ch-emendas");
+    const A = {};
+    for (const [n, nome, partido, uf, cargo, cat] of C.emendas) {
+      const k = `${nome} (${partido}/${uf})`; A[k] = A[k] || { contra: 0, pro: 0, tipos: {} };
+      const p = POS(cat); if (p !== "neutro") A[k][p]++; A[k].tipos[cat] = (A[k].tipos[cat] || 0) + 1;
+    }
+    const linhas = Object.entries(A).filter(([, v]) => v.contra + v.pro > 0).sort((a, b) => (b[1].contra - b[1].pro) - (a[1].contra - a[1].pro));
+    const max = Math.max(...linhas.map(([, v]) => Math.max(v.contra, v.pro)));
+    const W = 1000, rowH = 24, lab = 250, m = { t: 22, b: 6 }, H = m.t + m.b + linhas.length * rowH, cx = lab + (W - lab) / 2;
+    const half = (W - lab) / 2 - 40, x = v => v / max * half;
+    const svg = s("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Emendas por autor" }, el);
+    const fig = el.closest(".fig"), tip = tipFor(fig);
+    [["← afrouxa", cx - 8, "end"], ["reforça →", cx + 8, "start"]].forEach(([t, xx, a]) => { const e = s("text", { x: xx, y: 12, "text-anchor": a, class: "lbl", style: "font-weight:700" }, svg); e.textContent = t; });
+    s("line", { x1: cx, x2: cx, y1: m.t, y2: H - m.b, stroke: "var(--axis)" }, svg);
+    linhas.forEach(([k, v], i) => {
+      const y = m.t + i * rowH;
+      const t = s("text", { x: lab - 8, y: y + rowH / 2 + 4, "text-anchor": "end", class: "lbl" }, svg); t.textContent = k;
+      if (v.contra) { s("rect", { x: cx - x(v.contra) - 1, y: y + 4, width: x(v.contra), height: rowH - 8, rx: 3, fill: "var(--contra)" }, svg);
+        const n = s("text", { x: cx - x(v.contra) - 7, y: y + rowH / 2 + 4, "text-anchor": "end", class: "lbl tnum" }, svg); n.textContent = v.contra; }
+      if (v.pro) { s("rect", { x: cx + 1, y: y + 4, width: x(v.pro), height: rowH - 8, rx: 3, fill: "var(--pro)" }, svg);
+        const n = s("text", { x: cx + x(v.pro) + 7, y: y + rowH / 2 + 4, class: "lbl tnum" }, svg); n.textContent = v.pro; }
+      const hit = s("rect", { x: 0, y, width: W, height: rowH, fill: "transparent" }, svg);
+      hit.addEventListener("pointermove", ev => { const fr = fig.getBoundingClientRect();
+        tip.show(`<div><b>${k}</b></div>` + Object.entries(v.tipos).sort((a, b) => a[0] - b[0]).map(([c, q]) => `<div><span class="k">${TIPOS[c]}:</span> <b>${q}</b></div>`).join(""), ev.clientX - fr.left, ev.clientY - fr.top); });
+      hit.addEventListener("pointerleave", () => tip.hide());
+    });
+  })();
+
+  // tabela de projetos
+  const tb = document.querySelector("#tbl-pls tbody");
+  for (const p of C.projetos) {
+    const partidos = [...new Set(p.autores.map(a => a[1]).filter(Boolean))].join(", ");
+    const nomes = p.autores.length > 3 ? `${p.autores.slice(0, 2).map(a => a[0]).join(", ")} e mais ${p.autores.length - 2} deputados` : p.autores.map(a => `${a[0]}${a[1] ? ` (${a[1]}/${a[2]})` : ""}`).join(", ");
+    const tr = h("tr", {}, `<td><a href="${p.url}" target="_blank" rel="noopener">${p.projeto}</a></td><td class="tnum">${p.data.slice(8, 10)}/${p.data.slice(5, 7)}/${p.data.slice(0, 4)}</td><td>${p.alcance}</td><td>${nomes}${p.autores.length > 3 ? ` <span class="small">(${partidos})</span>` : ""}</td>`);
+    tb.appendChild(tr);
+  }
+
+  // busca por parlamentar
+  const P = {};
+  const chave = n => norm(n).replace(/[^a-z ]/g, "").trim();
+  const ent = (nome, partido, uf, casa) => { const k = chave(nome); P[k] = P[k] || { nome, partido, uf, casa, voto: null, url: null, emendas: [], projetos: [] }; return P[k]; };
+  for (const [casa, nome, partido, uf, tirar, url] of C.votos) { const e = ent(nome, partido, uf, casa); e.voto = tirar; e.url = url; e.casa = casa; }
+  for (const [n, nome, partido, uf, cargo, cat, resumo, url] of C.emendas) { const e = ent(nome, partido, uf, cargo === "Senador(a)" ? "Senado" : "Câmara"); e.emendas.push({ n, cat, resumo, url }); if (!e.partido) e.partido = partido; }
+  for (const p of C.projetos) for (const [nome, partido, uf] of p.autores) { const e = ent(nome, partido, uf, "Câmara"); e.projetos.push(p); }
+  const lista = Object.values(P);
+  const q2 = document.getElementById("q-parl"), sug2 = document.getElementById("sug-parl"), ficha = document.getElementById("ficha-parl");
+  function mostrar(e) {
+    sug2.hidden = true; q2.value = e.nome;
+    const voto = e.voto == null ? `<span class="chip neutro">não votou ou não era parlamentar</span>` : e.voto ? `<span class="chip pro">votou para tirar o cassino online</span>` : `<span class="chip contra">votou para manter o cassino online</span>`;
+    const ems = e.emendas.length ? `<ul>${e.emendas.map(x => `<li><a href="${x.url}" target="_blank" rel="noopener">Emenda ${x.n}</a>: ${x.resumo} <span class="chip ${POS(x.cat)}">${TIPOS[x.cat]}</span></li>`).join("")}</ul>` : `<p class="small" style="margin:0">Não apresentou emendas.</p>`;
+    const pls = e.projetos.length ? `<ul>${e.projetos.map(p => `<li><a href="${p.url}" target="_blank" rel="noopener">${p.projeto}</a> (${p.data.slice(0, 4)}): proíbe ${p.alcance === "total" ? "as apostas" : p.alcance}</li>`).join("")}</ul>` : `<p class="small" style="margin:0">Não assinou projetos de proibição.</p>`;
+    ficha.innerHTML = `<div class="ficha"><div><div class="eyebrow">${e.casa === "Senado" ? "Senado" : "Câmara"}</div><h3>${e.nome} <span class="small">${e.partido || ""}${e.uf ? "/" + e.uf : ""}</span></h3>${e.url ? `<a class="small" href="${e.url}" target="_blank" rel="noopener">página oficial</a>` : ""}</div>
+      <div><b>Votação de 2023 sobre o cassino online</b><div style="margin-top:.3rem">${voto}</div></div>
+      <div><b>Emendas à MP 1.394 (2026)</b>${ems}</div>
+      <div><b>Projetos para proibir as bets</b>${pls}</div></div>`;
+  }
+  q2.addEventListener("input", () => {
+    const t = chave(q2.value); sug2.innerHTML = "";
+    if (t.length < 2) { sug2.hidden = true; return; }
+    const res = lista.filter(e => chave(e.nome).includes(t)).sort((a, b) => (chave(a.nome).startsWith(t) ? -1 : 0) - (chave(b.nome).startsWith(t) ? -1 : 0)).slice(0, 8);
+    if (!res.length) { sug2.appendChild(h("li", {}, `<span class="small" style="display:block;padding:.45rem .8rem">Nenhum parlamentar com esse nome votou em 2023, apresentou emenda ou assinou projeto de proibição.</span>`)); sug2.hidden = false; return; }
+    for (const e of res) { const li = h("li"); const b = h("button", { type: "button" }, `<span>${e.nome}</span><span class="small">${e.partido || ""}${e.uf ? "/" + e.uf : ""} · ${e.casa}</span>`); b.addEventListener("click", () => mostrar(e)); li.appendChild(b); sug2.appendChild(li); }
+    sug2.hidden = false;
+  });
+  q2.addEventListener("keydown", ev => { if (ev.key === "Enter") { const b = sug2.querySelector("button"); if (b) { ev.preventDefault(); b.click(); } } if (ev.key === "Escape") sug2.hidden = true; });
+  const ex = lista.find(e => chave(e.nome) === "carlos portinho"); if (ex) mostrar(ex);
 })();
 
 /* ---------- novos × já estavam ---------- */

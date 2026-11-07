@@ -107,13 +107,29 @@ def perfil(r):
 
 
 
+def congresso():
+    """Votação nominal de 2023 sobre o cassino online, emendas à MP 1.394 e projetos de proibição (dados públicos)."""
+    v = pl.read_parquet(PROCESSED / "congresso_votacao_cassino_2023.parquet").filter(pl.col("voto") != "outro")
+    votos = [[d["casa"], d["nome"], d["partido"], d["uf"], 1 if d["voto"] == "tirar o cassino" else 0, d["url"]] for d in v.to_dicts()]
+    em = pl.read_parquet(PROCESSED / "mp1394_emendas.parquet").drop("texto").join(
+        pl.read_csv(ROOT / "src" / "politica" / "classificacao_mp1394.csv"), on="numero")
+    emendas = [[d["numero"], d["parlamentar"], d["partido"], d["uf"], d["cargo"], d["categoria"], d["resumo"], d["url"]] for d in em.sort("numero").to_dicts()]
+    pls = pl.read_parquet(PROCESSED / "congresso_pls_proibicao.parquet")
+    projetos = []
+    for (proj, data, alc, ementa, url), g in pls.group_by(["projeto", "data", "alcance", "ementa", "url"], maintain_order=True):
+        projetos.append({"projeto": proj, "data": data, "alcance": alc, "ementa": ementa, "url": url,
+                         "autores": [[a["autor"], a["partido"], a["uf"]] for a in g.to_dicts()]})
+    projetos.sort(key=lambda x: x["data"])
+    return {"votos": votos, "emendas": emendas, "projetos": projetos}
+
+
 def main():
     r = registros()
     perf, mulheres = perfil(r)
     dados = {
         "corte": CORTE, "choques": CHOQUES, "noticias": NOTICIAS, "pandemia": PANDEMIA,
         "serie": serie_nacional(r), "anual": anual(r), "novos": novos(r),
-        "perfil": perf, "mulheres": mulheres,
+        "perfil": perf, "mulheres": mulheres, "congresso": congresso(),
     }
     js = json.dumps(dados, ensure_ascii=False, separators=(",", ":"))
     corpo = (ROOT / "site" / "modelo.html").read_text().replace("/*__DADOS__*/null", js)
