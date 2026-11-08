@@ -181,10 +181,10 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     <ol class="marcos" id="marcos-aps-taxa"></ol>
   </div>
   <div class="fig">
-    <div class="fig-title">Crescimento desde 2022 (média mensal de 2022 = 100, escala logarítmica)</div>
+    <div class="fig-title">Crescimento desde 2022 (média mensal de 2022 = 100)</div>
     <div class="legend"><span><i style="background:var(--s1)"></i>Jogo patológico, atenção primária (atendimentos)</span><span><i style="background:var(--caps)"></i>Jogo patológico, CAPS (pessoas)</span><span><i style="background:var(--ref)"></i>Outros diagnósticos de saúde mental, atenção primária</span></div>
     <div id="ch-indice"></div>
-    <p class="small" style="margin:0">A atenção primária cresceu mais rápido que o CAPS a partir de 2023. 2026: atenção primária até <span class="aps-fim"></span>, CAPS até <span class="caps-fim"></span>. O CAPS conta pessoas por mês e a atenção primária conta atendimentos; por isso a comparação é só do ritmo de crescimento.</p>
+    <p class="small" style="margin:0">Tracejado: nível de 2022 (100). Um valor de 1.000 quer dizer 10 vezes a média mensal de 2022. A atenção primária cresceu mais rápido que o CAPS a partir de 2023. 2026: atenção primária até <span class="aps-fim"></span>, CAPS até <span class="caps-fim"></span>. O CAPS conta pessoas por mês e a atenção primária conta atendimentos; por isso a comparação é só do ritmo de crescimento.</p>
   </div>
 </section>
 
@@ -600,15 +600,16 @@ function idadeChart(el, J, R, cor) {
       { nome: "Outros diagnósticos", cor: "var(--ref)", v: a => an[a].ref_mes / an[2022].ref_mes * 100 },
     ];
     const W = 1000, H = 300, m = { l: 52, r: 150, t: 14, b: 24 };
-    const lo = Math.log(25), hi = Math.log(5000);
+    const top = Math.ceil(Math.max(...anos.flatMap(a => S.map(se => se.v(a) ?? 0))) / 500) * 500;
     const x = a => m.l + (a - 2019) / 7 * (W - m.l - m.r);
-    const y = v => H - m.b - (Math.log(v) - lo) / (hi - lo) * (H - m.t - m.b);
+    const y = v => H - m.b - v / top * (H - m.t - m.b);
     const svg = s("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Crescimento desde 2022" }, el);
     const f = el.closest(".fig"), tp = tipFor(f);
-    for (const v of [25, 50, 100, 250, 500, 1000, 2500, 5000]) {
-      s("line", { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: v === 100 ? "var(--axis)" : "var(--rule)" }, svg);
+    for (let v = 0; v <= top; v += 500) {
+      s("line", { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: v === 0 ? "var(--axis)" : "var(--rule)" }, svg);
       const t = s("text", { x: m.l - 6, y: y(v) + 4, "text-anchor": "end", class: "tnum" }, svg); t.textContent = fmt(v);
     }
+    s("line", { x1: m.l, x2: W - m.r, y1: y(100), y2: y(100), stroke: "var(--ink-2)", "stroke-dasharray": "4 4" }, svg);
     for (const a of anos) { const t = s("text", { x: x(a), y: H - 6, "text-anchor": "middle", class: "lbl" }, svg); t.textContent = a + (a === 2026 ? "*" : ""); }
     const fins = [];
     for (const se of S) {
