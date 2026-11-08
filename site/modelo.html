@@ -178,13 +178,11 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     <div class="fig-title">Atendimentos por jogo patológico para cada 10 mil atendimentos de saúde mental com outros diagnósticos</div>
     <div class="legend"><span><i style="background:var(--s1)"></i>Jogo patológico <span class="cid">F63.0</span></span><span><i class="box" style="background:var(--band-pand)"></i>Pandemia</span><span><i class="box" style="background:var(--band-cpi)"></i><a href="" class="lk-cpi" target="_blank" rel="noopener">CPI das Bets</a> (Senado, nov/2024–jun/2025)</span></div>
     <div id="ch-aps-taxa"></div>
-    <ol class="marcos" id="marcos-aps-taxa"></ol>
-  </div>
-  <div class="fig">
-    <div class="fig-title">Crescimento desde 2022 (média mensal de 2022 = 100)</div>
+    <div class="fig-title" style="margin-top:.8rem">Crescimento desde 2022 (média mensal de 2022 = 100)</div>
     <div class="legend"><span><i style="background:var(--s1)"></i>Jogo patológico, atenção primária (atendimentos)</span><span><i style="background:var(--caps)"></i>Jogo patológico, CAPS (pessoas)</span><span><i style="background:var(--ref)"></i>Outros diagnósticos de saúde mental, atenção primária</span></div>
     <div id="ch-indice"></div>
-    <p class="small" style="margin:0">Tracejado: nível de 2022 (100). Um valor de 1.000 quer dizer 10 vezes a média mensal de 2022. A atenção primária cresceu mais rápido que o CAPS a partir de 2023. 2026: atenção primária até <span class="aps-fim"></span>, CAPS até <span class="caps-fim"></span>. O CAPS conta pessoas por mês e a atenção primária conta atendimentos; por isso a comparação é só do ritmo de crescimento.</p>
+    <ol class="marcos" id="marcos-aps-taxa"></ol>
+    <p class="small" style="margin:0">Todas as linhas valem 100 na média de 2022 (tracejado); 1.000 quer dizer 10 vezes a média de 2022. A linha cinza fica quase no chão porque os outros diagnósticos de saúde mental só dobraram (cerca de 200): ela mostra quanto cresceria o jogo patológico se a alta fosse só o SUS registrando mais. Valores mensais, por isso as linhas oscilam. A atenção primária cresceu mais rápido que o CAPS a partir de 2023. 2026: atenção primária até <span class="aps-fim"></span>, CAPS até <span class="caps-fim"></span>. O CAPS conta pessoas por mês e a atenção primária conta atendimentos; por isso a comparação é só do ritmo de crescimento.</p>
   </div>
 </section>
 
@@ -494,6 +492,7 @@ function painel(fig, graficos, tip) {
     });
     hit.addEventListener("pointerleave", () => { ls.forEach(l => l.setAttribute("visibility", "hidden")); tt.hide(); });
   });
+  return chs;
 }
 const busca = Object.fromEntries(D.serie.trends.map(d => [idx(d.cmp), d.trends]));
 const trendsSerie = { pts: D.serie.trends.map(d => ({ i: idx(d.cmp), v: d.trends })), cor: "var(--s2)", rotulo: true };
@@ -579,54 +578,27 @@ function idadeChart(el, J, R, cor) {
       <div class="k" style="margin-top:.2rem">CAPS (pessoas)</div>
       <div><span class="k">F63.0:</span> <b>${valor(d?.f630, D.corte, c)}</b> · <span class="k">F63.1–3:</span> <b>${valor(d?.placebo, D.corte, c)}</b></div>
       <div style="margin-top:.2rem"><span class="k">Busca:</span> <b>${b == null ? "—" : fmt(b)}</b></div>`; });
-  painel(document.getElementById("fig-aps-taxa"), [
+  // índice mensal: cada mês dividido pela média mensal de 2022 (×100)
+  const m22 = (lista, k) => { const v = lista.filter(d => d.cmp.startsWith("2022") && d[k] != null).map(d => d[k]); return v.reduce((a, b) => a + b, 0) / v.length; };
+  const bJ = m22(A.mensal, "jogo"), bR = m22(A.mensal, "ref"), bC = m22(D.serie.caps, "f630");
+  const ind = (v, b) => v == null ? null : Math.round(v / b * 100);
+  const chs = painel(document.getElementById("fig-aps-taxa"), [
     { el: document.getElementById("ch-aps-taxa"), altura: 240, series: [{ pts: A.mensal.map(d => ({ i: idx(d.cmp), v: d.por10mil })), cor: "var(--s1)", rotulo: true }] },
-  ], i => { const d = P[i]; if (!d) return null;
-    return `<div><b>${mesLabel(d.cmp)}</b></div><div><span class="k">Jogo patológico a cada 10 mil:</span> <b>${d.por10mil == null ? "—" : fmt(d.por10mil, 1)}</b></div>`; });
+    { el: document.getElementById("ch-indice"), altura: 300, passoY: 1000, series: [
+      { pts: A.mensal.map(d => ({ i: idx(d.cmp), v: ind(d.ref, bR) })), cor: "var(--ref)", rotulo: true },
+      { pts: D.serie.caps.map(d => ({ i: idx(d.cmp), v: ind(d.f630, bC) })), cor: "var(--caps)", rotulo: true },
+      { pts: A.mensal.map(d => ({ i: idx(d.cmp), v: ind(d.jogo, bJ) })), cor: "var(--s1)", rotulo: true }] },
+  ], i => { const d = P[i], c = C[i]; if (!d) return null;
+    return `<div><b>${mesLabel(d.cmp)}</b></div><div><span class="k">Jogo patológico a cada 10 mil:</span> <b>${d.por10mil == null ? "—" : fmt(d.por10mil, 1)}</b></div>
+      <div class="k" style="margin-top:.2rem">Índice (2022 = 100)</div>
+      <div><span class="k">Atenção primária:</span> <b>${ind(d.jogo, bJ) ?? "—"}</b></div>
+      <div><span class="k">CAPS:</span> <b>${c ? (ind(c.f630, bC) ?? "—") : "sem dado"}</b></div>
+      <div><span class="k">Outros diagnósticos:</span> <b>${ind(d.ref, bR)}</b></div>`; });
+  const ci = chs[1]; s("line", { x1: ci.m.l, x2: ci.W - ci.m.r, y1: ci.y(100), y2: ci.y(100), stroke: "var(--ink-2)", "stroke-dasharray": "4 4" }, ci.svg);
   listaMarcos(document.getElementById("marcos-aps-taxa"));
   mulheresChart(document.getElementById("ch-caps-mulheres"), CP.mulheres, "pacientes de cada mês", "var(--caps)");
   idadeChart(document.getElementById("ch-caps-idade"), CP.faixas.jogo, CP.faixas.ref, "var(--caps)");
 
-  // índice 2022 = 100
-  (function indice() {
-    const el = document.getElementById("ch-indice");
-    const anos = [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
-    const capsMes = {};
-    for (const d of D.serie.caps) { if (d.f630 == null) continue; const a = +d.cmp.slice(0, 4); capsMes[a] = capsMes[a] || []; capsMes[a].push(d.f630); }
-    const media = a => capsMes[a] ? capsMes[a].reduce((x, y) => x + y, 0) / capsMes[a].length : null;
-    const S = [
-      { nome: "Atenção primária", cor: "var(--s1)", v: a => an[a].jogo_mes / an[2022].jogo_mes * 100 },
-      { nome: "CAPS", cor: "var(--caps)", v: a => media(a) && media(2022) ? media(a) / media(2022) * 100 : null },
-      { nome: "Outros diagnósticos", cor: "var(--ref)", v: a => an[a].ref_mes / an[2022].ref_mes * 100 },
-    ];
-    const W = 1000, H = 300, m = { l: 52, r: 150, t: 14, b: 24 };
-    const top = Math.ceil(Math.max(...anos.flatMap(a => S.map(se => se.v(a) ?? 0))) / 500) * 500;
-    const x = a => m.l + (a - 2019) / 7 * (W - m.l - m.r);
-    const y = v => H - m.b - v / top * (H - m.t - m.b);
-    const svg = s("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Crescimento desde 2022" }, el);
-    const f = el.closest(".fig"), tp = tipFor(f);
-    for (let v = 0; v <= top; v += 500) {
-      s("line", { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: v === 0 ? "var(--axis)" : "var(--rule)" }, svg);
-      const t = s("text", { x: m.l - 6, y: y(v) + 4, "text-anchor": "end", class: "tnum" }, svg); t.textContent = fmt(v);
-    }
-    s("line", { x1: m.l, x2: W - m.r, y1: y(100), y2: y(100), stroke: "var(--ink-2)", "stroke-dasharray": "4 4" }, svg);
-    for (const a of anos) { const t = s("text", { x: x(a), y: H - 6, "text-anchor": "middle", class: "lbl" }, svg); t.textContent = a + (a === 2026 ? "*" : ""); }
-    const fins = [];
-    for (const se of S) {
-      const p = anos.map(a => [a, se.v(a)]).filter(([, v]) => v != null && v > 0);
-      s("path", { d: p.map(([a, v], k) => (k ? "L" : "M") + x(a).toFixed(1) + "," + y(v).toFixed(1)).join(""), fill: "none", stroke: se.cor, "stroke-width": 2, "stroke-linejoin": "round" }, svg);
-      for (const [a, v] of p) s("circle", { cx: x(a), cy: y(v), r: 4, fill: se.cor, stroke: "var(--surface)", "stroke-width": 2 }, svg);
-      const [a, v] = p[p.length - 1]; fins.push({ y: y(v), t: `${se.nome}: ${fmt(v)}`, x: x(a) });
-    }
-    fins.sort((a, b) => a.y - b.y); for (let k = 1; k < fins.length; k++) fins[k].y = Math.max(fins[k].y, fins[k - 1].y + 16);
-    for (const e of fins) { const t = s("text", { x: e.x + 10, y: e.y + 4, class: "lbl tnum" }, svg); t.textContent = e.t; }
-    anos.forEach(a => {
-      const hit = s("rect", { x: x(a) - (W - m.l - m.r) / 14, y: m.t, width: (W - m.l - m.r) / 7, height: H - m.t - m.b, fill: "transparent" }, svg);
-      hit.addEventListener("pointermove", ev => { const fr = f.getBoundingClientRect();
-        tp.show(`<div><b>${a}</b></div>` + S.map(se => `<div><span class="k">${se.nome}:</span> <b>${se.v(a) == null ? "—" : fmt(se.v(a))}</b></div>`).join(""), ev.clientX - fr.left, ev.clientY - fr.top); });
-      hit.addEventListener("pointerleave", () => tp.hide());
-    });
-  })();
   mulheresChart(document.getElementById("ch-aps-mulheres"), A.mulheres, "atendimentos", "var(--s1)");
   idadeChart(document.getElementById("ch-aps-idade"), A.faixas.jogo, A.faixas.ref, "var(--s1)");
 })();

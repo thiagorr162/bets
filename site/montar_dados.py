@@ -142,7 +142,7 @@ def atencao_primaria():
     m = (t.group_by("cmp").agg(pl.col("atendimentos").filter(pl.col("grupo") == "jogo_cid").sum().alias("jogo"),
                                pl.col("atendimentos").filter(pl.col("grupo").is_in(REF)).sum().alias("ref"),
                                pl.col("atendimentos").filter(pl.col("grupo").is_in(PLACEBO)).sum().alias("placebo")).sort("cmp"))
-    mensal = [{"cmp": d["cmp"], "jogo": sup(d["jogo"]), "placebo": sup(d["placebo"]), "por10mil": round(d["jogo"] / d["ref"] * 1e4, 2) if d["jogo"] >= MIN else None}
+    mensal = [{"cmp": d["cmp"], "jogo": sup(d["jogo"]), "placebo": sup(d["placebo"]), "ref": d["ref"], "por10mil": round(d["jogo"] / d["ref"] * 1e4, 2) if d["jogo"] >= MIN else None}
               for d in m.to_dicts()]
     an = (m.with_columns(pl.col("cmp").str.slice(0, 4).cast(pl.Int32).alias("ano")).group_by("ano")
           .agg((pl.col("jogo").sum() / pl.len()).alias("jogo_mes"), (pl.col("jogo").sum() / pl.col("ref").sum() * 1e4).alias("por10mil"), (pl.col("ref").sum() / pl.len()).alias("ref_mes"),
