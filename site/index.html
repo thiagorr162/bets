@@ -20,8 +20,8 @@
   --s1-soft: #9ec5f4;     /* mesma família: parte "já estava no CAPS" */
   --s2: #eb6834;          /* série: busca por apostas (gráfico próprio) */
   --ref: #9a9c9e;         /* referência: placebo / saúde mental */
-  --pro: #1baf7a;          /* Congresso: tirar o cassino / reforça a proibição */
-  --contra: #eda100;       /* Congresso: manter o cassino / afrouxa a proibição */
+  --pro: #1baf7a;          /* Congresso: proibir o cassino / reforça a proibição */
+  --contra: #eda100;       /* Congresso: liberar o cassino / afrouxa a proibição */
   --band-pand: rgba(120,124,128,.13);
   --mark: #c8352f;        /* marcos regulatórios */
   --f-display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
@@ -175,23 +175,29 @@ footer { padding-top: 2rem; border-top: 1px solid var(--rule); font-size: var(--
 <section id="congresso">
   <div class="prose">
     <h2>O que o Congresso decidiu e propõe</h2>
-    <p>As bets chegaram ao Brasil por decisão do Congresso, e é lá que a proibição de 2026 será confirmada ou mudada. Três registros públicos mostram a posição de cada parlamentar: a votação de 2023 que manteve o cassino online na lei, as emendas apresentadas à MP 1.394 e os projetos de lei para proibir as apostas.</p>
+    <p>As bets chegaram ao Brasil por decisão do Congresso, e é lá que a proibição de 2026 será confirmada ou mudada. Três registros públicos mostram a posição de cada parlamentar: a votação de 2023 que liberou o cassino online, as emendas apresentadas à MP 1.394 e os projetos de lei para proibir as apostas.</p>
   </div>
 
   <div class="prose">
-    <h3>2023: o cassino online entrou na lei</h3>
-    <p>O projeto que virou a Lei 14.790 regulamentava as apostas esportivas e os jogos online, como o "tigrinho". Em 12/12/2023, o Senado aprovou por 37 a 27 uma emenda do senador Carlos Portinho (PL-RJ) para <b>tirar o cassino online</b> e deixar só as apostas em eventos esportivos. Em 21/12/2023, a Câmara rejeitou a mudança por 261 a 120, e <b>o cassino online ficou na lei</b>. Desde 2025, quando o mercado regulado começou, ele funciona legalmente.</p>
+    <h3>2023: o Congresso liberou o cassino online</h3>
+    <p>Em 2023, o Congresso votou a lei que regulamentou as bets (Lei 14.790). As <b>apostas esportivas</b>, em jogos de futebol e outros esportes, já estavam garantidas no projeto e não estavam em disputa. A dúvida era se a lei também liberaria o <b>cassino online</b>: caça-níqueis, roleta e jogos como o "tigrinho", em que o resultado sai de um sorteio do próprio sistema, sem nenhum evento real.</p>
+    <ol class="limites" style="max-width:68ch">
+      <li><b>Senado, 12/12/2023:</b> por 37 a 27, os senadores aprovaram uma emenda do senador Carlos Portinho (PL-RJ) que <b>proibia o cassino online</b>.</li>
+      <li><b>Câmara, 21/12/2023:</b> a palavra final era dos deputados. Por 261 a 120, eles derrubaram a emenda do Senado e <b>liberaram o cassino online</b>.</li>
+      <li><b>Resultado:</b> a lei saiu com apostas esportivas e cassino online. Desde 2025, os dois funcionam legalmente no mercado regulado. É no cassino online que se concentra a preocupação com o vício, e a MP 1.394, de 2026, proibiu os dois.</li>
+    </ol>
+    <p class="small">Nos gráficos, cada parlamentar aparece pelo que o voto significou: <b>proibir</b> ou <b>liberar</b> o cassino online.</p>
   </div>
   <div class="duo">
     <div class="fig">
-      <div class="fig-title">Câmara, 21/12/2023: votos por partido</div>
-      <div class="legend"><span><i class="box" style="background:var(--pro)"></i>Votou para tirar o cassino online</span><span><i class="box" style="background:var(--contra)"></i>Votou para manter</span></div>
+      <div class="fig-title">Câmara, 21/12/2023: 120 para proibir × 261 para liberar o cassino online</div>
+      <div class="legend"><span><i class="box" style="background:var(--pro)"></i>Votou para proibir o cassino online</span><span><i class="box" style="background:var(--contra)"></i>Votou para liberar o cassino online</span></div>
       <div id="ch-camara"></div>
       <p class="small" style="margin:0">Partidos com pelo menos 3 votos. Partido na data da votação.</p>
     </div>
     <div class="fig">
-      <div class="fig-title">Senado, 12/12/2023: votos por partido</div>
-      <div class="legend"><span><i class="box" style="background:var(--pro)"></i>Votou para tirar o cassino online</span><span><i class="box" style="background:var(--contra)"></i>Votou para manter</span></div>
+      <div class="fig-title">Senado, 12/12/2023: 37 para proibir × 27 para liberar o cassino online</div>
+      <div class="legend"><span><i class="box" style="background:var(--pro)"></i>Votou para proibir o cassino online</span><span><i class="box" style="background:var(--contra)"></i>Votou para liberar o cassino online</span></div>
       <div id="ch-senado"></div>
       <p class="small" style="margin:0">17 senadores não votaram (ausentes, em missão ou presidente da sessão).</p>
     </div>
@@ -221,7 +227,7 @@ footer { padding-top: 2rem; border-top: 1px solid var(--rule); font-size: var(--
     <ul class="sug2" id="sug-parl" hidden></ul>
   </div>
   <div id="ficha-parl"></div>
-  <p class="nota">Votar para manter o cassino online, ou propor afrouxar a proibição, não equivale a defender o vício em apostas: os argumentos incluem regular um mercado que já existia na ilegalidade, arrecadar impostos e proteger o apostador. O site registra posições, sem julgá-las.</p>
+  <p class="nota">Votar para liberar o cassino online, ou propor afrouxar a proibição, não equivale a defender o vício em apostas: os argumentos incluem regular um mercado que já existia na ilegalidade, arrecadar impostos e proteger o apostador. O site registra posições, sem julgá-las.</p>
 </section>
 
 <section id="metodo">
@@ -424,7 +430,7 @@ const linhas = [cA, cB].map(ch => s("line", { y1: ch.m.t, y2: ch.H - ch.m.b, str
     for (const [cs, , partido, , tirar] of C.votos) { if (cs !== casa) continue; const k = partido || "sem partido"; cont[k] = cont[k] || [0, 0]; cont[k][tirar ? 0 : 1]++; }
     const linhas = Object.entries(cont).filter(([, v]) => v[0] + v[1] >= minimo).sort((a, b) => (b[1][0] + b[1][1]) - (a[1][0] + a[1][1]));
     const max = Math.max(...linhas.map(([, v]) => v[0] + v[1]));
-    const W = 520, rowH = 24, m = { l: 96, r: 44, t: 4, b: 4 }, H = m.t + m.b + linhas.length * rowH;
+    const W = 520, rowH = 24, m = { l: 96, r: 128, t: 4, b: 4 }, H = m.t + m.b + linhas.length * rowH;
     const x = v => v / max * (W - m.l - m.r);
     const svg = s("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": `Votos por partido, ${casa}` }, el);
     const fig = el.closest(".fig"), tip = tipFor(fig);
@@ -433,10 +439,10 @@ const linhas = [cA, cB].map(ch => s("line", { y1: ch.m.t, y2: ch.H - ch.m.b, str
       const t = s("text", { x: m.l - 8, y: y + rowH / 2 + 4, "text-anchor": "end", class: "lbl" }, svg); t.textContent = pt;
       if (a) s("rect", { x: m.l, y: y + 4, width: x(a), height: rowH - 8, rx: 3, fill: "var(--pro)" }, svg);
       if (b) s("rect", { x: m.l + x(a) + (a ? 2 : 0), y: y + 4, width: x(b), height: rowH - 8, rx: 3, fill: "var(--contra)" }, svg);
-      const v = s("text", { x: m.l + x(a + b) + 6, y: y + rowH / 2 + 4, class: "lbl tnum" }, svg); v.textContent = `${a} × ${b}`;
+      const v = s("text", { x: m.l + x(a + b) + 6, y: y + rowH / 2 + 4, class: "lbl tnum" }, svg); v.textContent = `${a} proibir · ${b} liberar`;
       const hit = s("rect", { x: 0, y, width: W, height: rowH, fill: "transparent" }, svg);
       hit.addEventListener("pointermove", ev => { const fr = fig.getBoundingClientRect();
-        tip.show(`<div><b>${pt}</b></div><div><span class="k">Tirar o cassino:</span> <b>${a}</b></div><div><span class="k">Manter:</span> <b>${b}</b></div>`, ev.clientX - fr.left, ev.clientY - fr.top); });
+        tip.show(`<div><b>${pt}</b></div><div><span class="k">Proibir o cassino online:</span> <b>${a}</b></div><div><span class="k">Liberar o cassino online:</span> <b>${b}</b></div>`, ev.clientX - fr.left, ev.clientY - fr.top); });
       hit.addEventListener("pointerleave", () => tip.hide());
     });
   }
@@ -493,11 +499,11 @@ const linhas = [cA, cB].map(ch => s("line", { y1: ch.m.t, y2: ch.H - ch.m.b, str
   const q2 = document.getElementById("q-parl"), sug2 = document.getElementById("sug-parl"), ficha = document.getElementById("ficha-parl");
   function mostrar(e) {
     sug2.hidden = true; q2.value = e.nome;
-    const voto = e.voto == null ? `<span class="chip neutro">não votou ou não era parlamentar</span>` : e.voto ? `<span class="chip pro">votou para tirar o cassino online</span>` : `<span class="chip contra">votou para manter o cassino online</span>`;
+    const voto = e.voto == null ? `<span class="chip neutro">não votou ou não era parlamentar</span>` : e.voto ? `<span class="chip pro">votou para proibir o cassino online</span>` : `<span class="chip contra">votou para liberar o cassino online</span>`;
     const ems = e.emendas.length ? `<ul>${e.emendas.map(x => `<li><a href="${x.url}" target="_blank" rel="noopener">Emenda ${x.n}</a>: ${x.resumo} <span class="chip ${POS(x.cat)}">${TIPOS[x.cat]}</span></li>`).join("")}</ul>` : `<p class="small" style="margin:0">Não apresentou emendas.</p>`;
     const pls = e.projetos.length ? `<ul>${e.projetos.map(p => `<li><a href="${p.url}" target="_blank" rel="noopener">${p.projeto}</a> (${p.data.slice(0, 4)}): proíbe ${p.alcance === "total" ? "as apostas" : p.alcance}</li>`).join("")}</ul>` : `<p class="small" style="margin:0">Não assinou projetos de proibição.</p>`;
     ficha.innerHTML = `<div class="ficha"><div><div class="eyebrow">${e.casa === "Senado" ? "Senado" : "Câmara"}</div><h3>${e.nome} <span class="small">${e.partido || ""}${e.uf ? "/" + e.uf : ""}</span></h3>${e.url ? `<a class="small" href="${e.url}" target="_blank" rel="noopener">página oficial</a>` : ""}</div>
-      <div><b>Votação de 2023 sobre o cassino online</b><div style="margin-top:.3rem">${voto}</div></div>
+      <div><b>Votação de 2023: proibir ou liberar o cassino online</b><div style="margin-top:.3rem">${voto}</div></div>
       <div><b>Emendas à MP 1.394 (2026)</b>${ems}</div>
       <div><b>Projetos para proibir as bets</b>${pls}</div></div>`;
   }
