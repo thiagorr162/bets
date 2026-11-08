@@ -383,10 +383,11 @@ function serieChart(el, series, { altura, yMax, passoY }) {
   // faixa da pandemia
   const [p0, p1] = D.pandemia.map(idxDate);
   s("rect", { x: x(p0), y: m.t, width: x(p1) - x(p0), height: H - m.t - m.b, fill: "var(--band-pand)" }, svg);
+  const tp = s("text", { x: x(p0) + 4, y: m.t + 12, style: "font-size:10px;fill:var(--ink-2)" }, svg); tp.textContent = "Pandemia";
   // faixa da CPI das Bets (Senado)
   const [c0, c1] = [idxDate(D.cpi.inicio), idxDate(D.cpi.fim)];
   s("rect", { x: x(c0), y: m.t, width: x(c1) - x(c0), height: H - m.t - m.b, fill: "var(--band-cpi)" }, svg);
-  const tc = s("text", { x: x(c0) + 3, y: H - m.b - 5, style: "font-size:10px;fill:var(--ink-2)" }, svg); tc.textContent = "CPI";
+  const tc = s("text", { x: x(c0) + 4, y: m.t + 12, style: "font-size:10px;fill:var(--ink-2)" }, svg); tc.textContent = "CPI";
   // grade e eixo y
   const g = s("g", { class: "grid" }, svg);
   for (let v = 0; v <= yMax; v += passoY) {
