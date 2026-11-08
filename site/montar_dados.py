@@ -113,6 +113,65 @@ def perfil(r):
 
 
 
+def atencao_primaria():
+    """SISAB: atendimentos individuais com F63.0 por mês, referência de saúde mental, perfil por idade e sexo."""
+    a = pl.read_parquet(pasta("atencao_primaria") / "sisab_aps.parquet")
+    REF = ["depressao_cid", "depressao_rec_cid", "ansiedade_cid", "estresse_cid", "alcool_cid", "esquizofrenia_cid"]
+    t = a.filter(pl.col("recorte") == "total")
+    m = (t.group_by("cmp").agg(pl.col("atendimentos").filter(pl.col("grupo") == "jogo_cid").sum().alias("jogo"),
+                               pl.col("atendimentos").filter(pl.col("grupo").is_in(REF)).sum().alias("ref")).sort("cmp"))
+    mensal = [{"cmp": d["cmp"], "jogo": sup(d["jogo"]), "por10mil": round(d["jogo"] / d["ref"] * 1e4, 2) if d["jogo"] >= MIN else None}
+              for d in m.to_dicts()]
+    an = (m.with_columns(pl.col("cmp").str.slice(0, 4).cast(pl.Int32).alias("ano")).group_by("ano")
+          .agg((pl.col("jogo").sum() / pl.len()).alias("jogo_mes"), (pl.col("jogo").sum() / pl.col("ref").sum() * 1e4).alias("por10mil"), (pl.col("ref").sum() / pl.len()).alias("ref_mes"),
+               pl.len().alias("meses")).sort("ano"))
+    fx = (a.filter((pl.col("recorte") == "faixa") & pl.col("cmp").str.slice(0, 4).is_in(["2025", "2026"])
+                   & pl.col("grupo").is_in(["jogo_cid", "ansiedade_cid", "depressao_cid"]))
+          .group_by("grupo", "valor").agg(pl.col("atendimentos").sum())
+          .with_columns((pl.col("atendimentos") / pl.col("atendimentos").sum().over("grupo") * 100).alias("pct")))
+    faixas = {g: {d["valor"]: round(d["pct"], 1) for d in fx.filter(pl.col("grupo") == g).to_dicts()} for g in ["jogo_cid", "ansiedade_cid", "depressao_cid"]}
+    sx = (a.filter((pl.col("recorte") == "sexo") & (pl.col("grupo") == "jogo_cid"))
+          .with_columns(pl.col("cmp").str.slice(0, 4).cast(pl.Int32).alias("ano")).group_by("ano", "valor").agg(pl.col("atendimentos").sum())
+          .pivot(on="valor", index="ano", values="atendimentos").sort("ano"))
+    mulheres = [{"ano": d["ano"], "pct": round(d["F"] / (d["F"] + d["M"]) * 100, 1) if d["F"] + d["M"] >= 20 else None} for d in sx.to_dicts()]
+    return {"mensal": mensal, "anual": [{k: (round(v, 1) if isinstance(v, float) else v) for k, v in d.items()} for d in an.to_dicts()],
+            "faixas": faixas, "mulheres": mulheres, "fim": m["cmp"].max()}
+
+
+def trajetorias():
+    """Diagnóstico novo nos 12 meses após o 1º diagnóstico (jan/2019–jun/2025), padronizado por sexo e idade dos
+    pacientes de jogo patológico. Mesma lógica de notebooks/f63_trajetoria.ipynb."""
+    corte = (2026 - 2018) * 12 + 6 - 1
+    t = pl.read_parquet(pasta("caps") / "sia_trajetorias.parquet").filter(pl.col("mes").is_between(0, corte))
+    entradas, desfechos = [1, 2, 3, 5, 6], [6, 5, 3, 2]
+    prim = t.group_by("id", "grupo").agg(pl.col("mes").min().alias("t0"))
+    perf = t.join(prim, left_on=["id", "grupo", "mes"], right_on=["id", "grupo", "t0"]).group_by("id", "grupo").agg(pl.col("sexo").first(), pl.col("faixa").first())
+    co = (prim.filter(pl.col("grupo").is_in(entradas) & pl.col("t0").is_between(12, corte - 12)).join(perf, on=["id", "grupo"])
+          .drop_nulls(["sexo", "faixa"]).rename({"grupo": "entrada"}))
+    j = t.select("id", "mes", "grupo").join(co.select("id", "entrada", "t0"), on="id")
+    antes = j.filter((pl.col("mes") >= pl.col("t0") - 12) & (pl.col("mes") < pl.col("t0"))).select("id", "entrada", "grupo").unique()
+    depois = j.filter((pl.col("mes") > pl.col("t0")) & (pl.col("mes") <= pl.col("t0") + 12)).select("id", "entrada", "grupo").unique()
+    novo = depois.join(antes, on=["id", "entrada", "grupo"], how="anti").filter(pl.col("grupo") != pl.col("entrada"))
+    fica = j.filter((pl.col("mes") > pl.col("t0") + 6) & (pl.col("mes") <= pl.col("t0") + 12)).select("id", "entrada").unique().with_columns(pl.lit(True).alias("fica"))
+    b = co.join(fica, on=["id", "entrada"], how="left").with_columns(pl.col("fica").fill_null(False))
+    for g in desfechos:
+        ids = novo.filter(pl.col("grupo") == g).select("id", "entrada").with_columns(pl.lit(True).alias(f"n{g}"))
+        b = b.join(ids, on=["id", "entrada"], how="left").with_columns(pl.col(f"n{g}").fill_null(False))
+    cols = [f"n{g}" for g in desfechos] + ["fica"]
+    w = b.filter(pl.col("entrada") == 1).group_by("sexo", "faixa").len("nj").with_columns((pl.col("nj") / pl.col("nj").sum()).alias("peso"))
+    es = b.group_by("entrada", "sexo", "faixa").agg(pl.len().alias("n"), *[pl.col(c).mean() for c in cols])
+    out = {}
+    for e in entradas:
+        n = b.filter(pl.col("entrada") == e).height
+        if e == 1:
+            vals = {c: b.filter(pl.col("entrada") == 1)[c].mean() * 100 for c in cols}
+        else:
+            x = es.filter(pl.col("entrada") == e).join(w, on=["sexo", "faixa"])
+            vals = {c: float((x[c] * x["peso"]).sum() / x["peso"].sum() * 100) for c in cols}
+        out[str(e)] = {"n": n, **{c: round(v, 1) for c, v in vals.items()}}
+    return out
+
+
 def congresso():
     """Votação nominal de 2023 sobre o cassino online, emendas à MP 1.394 e projetos de proibição (dados públicos)."""
     v = pl.read_parquet(pasta("congresso") / "congresso_votacao_cassino_2023.parquet").filter(pl.col("voto") != "outro")
@@ -135,7 +194,7 @@ def main():
     dados = {
         "corte": CORTE, "choques": CHOQUES, "noticias": NOTICIAS, "pandemia": PANDEMIA, "cpi": CPI,
         "serie": serie_nacional(r), "anual": anual(r), "novos": novos(r),
-        "perfil": perf, "mulheres": mulheres, "congresso": congresso() if MOSTRAR_CONGRESSO else None,
+        "perfil": perf, "mulheres": mulheres, "aps": atencao_primaria(), "trajetorias": trajetorias(), "congresso": congresso() if MOSTRAR_CONGRESSO else None,
     }
     js = json.dumps(dados, ensure_ascii=False, separators=(",", ":"))
     corpo = (ROOT / "site" / "modelo.html").read_text().replace("/*__DADOS__*/null", js)
