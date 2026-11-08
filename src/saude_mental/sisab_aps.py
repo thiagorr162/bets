@@ -45,7 +45,15 @@ def recortes():
         yield f"faixa={fx}", [("tpIdade", "ano"), ("idadeInicio", str(a)), ("idadeFim", str(b))]
 
 
-def consultar(comps: list[str], extra: list, codigos=CODIGOS, tentativas: int = 4) -> list[list[str]]:
+def recortes_cruzados():
+    """sexo × faixa etária juntos (pirâmide), só de 2022 em diante. Arquivo: sexofaixa_<F|M>_<faixa>_<ano>.csv"""
+    for sx, v in [("M", "0"), ("F", "1")]:
+        for fx, (a, b) in FAIXAS.items():
+            yield f"sexofaixa_{sx}_{fx}", [("sexo", v), ("tpIdade", "ano"), ("idadeInicio", str(a)), ("idadeFim", str(b))]
+
+
+def consultar(comps: list[str], extra: list, codigos=CODIGOS, coluna: str = "CID", tentativas: int = 4) -> list[list[str]]:
+    """coluna: "CID" (padrão) ou outro campo do relatório (ex.: "CDT" = conduta; nesse caso marcamos todas as opções do filtro)."""
     for i in range(tentativas):
         try:
             s = requests.Session(); s.headers["User-Agent"] = "Mozilla/5.0"
@@ -53,8 +61,11 @@ def consultar(comps: list[str], extra: list, codigos=CODIGOS, tentativas: int = 
             vs = re.search(r'name="javax.faces.ViewState"[^>]*value="([^"]+)"', g).group(1)
             act = re.search(r'<form id="j_idt44"[^>]*action="([^"]+)"', g).group(1)
             base = [("j_idt44", "j_idt44"), ("lsCid", ",".join(codigos) + ","), ("unidGeo", "brasil"),
-                    ("selectLinha", "NU_COMPETENCIA"), ("selectcoluna", "CID"), ("tpProducao", "4"),
+                    ("selectLinha", "NU_COMPETENCIA"), ("selectcoluna", coluna), ("tpProducao", "4"),
                     ("javax.faces.ViewState", vs), ("verTela", "Ver em tela")]
+            if coluna == "CDT":  # sem marcar as condutas, o relatório volta vazio
+                corpo = re.search(r'<select[^>]*name="conduta"[^>]*>(.*?)</select>', g, re.S).group(1)
+                base += [("conduta", v) for v in re.findall(r'<option value="([^"]*)"', corpo)]
             if not any(k == "tpIdade" for k, _ in extra):
                 base.append(("tpIdade", ""))
             r = s.post("https://sisab.saude.gov.br" + act, data=base + extra + [("j_idt76", c) for c in comps], timeout=600)
@@ -75,9 +86,12 @@ def main():
     x = a.parse_args()
     PASTA.mkdir(parents=True, exist_ok=True)
     anos = range(x.inicio, int(x.fim[:4]) + 1)
-    consultas = [(nome.replace("=", "_"), extra, CODIGOS) for nome, extra in recortes()] + [("placebo-total", [], PLACEBO)]
-    for nome, extra, codigos in consultas:
+    consultas = ([(nome.replace("=", "_"), extra, CODIGOS, x.inicio) for nome, extra in recortes()] + [("placebo-total", [], PLACEBO, x.inicio)]
+                 + [(nome, extra, CODIGOS, 2022) for nome, extra in recortes_cruzados()])
+    for nome, extra, codigos, desde in consultas:
         for ano in anos:
+            if ano < desde:
+                continue
             arq = PASTA / f"{nome}_{ano}.csv"
             if arq.exists():
                 continue

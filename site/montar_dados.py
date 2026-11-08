@@ -158,7 +158,19 @@ def atencao_primaria():
           .with_columns(pl.col("g") + "_" + pl.col("valor")).pivot(on="g", index="ano", values="atendimentos").sort("ano"))
     mulheres = [{"ano": d["ano"], "pct": round(d["jogo_F"] / (d["jogo_F"] + d["jogo_M"]) * 100, 1) if d["jogo_F"] + d["jogo_M"] >= 20 else None,
                  "ref": round(d["ref_F"] / (d["ref_F"] + d["ref_M"]) * 100, 1)} for d in sx.to_dicts()]
-    return {"mensal": mensal, "anual": [{k: (round(v, 1) if isinstance(v, float) else v) for k, v in d.items()} for d in an.to_dicts()],
+    # pirâmide 2025: sexo × faixa, consultados juntos (recorte "sexofaixa")
+    px = (a.filter((pl.col("recorte") == "sexofaixa") & pl.col("cmp").str.starts_with("2025")).with_columns(g.alias("g")).drop_nulls("g")
+          .with_columns(pl.col("valor").str.split("_").list.get(0).alias("sexo"), pl.col("valor").str.split("_").list.get(1).alias("faixa"))
+          .group_by("g", "sexo", "faixa").agg(pl.col("atendimentos").sum())
+          .with_columns((pl.col("atendimentos") / pl.col("atendimentos").sum().over("g") * 100).alias("pct")))
+    piramide = []
+    for sx in ["F", "M"]:
+        for fx in ["0-17", "18-24", "25-34", "35-44", "45-59", "60+"]:
+            v = {r["g"]: r for r in px.filter((pl.col("sexo") == sx) & (pl.col("faixa") == fx)).to_dicts()}
+            j = v.get("jogo")
+            piramide.append({"sexo": sx, "faixa": fx, "j": round(j["pct"], 1) if j and j["atendimentos"] >= MIN else None,
+                             "r": round(v["ref"]["pct"], 1) if "ref" in v else None})
+    return {"mensal": mensal, "piramide": piramide, "anual": [{k: (round(v, 1) if isinstance(v, float) else v) for k, v in d.items()} for d in an.to_dicts()],
             "faixas": faixas, "mulheres": mulheres, "fim": m["cmp"].max()}
 
 
