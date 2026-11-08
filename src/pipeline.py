@@ -1,7 +1,7 @@
 """Roda todas as etapas da parte de saúde mental, em sequência (sempre a partir da raiz do projeto).
 
 uv run python -m src.pipeline            # exposição (Trends, DataSenado, população): minutos
-uv run python -m src.pipeline --pesado   # + DATASUS (CAPS, pacientes com F63, internações e óbitos): ~1–2 h
+uv run python -m src.pipeline --pesado   # + DATASUS (CAPS, pacientes, trajetórias, internações e óbitos) e SISAB: ~2–3 h
 """
 
 import argparse
@@ -16,6 +16,9 @@ LEVES = [
 PESADAS = [
     "src.saude_mental.sia_caps",  # CAPS agregado por município
     "src.saude_mental.sia_f63_pacientes",  # pacientes com F63 (pseudonimizado no fim)
+    "src.saude_mental.sia_trajetorias",  # todos os pacientes de saúde mental: pessoa × mês × grupo de CID
+    "src.saude_mental.sisab_aps",  # atenção primária: atendimentos por CID, sexo e idade
+    "src.saude_mental.sisab_conduta",  # atenção primária: conduta por CID
     "src.saude_mental.graves_f63",  # internações (SIH) e óbitos (SIM)
 ]
 
