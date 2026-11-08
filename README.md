@@ -24,6 +24,9 @@ uv run jupyter lab notebooks/
 | `src/exposicao/datasenado` | DataSenado 2024: % que apostou e % com dívida atrasada, por UF | `datasenado_uf_2024` |
 | `src/saude_mental/sia_caps` | DATASUS SIA-PS (CAPS), agregado por município × mês | `sia_caps_municipio` |
 | `src/saude_mental/sia_f63_pacientes` | DATASUS SIA-PS, pacientes com F63 (pseudonimizado por `minimizar_f63`) | `sia_f63_registros`, `sia_f63_historico`, `sia_perfil` |
+| `src/saude_mental/sia_trajetorias` | DATASUS SIA-PS, todos os pacientes: pessoa (pseudônimo) × mês × grupo de CID | `sia_trajetorias` |
+| `src/saude_mental/sia_grupos` | DATASUS SIA-PS: pacientes por grupo de CID, sexo e faixa etária | `sia_grupos` |
+| `src/saude_mental/sisab_aps` | SISAB (atenção primária): atendimentos por CID/CIAP, sexo e faixa etária | `sisab_aps` |
 | `src/saude_mental/graves_f63` | DATASUS SIH (internações) e SIM (óbitos), agregados por UF × mês × sexo × faixa etária | `sih_graves`, `sim_graves` |
 | — | IBGE, projeção da população por sexo e idade (SIDRA 7358), em `data/ibge/raw/` | usada no `suicidio.ipynb` |
 
@@ -54,6 +57,7 @@ data/
 | `saude_mental.ipynb` | F63 nos CAPS: tendência nacional, comparação com outros diagnósticos, diferença longa por UF |
 | `f63_pacientes.ipynb` | Pacientes com F63: subcódigos, novos × reclassificados, perfil por sexo e idade, comorbidade, regiões |
 | `f63_comorbidade.ipynb` | Outros diagnósticos dos pacientes com F63.0 por ano e sexo (depressão, ansiedade, substâncias) |
+| `f63_trajetoria.ipynb` | Diagnósticos novos e permanência no CAPS depois do jogo patológico, comparado com outros grupos |
 | `suicidio.ipynb` | Suicídio (SIM) por sexo e idade, taxas por 100 mil, antes e depois de 2022 |
 | `mp1394_emendas.ipynb` | As 99 emendas à MP 1.394 (proibição): quem propôs afrouxar ou reforçar, por parlamentar e partido |
 
