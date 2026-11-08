@@ -126,18 +126,83 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 <header class="top">
   <div class="eyebrow">Apostas online · saúde mental<span data-congresso> · Congresso</span> · 2018–2026</div>
   <h1>Bets no Brasil</h1>
-  <p class="lede"><span data-sem-congresso>O que mudou desde que as apostas online foram liberadas, em 2018: quantas pessoas passaram a procurar tratamento por jogo patológico no SUS, nos CAPS e nas unidades básicas de saúde, quem são essas pessoas e como isso acompanhou as leis e a proibição de 2026.</span><span data-congresso>O que mudou desde que as apostas online foram liberadas, em 2018: quantas pessoas passaram a procurar tratamento por jogo patológico no SUS, e como o Congresso votou e o que propõe para a proibição de 2026.</span></p>
-  <div class="carimbo small"><span><b>CAPS:</b> DATASUS, até <span id="carimbo-dados"></span></span><span><b>Atenção primária:</b> SISAB, até <span id="carimbo-aps"></span></span><span data-congresso><b>Congresso:</b> dados abertos da Câmara e do Senado</span><span>Só dados agregados e registros públicos</span></div>
+  <p class="lede"><span data-sem-congresso>O que mudou desde que as apostas online foram liberadas, em 2018: quantas pessoas passaram a procurar tratamento por jogo patológico no SUS, nas unidades básicas de saúde e nos CAPS, quem são essas pessoas e como isso acompanhou as leis e a proibição de 2026.</span><span data-congresso>O que mudou desde que as apostas online foram liberadas, em 2018: quantas pessoas passaram a procurar tratamento por jogo patológico no SUS, e como o Congresso votou e o que propõe para a proibição de 2026.</span></p>
+  <div class="carimbo small"><span><b>Atenção primária:</b> SISAB, até <span id="carimbo-aps"></span></span><span><b>CAPS:</b> DATASUS, até <span id="carimbo-dados"></span></span><span data-congresso><b>Congresso:</b> dados abertos da Câmara e do Senado</span><span>Só dados agregados e registros públicos</span></div>
 </header>
 
 <nav class="abas" role="tablist" aria-label="Seções do site">
-  <button type="button" role="tab" id="tab-saude" data-aba="saude" aria-controls="aba-saude" aria-selected="true">CAPS</button>
-  <button type="button" role="tab" id="tab-aps" data-aba="aps" aria-controls="aba-aps" aria-selected="false">Atenção primária</button>
+  <button type="button" role="tab" id="tab-aps" data-aba="aps" aria-controls="aba-aps" aria-selected="true">Atenção primária</button>
+  <button type="button" role="tab" id="tab-caps" data-aba="caps" aria-controls="aba-caps" aria-selected="false">CAPS</button>
   <button type="button" role="tab" data-congresso id="tab-votacao" data-aba="votacao" aria-controls="aba-votacao" aria-selected="false">Votação no Congresso</button>
   <button type="button" role="tab" id="tab-metodo" data-aba="metodo" aria-controls="aba-metodo" aria-selected="false">Como foi feito</button>
 </nav>
 
-<div id="aba-saude" role="tabpanel" aria-labelledby="tab-saude">
+<div id="aba-aps" role="tabpanel" aria-labelledby="tab-aps">
+
+<div class="tiles" id="tiles-aps"></div>
+
+<section id="serie-aps">
+  <div class="prose">
+    <h2>Busca por apostas e procura por atendimento</h2>
+    <p>A atenção primária é a porta de entrada do SUS: as unidades básicas de saúde e as equipes de saúde da família. Ali, os atendimentos com o diagnóstico de jogo patológico ficaram em torno de 10 a 20 por mês até 2022. Começaram a subir em 2023, ainda no pico das buscas por apostas e um ano antes do CAPS, e chegaram a <b id="aps-ultimo"></b> por mês em 2026.</p>
+    <p>Os outros transtornos de impulso (piromania, cleptomania, tricotilomania), que não têm relação com jogo, também cresceram, mas devagar: cerca de 2,5 vezes de 2022 para 2026, no ritmo em que a atenção primária passou a registrar mais diagnósticos em geral. O jogo patológico cresceu mais de 30 vezes.</p>
+  </div>
+  <div class="fig" id="fig-aps">
+    <div class="fig-title">Atendimentos na atenção primária, por mês</div>
+    <div class="legend"><span><i style="background:var(--s1)"></i>Jogo patológico <span class="cid">F63.0</span></span><span><i style="background:var(--ref)"></i>Outros transtornos de impulso <span class="cid">F63.1–F63.3</span></span><span><i class="box" style="background:var(--band-pand)"></i>Pandemia</span><span><i class="box" style="background:var(--band-cpi)"></i><a href="" class="lk-cpi" target="_blank" rel="noopener">CPI das Bets</a> (Senado, nov/2024–jun/2025)</span></div>
+    <div id="ch-aps"></div>
+    <div class="fig-title" style="margin-top:.8rem">Busca por apostas no Google, Brasil (0–100)</div>
+    <div class="legend"><span><i style="background:var(--s2)"></i>bet, apostas, betano, bet365, tigrinho</span></div>
+    <div id="ch-aps-trends"></div>
+    <ol class="marcos" id="marcos-aps"></ol>
+  </div>
+  <p class="nota">Os dois gráficos usam escalas diferentes e por isso estão separados. Atendimentos individuais registrados no e-SUS APS com o diagnóstico entre os problemas avaliados. É contagem de atendimentos, não de pessoas: quem volta várias vezes conta várias vezes. Meses com menos de 5 atendimentos ficam em branco. Dados até <span class="aps-fim"></span>.</p>
+</section>
+
+<section id="peso-aps">
+  <div class="prose">
+    <h2>Não é só o SUS registrando mais</h2>
+    <p>O número de atendimentos registrados na atenção primária cresce todo ano, por qualquer motivo, porque mais unidades passaram a usar o sistema. Para descontar isso, comparamos o jogo patológico com os atendimentos de saúde mental por outros diagnósticos: depressão, ansiedade, estresse, álcool e esquizofrenia.</p>
+    <p>Em 2022, para cada 10 mil desses atendimentos, havia <span id="aps-r22"></span> por jogo patológico. Em 2025 eram <span id="aps-r25"></span>, e em 2026, <span id="aps-r26"></span>. Se a alta fosse só mais registro, essa conta ficaria parada.</p>
+  </div>
+  <div class="fig" id="fig-aps-taxa">
+    <div class="fig-title">Atendimentos por jogo patológico para cada 10 mil atendimentos de saúde mental com outros diagnósticos</div>
+    <div class="legend"><span><i style="background:var(--s1)"></i>Jogo patológico <span class="cid">F63.0</span></span><span><i class="box" style="background:var(--band-pand)"></i>Pandemia</span><span><i class="box" style="background:var(--band-cpi)"></i><a href="" class="lk-cpi" target="_blank" rel="noopener">CPI das Bets</a> (Senado, nov/2024–jun/2025)</span></div>
+    <div id="ch-aps-taxa"></div>
+    <ol class="marcos" id="marcos-aps-taxa"></ol>
+  </div>
+  <div class="fig">
+    <div class="fig-title">Crescimento desde 2022 (média mensal de 2022 = 100, escala logarítmica)</div>
+    <div class="legend"><span><i style="background:var(--s1)"></i>Jogo patológico, atenção primária (atendimentos)</span><span><i style="background:var(--ink-2)"></i>Jogo patológico, CAPS (pessoas)</span><span><i style="background:var(--ref)"></i>Outros diagnósticos de saúde mental, atenção primária</span></div>
+    <div id="ch-indice"></div>
+    <p class="small" style="margin:0">A atenção primária cresceu mais rápido que o CAPS a partir de 2023. 2026: atenção primária até <span class="aps-fim"></span>, CAPS até <span class="caps-fim"></span>. O CAPS conta pessoas por mês e a atenção primária conta atendimentos; por isso a comparação é só do ritmo de crescimento.</p>
+  </div>
+</section>
+
+<section id="perfil-aps">
+  <div class="prose">
+    <h2>Quem está sendo atendido</h2>
+    <p>Em 2021 e 2022, as mulheres eram cerca de um quinto dos atendimentos por jogo patológico na atenção primária. Desde 2024 são quase metade (<span id="aps-mulheres"></span> em 2026), ainda menos que na saúde mental em geral (<span id="aps-mulheres-ref"></span>). Dois terços dos atendimentos são de pessoas de 25 a 44 anos, mais concentrados nessa faixa que os outros diagnósticos de saúde mental. Menores de 18 anos são <span id="aps-menores"></span>.</p>
+  </div>
+  <div class="duo">
+    <div class="fig">
+      <div class="fig-title">Mulheres entre os atendimentos, por ano (%)</div>
+      <div class="legend"><span><i class="box" style="background:var(--s1)"></i>Jogo patológico</span><span><i style="background:var(--ink-2);height:2px"></i>Saúde mental em geral</span></div>
+      <div id="ch-aps-mulheres"></div>
+      <p class="small" style="margin:0">Antes de 2021 eram cerca de 10 atendimentos por jogo por mês, então a proporção oscila muito.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-title">Atendimentos por faixa de idade, 2025–2026 (%)</div>
+      <div class="legend"><span><i class="box" style="background:var(--s1)"></i>Jogo patológico</span><span><i style="background:var(--ink-2);height:2px"></i>Saúde mental em geral</span></div>
+      <div id="ch-aps-idade"></div>
+    </div>
+  </div>
+  <p class="nota">Saúde mental em geral = atendimentos com CID de depressão, ansiedade, estresse, álcool ou esquizofrenia. Na atenção primária, o diagnóstico pode ser registrado pela CID-10 ou pela CIAP-2, a classificação própria da atenção básica. A CIAP-2 não tem código para jogo, então só aparecem aqui os atendimentos em que o profissional usou a CID. O número real deve ser maior.</p>
+</section>
+
+</div>
+
+<div id="aba-caps" role="tabpanel" aria-labelledby="tab-caps" hidden>
 
 <div class="tiles" id="tiles"></div>
 
@@ -149,7 +214,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   </div>
   <div class="fig" id="fig-serie">
     <div class="fig-title">Pessoas em acompanhamento nos CAPS, por mês</div>
-    <div class="legend"><span><i style="background:var(--s1)"></i>Jogo patológico <span class="cid">F63.0</span></span><span><i style="background:var(--ref)"></i>Outros transtornos de impulso <span class="cid">F63.1–F63.3</span></span><span><i class="box" style="background:var(--band-pand)"></i>Pandemia</span><span><i class="box" style="background:var(--band-cpi)"></i><a href="" id="lk-cpi" target="_blank" rel="noopener">CPI das Bets</a> (Senado, nov/2024–jun/2025)</span></div>
+    <div class="legend"><span><i style="background:var(--s1)"></i>Jogo patológico <span class="cid">F63.0</span></span><span><i style="background:var(--ref)"></i>Outros transtornos de impulso <span class="cid">F63.1–F63.3</span></span><span><i class="box" style="background:var(--band-pand)"></i>Pandemia</span><span><i class="box" style="background:var(--band-cpi)"></i><a href="" class="lk-cpi" target="_blank" rel="noopener">CPI das Bets</a> (Senado, nov/2024–jun/2025)</span></div>
     <div id="ch-caps"></div>
     <div class="fig-title" style="margin-top:.8rem">Busca por apostas no Google, Brasil (0–100)</div>
     <div class="legend"><span><i style="background:var(--s2)"></i>bet, apostas, betano, bet365, tigrinho</span></div>
@@ -162,23 +227,23 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 <section id="perfil">
   <div class="prose">
     <h2>Quem está sendo atendido</h2>
-    <p>São sobretudo adultos de 25 a 34 anos, uma faixa que tem o dobro do peso que tem entre os pacientes de saúde mental em geral. Quase não há menores de idade. As mulheres são <b id="pct-mulheres"></b> dos atendidos por jogo patológico, perto da proporção de mulheres no conjunto do CAPS (<span id="pct-mulheres-caps"></span>). Entre os apostadores, segundo o DataSenado, elas são cerca de 38%. Homens apostam mais e procuram menos tratamento.</p>
-    <p>O que mudou foi o ritmo: de 2022 para 2025, o número de mulheres de 18 a 44 anos atendidas por jogo patológico cresceu muito mais que o de homens da mesma idade.</p>
+    <p>Em 2025, as mulheres eram <b id="caps-mulheres"></b> dos pacientes de jogo patológico nos CAPS, perto da proporção na saúde mental em geral (<span id="caps-mulheres-ref"></span>). Entre os apostadores, segundo o DataSenado, elas são cerca de 38%: homens apostam mais e procuram menos tratamento. Como na atenção primária, a participação delas caiu em 2021–2022 e voltou a subir desde então.</p>
+    <p>São sobretudo adultos de 25 a 44 anos, uma concentração bem maior que entre os pacientes de saúde mental em geral, e quase não há menores de idade.</p>
   </div>
   <div class="duo">
     <div class="fig">
-      <div class="fig-title">Composição por sexo e idade, 2025</div>
-      <div class="legend"><span><i class="box" style="background:var(--s1)"></i>Jogo patológico <span class="cid">F63.0</span></span><span><i style="background:var(--ink-2);height:2px"></i>Todos os pacientes de saúde mental do CAPS</span></div>
-      <div id="ch-piramide"></div>
-      <p class="small" style="margin:0">% dos pacientes-mês de cada grupo. Barra = jogo patológico; traço = saúde mental em geral.</p>
+      <div class="fig-title">Mulheres entre os pacientes, por ano (%)</div>
+      <div class="legend"><span><i class="box" style="background:var(--s1)"></i>Jogo patológico</span><span><i style="background:var(--ink-2);height:2px"></i>Saúde mental em geral</span></div>
+      <div id="ch-caps-mulheres"></div>
+      <p class="small" style="margin:0">Em 2026, só até junho.</p>
     </div>
     <div class="fig">
-      <div class="fig-title">Quantas vezes cresceu de 2022 para 2025</div>
-      <div class="legend"><span><i class="box" style="background:var(--s1);border-radius:50%"></i>Jogo patológico</span><span><i class="box" style="background:var(--ref);border-radius:50%"></i>Saúde mental em geral</span></div>
-      <div id="ch-cresc"></div>
-      <p class="small" style="margin:0">Escala logarítmica. Grupos com menos de 5 pacientes-mês em algum dos anos não aparecem.</p>
+      <div class="fig-title">Pacientes por faixa de idade, 2025–2026 (%)</div>
+      <div class="legend"><span><i class="box" style="background:var(--s1)"></i>Jogo patológico</span><span><i style="background:var(--ink-2);height:2px"></i>Saúde mental em geral</span></div>
+      <div id="ch-caps-idade"></div>
     </div>
   </div>
+  <p class="nota">Saúde mental em geral = todos os pacientes dos CAPS com diagnóstico do capítulo F da CID-10. Contagem em pacientes-mês: cada pessoa conta uma vez em cada mês em que foi atendida.</p>
 </section>
 
 <section id="novos">
@@ -205,62 +270,6 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     <table class="tbl mapa" id="tbl-traj"><thead><tr><th>Entrou no CAPS por</th><th>Pessoas</th><th>Ansiedade</th><th>Depressão</th><th>Drogas</th><th>Álcool</th><th>Ainda no CAPS<br>6–12 meses depois</th></tr></thead><tbody></tbody></table>
     <p class="small" style="margin:.6rem 0 0">Entrada de jan/2019 a jun/2025. As linhas dos outros grupos estão padronizadas para a composição por sexo e idade dos pacientes de jogo patológico. Tom mais escuro = taxa maior. Ansiedade inclui estresse (<span class="cid">F40–F48</span>), depressão inclui os outros transtornos do humor (<span class="cid">F30–F39</span>). Só vemos o que é registrado no CAPS: quem sai do CAPS some dos dados, então as taxas são um piso.</p>
   </div>
-</section>
-
-</div>
-
-<div id="aba-aps" role="tabpanel" aria-labelledby="tab-aps" hidden>
-
-<div class="tiles" id="tiles-aps"></div>
-
-<section id="serie-aps">
-  <div class="prose">
-    <h2>A mesma alta, mais cedo e mais forte</h2>
-    <p>A atenção primária é a porta de entrada do SUS: as unidades básicas de saúde e as equipes de saúde da família. Ali, os atendimentos com o diagnóstico de jogo patológico ficaram parados em torno de 10 a 20 por mês até 2022. Começaram a subir em 2023, um ano antes do CAPS, e chegaram a <b id="aps-ultimo"></b> por mês em 2026.</p>
-    <p>Parte disso poderia ser só o SUS registrando mais diagnósticos em geral. Por isso o segundo gráfico divide pelos atendimentos de saúde mental com outros diagnósticos (depressão, ansiedade, estresse, álcool, esquizofrenia). A alta continua lá: o jogo patológico passou de <span id="aps-r22"></span> para <span id="aps-r26"></span> a cada 10 mil atendimentos de saúde mental.</p>
-  </div>
-  <div class="fig" id="fig-aps">
-    <div class="fig-title">Atendimentos por jogo patológico na atenção primária, por mês</div>
-    <div class="legend"><span><i style="background:var(--s1)"></i>Jogo patológico <span class="cid">F63.0</span></span><span><i class="box" style="background:var(--band-pand)"></i>Pandemia</span><span><i class="box" style="background:var(--band-cpi)"></i>CPI das Bets</span></div>
-    <div id="ch-aps"></div>
-    <div class="fig-title" style="margin-top:.8rem">A cada 10 mil atendimentos de saúde mental com outros diagnósticos</div>
-    <div id="ch-aps-taxa"></div>
-    <ol class="marcos" id="marcos-aps"></ol>
-  </div>
-  <p class="nota">Atendimentos individuais registrados no e-SUS APS, com F63.0 entre os problemas avaliados. É contagem de atendimentos, não de pessoas: quem volta várias vezes conta várias vezes. Meses com menos de 5 atendimentos ficam em branco.</p>
-</section>
-
-<section id="compara-aps">
-  <div class="prose">
-    <h2>Cresceu mais que no CAPS e mais que o resto da saúde mental</h2>
-    <p>Pondo tudo na mesma base (média mensal de 2022 = 100), a atenção primária cresceu mais rápido que o CAPS a partir de 2023. Os atendimentos de saúde mental por outros diagnósticos, na mesma atenção primária, só dobraram no período.</p>
-  </div>
-  <div class="fig">
-    <div class="fig-title">Crescimento desde 2022 (média mensal de 2022 = 100, escala logarítmica)</div>
-    <div class="legend"><span><i style="background:var(--s1)"></i>Jogo patológico, atenção primária (atendimentos)</span><span><i style="background:var(--ink-2)"></i>Jogo patológico, CAPS (pessoas)</span><span><i style="background:var(--ref)"></i>Outros diagnósticos de saúde mental, atenção primária</span></div>
-    <div id="ch-indice"></div>
-    <p class="small" style="margin:0">2026: atenção primária até <span class="aps-fim"></span>, CAPS até <span class="caps-fim"></span>. O CAPS conta pessoas por mês e a atenção primária conta atendimentos; por isso a comparação é só do ritmo de crescimento.</p>
-  </div>
-</section>
-
-<section id="perfil-aps">
-  <div class="prose">
-    <h2>Mais mulheres, adultos jovens</h2>
-    <p>Em 2021 e 2022, as mulheres eram cerca de um quinto dos atendimentos por jogo patológico na atenção primária. Desde 2024 são quase metade, a mesma proporção que se vê no CAPS. A idade também é parecida com a do CAPS: dois terços dos atendimentos são de pessoas de 25 a 44 anos. Menores de 18 anos são <span id="aps-menores"></span>.</p>
-  </div>
-  <div class="duo">
-    <div class="fig">
-      <div class="fig-title">Mulheres entre os atendimentos por jogo patológico (%)</div>
-      <div id="ch-aps-mulheres"></div>
-      <p class="small" style="margin:0">Tracejado: 50%. Antes de 2021 eram cerca de 10 atendimentos por mês, então a proporção oscila muito.</p>
-    </div>
-    <div class="fig">
-      <div class="fig-title">Atendimentos por faixa de idade, 2025–2026 (%)</div>
-      <div class="legend"><span><i class="box" style="background:var(--s1)"></i>Jogo patológico</span><span><i style="background:var(--ink-2);height:2px"></i>Ansiedade</span></div>
-      <div id="ch-aps-idade"></div>
-    </div>
-  </div>
-  <p class="nota">Na atenção primária, o diagnóstico pode ser registrado pela CID-10 ou pela CIAP-2, a classificação própria da atenção básica. A CIAP-2 não tem código para jogo, então só aparecem aqui os atendimentos em que o profissional usou a CID. O número real deve ser maior.</p>
 </section>
 
 </div>
@@ -337,8 +346,18 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 <section id="metodo" style="border-top:0;padding-top:0">
   <div class="prose">
     <h2>Como foi feito</h2>
-    <p data-sem-congresso>Este site analisa a procura por tratamento de jogo patológico no SUS, nos CAPS e na atenção primária, desde a liberação das apostas online. Tudo foi feito com dados públicos e código aberto, e qualquer pessoa pode refazer os cálculos.</p>
+    <p data-sem-congresso>Este site analisa a procura por tratamento de jogo patológico no SUS, na atenção primária e nos CAPS, desde a liberação das apostas online. Tudo foi feito com dados públicos e código aberto, e qualquer pessoa pode refazer os cálculos.</p>
     <p data-congresso>Este site junta duas análises sobre as apostas online no Brasil: a procura por tratamento de jogo patológico no SUS e as posições do Congresso. Tudo foi feito com dados públicos e código aberto, e qualquer pessoa pode refazer os cálculos.</p>
+  </div>
+
+  <div class="prose">
+    <h3>Atenção primária</h3>
+    <ul class="limites">
+      <li><b>De onde vêm os dados.</b> Do relatório público de produção do SISAB, o sistema que reúne os registros do e-SUS APS das unidades básicas de saúde. Consultamos os atendimentos individuais por problema ou condição avaliada, mês a mês, de jan/2018 a set/2026, no total do Brasil, por sexo e por faixa de idade.</li>
+      <li><b>O que contamos.</b> Atendimentos individuais com a CID-10 <span class="cid">F63.0</span>. O relatório não identifica pessoas, então não dá para contar pacientes nem ver se a mesma pessoa voltou.</li>
+      <li><b>A referência.</b> A soma dos atendimentos com CID de depressão (<span class="cid">F32</span>, <span class="cid">F33</span>), ansiedade (<span class="cid">F41</span>), estresse (<span class="cid">F43</span>), álcool (<span class="cid">F10</span>) e esquizofrenia (<span class="cid">F20</span>). Dividir por ela tira o efeito de o SUS estar registrando mais diagnósticos em geral.</li>
+      <li><b>Limites.</b> Muitos profissionais da atenção primária registram pela CIAP-2, que não tem código para jogo. Os meses mais recentes ainda podem receber registros atrasados.</li>
+    </ul>
   </div>
 
   <div class="prose">
@@ -352,16 +371,6 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       <li><b>Por que não usamos <span class="cid">F63.8</span> e <span class="cid">F63.9</span>.</b> Mais de um terço dos registros com esses códigos é de crianças e adolescentes, em que eles indicam outros transtornos de impulso, não jogo.</li>
       <li><b>Busca por apostas.</b> Google Trends para o Brasil, com os termos bet, apostas, betano, bet365 e tigrinho. O índice vai de 0 a 100 e mede o interesse relativo, não o número de buscas.</li>
       <li><b>Limites.</b> Os dados contam quem chegou ao CAPS. Não dizem quantas pessoas têm o problema, e não incluem a rede privada, a atenção básica nem quem não procura ajuda. Mais casos e mais procura por ajuda aparecem do mesmo jeito.</li>
-    </ul>
-  </div>
-
-  <div class="prose">
-    <h3>Atenção primária</h3>
-    <ul class="limites">
-      <li><b>De onde vêm os dados.</b> Do relatório público de produção do SISAB, o sistema que reúne os registros do e-SUS APS das unidades básicas de saúde. Consultamos os atendimentos individuais por problema ou condição avaliada, mês a mês, de jan/2018 a set/2026, no total do Brasil, por sexo e por faixa de idade.</li>
-      <li><b>O que contamos.</b> Atendimentos individuais com a CID-10 <span class="cid">F63.0</span>. O relatório não identifica pessoas, então não dá para contar pacientes nem ver se a mesma pessoa voltou.</li>
-      <li><b>A referência.</b> A soma dos atendimentos com CID de depressão (<span class="cid">F32</span>, <span class="cid">F33</span>), ansiedade (<span class="cid">F41</span>), estresse (<span class="cid">F43</span>), álcool (<span class="cid">F10</span>) e esquizofrenia (<span class="cid">F20</span>). Dividir por ela tira o efeito de o SUS estar registrando mais diagnósticos em geral.</li>
-      <li><b>Limites.</b> Muitos profissionais da atenção primária registram pela CIAP-2, que não tem código para jogo. Os meses mais recentes ainda podem receber registros atrasados.</li>
     </ul>
   </div>
 
@@ -399,8 +408,8 @@ uv run python -m src.politica.congresso
   <div class="prose">
     <h3>Referências</h3>
     <ul class="limites">
-      <li><b>CAPS:</b> <a href="https://datasus.saude.gov.br/transferencia-de-arquivos/" target="_blank" rel="noopener">DATASUS, transferência de arquivos</a> (SIA-PS; arquivos em ftp.datasus.gov.br).</li>
       <li><b>Atenção primária:</b> <a href="https://sisab.saude.gov.br/paginas/acessoRestrito/relatorio/federal/saude/RelSauProducao.xhtml" target="_blank" rel="noopener">SISAB, relatório de produção</a>.</li>
+      <li><b>CAPS:</b> <a href="https://datasus.saude.gov.br/transferencia-de-arquivos/" target="_blank" rel="noopener">DATASUS, transferência de arquivos</a> (SIA-PS; arquivos em ftp.datasus.gov.br).</li>
       <li><b>Busca por apostas:</b> <a href="https://trends.google.com/trends/" target="_blank" rel="noopener">Google Trends</a>.</li>
       <li><b>Apostadores por sexo:</b> <a href="https://www12.senado.leg.br/noticias/arquivos/2024/09/30/relatorio_apostasesportivas-golpesdigitais-endividamento-1.pdf" target="_blank" rel="noopener">DataSenado, Panorama Político 2024: apostas esportivas, golpes digitais e endividamento</a>.</li>
       <li data-congresso><b>Câmara dos Deputados:</b> <a href="https://dadosabertos.camara.leg.br/" target="_blank" rel="noopener">dados abertos</a>.</li>
@@ -408,7 +417,7 @@ uv run python -m src.politica.congresso
       <li><b>MP 1.394/2026:</b> <a href="https://www12.senado.leg.br/publicacoes/estudos-legislativos/tipos-de-estudos/sumarios-de-proposicoes/mpv1394" target="_blank" rel="noopener">resumo do Senado</a>.</li>
       <li data-congresso><b>Votação de 2023:</b> <a href="https://www12.senado.leg.br/noticias/materias/2023/12/12/plenario-aprova-regulamentacao-das-bets-texto-volta-a-camara" target="_blank" rel="noopener">Agência Senado</a>; <a href="https://www.cnnbrasil.com.br/politica/governo-lula-foi-contra-proibir-do-jogo-do-tigrinho-em-2023/" target="_blank" rel="noopener">CNN Brasil</a>.</li>
       <li><b>CPI das Bets:</b> <a href="https://www12.senado.leg.br/radio/1/noticia/2024/11/12/cpi-das-bets-e-instalada-e-vai-investigar-influenciadores-donos-das-apostas-e-crime-de-lavagem-de-dinheiro" target="_blank" rel="noopener">instalação</a> e <a href="https://www12.senado.leg.br/noticias/materias/2025/06/12/cpi-das-bets-rejeita-relatorio-final" target="_blank" rel="noopener">encerramento</a> (Agência Senado).</li>
-      <li><b>Marcos regulatórios:</b> as notícias de cada marco estão linkadas abaixo dos gráficos das abas CAPS e Atenção primária.</li>
+      <li><b>Marcos regulatórios:</b> as notícias de cada marco estão linkadas abaixo dos gráficos das abas Atenção primária e CAPS.</li>
     </ul>
   </div>
 </section>
@@ -437,18 +446,6 @@ document.querySelectorAll(D.congresso ? "[data-sem-congresso]" : "[data-congress
 const anual = Object.fromEntries(D.anual.map(d => [d.ano, d]));
 const nov = Object.fromEntries(D.novos.map(d => [d.ano, d]));
 const pctNovo = a => nov[a] && nov[a].novos != null && nov[a].ja != null ? nov[a].novos / (nov[a].novos + nov[a].ja) * 100 : null;
-document.getElementById("carimbo-dados").textContent = mesLabel(D.corte);
-document.getElementById("pct-mulheres").textContent = fmt(D.mulheres.f630_2025) + "%";
-document.getElementById("pct-mulheres-caps").textContent = fmt(D.mulheres.mental_2025) + "%";
-const tiles = [
-  [fmt(anual[2025].f630), "pessoas atendidas por jogo patológico nos CAPS em 2025"],
-  [`${fmt(anual[2025].f630 / anual[2022].f630, 1)}<small>×</small>`, `em relação a 2022 (${fmt(anual[2022].f630)} pessoas)`],
-  [fmt(anual[2026].f630), "só no 1º semestre de 2026, quase o total de 2025"],
-  [`${fmt(pctNovo(2026))}<small>%</small>`, "das que receberam o diagnóstico em 2026 não tinham passado pelo CAPS no ano anterior"],
-];
-const tw = document.getElementById("tiles");
-for (const [v, d] of tiles) tw.appendChild(h("div", { class: "tile" }, `<div class="v">${v}</div><div class="d">${d}</div>`));
-
 /* ---------- tooltip ---------- */
 function tipFor(fig) {
   const t = h("div", { class: "tip", hidden: "" }); fig.appendChild(t);
@@ -459,28 +456,26 @@ function tipFor(fig) {
   };
 }
 
-/* ---------- séries temporais (dois gráficos, mesmo eixo x) ---------- */
+/* ---------- séries temporais: painel comum às duas abas ---------- */
 const X0 = 0, X1 = idx("202610");
 const marcos = Object.entries(D.choques);
-const olM = document.getElementById("marcos");
-marcos.forEach(([d, rot], i) => { const n = D.noticias[d];
-  olM.appendChild(h("li", {}, `<b>${i + 1}</b>${rot}, ${mesLabel(d.slice(0, 4) + d.slice(5, 7))}` +
-    (n ? ` · <a href="${n[1]}" target="_blank" rel="noopener">notícia (${n[0]})</a>` : ""))); });
+function listaMarcos(ol) {
+  marcos.forEach(([d, rot], i) => { const n = D.noticias[d];
+    ol.appendChild(h("li", {}, `<b>${i + 1}</b>${rot}, ${mesLabel(d.slice(0, 4) + d.slice(5, 7))}` +
+      (n ? ` · <a href="${n[1]}" target="_blank" rel="noopener">notícia (${n[0]})</a>` : ""))); });
+}
 
 function serieChart(el, series, { altura, yMax, passoY }) {
   const W = 1000, H = altura, m = { l: 40, r: 12, t: 18, b: 22 };
   const svg = s("svg", { viewBox: `0 0 ${W} ${H}`, role: "img" }, el);
   const x = i => m.l + (i - X0) / (X1 - X0) * (W - m.l - m.r);
   const y = v => H - m.b - v / yMax * (H - m.t - m.b);
-  // faixa da pandemia
   const [p0, p1] = D.pandemia.map(idxDate);
   s("rect", { x: x(p0), y: m.t, width: x(p1) - x(p0), height: H - m.t - m.b, fill: "var(--band-pand)" }, svg);
   const tp = s("text", { x: x(p0) + 4, y: m.t + 12, style: "font-size:10px;fill:var(--ink-2)" }, svg); tp.textContent = "Pandemia";
-  // faixa da CPI das Bets (Senado)
   const [c0, c1] = [idxDate(D.cpi.inicio), idxDate(D.cpi.fim)];
   s("rect", { x: x(c0), y: m.t, width: x(c1) - x(c0), height: H - m.t - m.b, fill: "var(--band-cpi)" }, svg);
   const tc = s("text", { x: x(c0) + 4, y: m.t + 12, style: "font-size:10px;fill:var(--ink-2)" }, svg); tc.textContent = "CPI";
-  // grade e eixo y
   const g = s("g", { class: "grid" }, svg);
   for (let v = 0; v <= yMax; v += passoY) {
     s("line", { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v) }, g);
@@ -488,12 +483,10 @@ function serieChart(el, series, { altura, yMax, passoY }) {
   }
   s("line", { x1: m.l, x2: W - m.r, y1: y(0), y2: y(0), stroke: "var(--axis)" }, svg);
   for (let a = 2018; a <= 2026; a++) { const t = s("text", { x: x((a - 2018) * 12), y: H - 6, "text-anchor": "start" }, svg); t.textContent = a; s("line", { x1: x((a - 2018) * 12), x2: x((a - 2018) * 12), y1: y(0), y2: y(0) + 4, stroke: "var(--axis)" }, svg); }
-  // marcos
   marcos.forEach(([d], i) => { const xi = x(idxDate(d)); s("line", { x1: xi, x2: xi, y1: m.t, y2: y(0), stroke: "var(--mark)", "stroke-dasharray": "3 3", "stroke-width": 1 }, svg);
     const n = D.noticias[d]; const alvo = n ? s("a", { href: n[1], target: "_blank", rel: "noopener" }, svg) : svg;
     if (n) { const tt = s("title", {}, alvo); tt.textContent = `${marcos[i][1]}: abrir notícia (${n[0]})`; }
     const c = s("text", { x: xi, y: m.t - 5, "text-anchor": "middle", fill: "var(--mark)", style: "fill:var(--mark);font-weight:700;font-family:var(--f-mono);cursor:pointer;text-decoration:underline" }, alvo); c.textContent = i + 1; });
-  // linhas (com quebras onde há supressão)
   for (const se of series) {
     let d = "", aberto = false;
     for (const p of se.pts) { if (p.v == null) { aberto = false; continue; } d += (aberto ? "L" : "M") + x(p.i).toFixed(1) + "," + y(p.v).toFixed(1); aberto = true; }
@@ -504,95 +497,177 @@ function serieChart(el, series, { altura, yMax, passoY }) {
   }
   return { svg, x, y, W, H, m };
 }
-
-const caps = D.serie.caps.map(d => ({ i: idx(d.cmp), c: d.cmp, f: d.f630, p: d.placebo }));
-const tr = D.serie.trends.map(d => ({ i: idx(d.cmp), c: d.cmp, v: d.trends }));
-const figS = document.getElementById("fig-serie");
-const tipS = tipFor(figS);
-const cA = serieChart(document.getElementById("ch-caps"), [
-  { pts: caps.map(d => ({ i: d.i, v: d.p })), cor: "var(--ref)" },
-  { pts: caps.map(d => ({ i: d.i, v: d.f })), cor: "var(--s1)", rotulo: true },
-], { altura: 300, yMax: 300, passoY: 100 });
-const cB = serieChart(document.getElementById("ch-trends"), [{ pts: tr.map(d => ({ i: d.i, v: d.v })), cor: "var(--s2)", rotulo: true }], { altura: 170, yMax: 100, passoY: 50 });
-// crosshair compartilhado
-const porMes = {};
-for (const d of caps) porMes[d.i] = { ...(porMes[d.i] || {}), c: d.c, f: d.f, p: d.p };
-for (const d of tr) porMes[d.i] = { ...(porMes[d.i] || {}), c: d.c, t: d.v };
-const linhas = [cA, cB].map(ch => s("line", { y1: ch.m.t, y2: ch.H - ch.m.b, stroke: "var(--ink-2)", "stroke-width": 1, visibility: "hidden" }, ch.svg));
-[cA, cB].forEach(ch => {
-  const hit = s("rect", { x: ch.m.l, y: 0, width: ch.W - ch.m.l - ch.m.r, height: ch.H, fill: "transparent" }, ch.svg);
-  hit.addEventListener("pointermove", ev => {
-    const r = ch.svg.getBoundingClientRect(); const px = (ev.clientX - r.left) / r.width * ch.W;
-    const i = Math.round(X0 + (px - ch.m.l) / (ch.W - ch.m.l - ch.m.r) * (X1 - X0));
-    const d = porMes[i]; if (!d) return;
-    linhas.forEach((l, k) => { const xx = [cA, cB][k].x(i); l.setAttribute("x1", xx); l.setAttribute("x2", xx); l.setAttribute("visibility", "visible"); });
-    const marco = marcos.findIndex(([dd]) => idxDate(dd) === i);
-    const fr = figS.getBoundingClientRect();
-    tipS.show(`<div><b>${mesLabel(d.c)}</b></div>
-      <div><span class="k">F63.0:</span> <b>${d.f == null ? (d.c > D.corte ? "sem dado" : "menos de 5") : fmt(d.f)}</b></div>
-      <div><span class="k">F63.1–3:</span> <b>${d.p == null ? (d.c > D.corte ? "sem dado" : "menos de 5") : fmt(d.p)}</b></div>
-      <div><span class="k">Busca:</span> <b>${d.t == null ? "—" : fmt(d.t)}</b></div>
-      ${marco >= 0 ? `<div style="color:var(--mark)">${marcos[marco][1]}</div>` : ""}`, ev.clientX - fr.left, ev.clientY - fr.top);
+const teto = (v, p) => Math.ceil(v / p) * p;
+const passo = v => v > 600 ? 250 : v > 200 ? 100 : v > 60 ? 25 : v > 30 ? 10 : 5;
+// vários gráficos empilhados com o mesmo eixo x e um crosshair compartilhado; tip(i) devolve o HTML do mês i
+function painel(fig, graficos, tip) {
+  const tt = tipFor(fig);
+  const chs = graficos.map(g => { const max = Math.max(...g.series.flatMap(se => se.pts.map(p => p.v ?? 0)));
+    const pp = g.passoY || passo(max); return serieChart(g.el, g.series, { altura: g.altura, yMax: g.yMax || teto(max, pp), passoY: pp }); });
+  const ls = chs.map(ch => s("line", { y1: ch.m.t, y2: ch.H - ch.m.b, stroke: "var(--ink-2)", "stroke-width": 1, visibility: "hidden" }, ch.svg));
+  chs.forEach(ch => {
+    const hit = s("rect", { x: ch.m.l, y: 0, width: ch.W - ch.m.l - ch.m.r, height: ch.H, fill: "transparent" }, ch.svg);
+    hit.addEventListener("pointermove", ev => {
+      const r = ch.svg.getBoundingClientRect(); const px = (ev.clientX - r.left) / r.width * ch.W;
+      const i = Math.round(X0 + (px - ch.m.l) / (ch.W - ch.m.l - ch.m.r) * (X1 - X0));
+      const html = tip(i); if (!html) return;
+      ls.forEach((l, k) => { const xx = chs[k].x(i); l.setAttribute("x1", xx); l.setAttribute("x2", xx); l.setAttribute("visibility", "visible"); });
+      const marco = marcos.findIndex(([dd]) => idxDate(dd) === i);
+      const fr = fig.getBoundingClientRect();
+      tt.show(html + (marco >= 0 ? `<div style="color:var(--mark)">${marcos[marco][1]}</div>` : ""), ev.clientX - fr.left, ev.clientY - fr.top);
+    });
+    hit.addEventListener("pointerleave", () => { ls.forEach(l => l.setAttribute("visibility", "hidden")); tt.hide(); });
   });
-  hit.addEventListener("pointerleave", () => { linhas.forEach(l => l.setAttribute("visibility", "hidden")); tipS.hide(); });
-});
+}
+const busca = Object.fromEntries(D.serie.trends.map(d => [idx(d.cmp), d.trends]));
+const trendsSerie = { pts: D.serie.trends.map(d => ({ i: idx(d.cmp), v: d.trends })), cor: "var(--s2)", rotulo: true };
+const valor = (v, fim, c) => v == null ? (c > fim ? "sem dado" : "menos de 5") : fmt(v);
+function tiles(el, lista) { for (const [v, d] of lista) el.appendChild(h("div", { class: "tile" }, `<div class="v">${v}</div><div class="d">${d}</div>`)); }
 
-/* ---------- perfil: pirâmide ---------- */
-(function piramide() {
-  const el = document.getElementById("ch-piramide");
-  const faixas = ["60+", "45-59", "35-44", "25-34", "18-24", "0-17"];
-  const P = Object.fromEntries(D.perfil.map(d => [d.sexo + d.faixa, d]));
-  const W = 520, rowH = 34, m = { t: 26, b: 22 }, H = m.t + m.b + faixas.length * rowH, cx = W / 2, lab = 44;
-  const max = 22, sc = (cx - lab - 10) / max;
-  const svg = s("svg", { viewBox: `0 0 ${W} ${H}`, role: "img" }, el);
-  const fig = el.closest(".fig"), tip = tipFor(fig);
-  [["Mulheres", cx - lab - 4, "end"], ["Homens", cx + lab + 4, "start"]].forEach(([t, x, a]) => { const e = s("text", { x, y: 14, "text-anchor": a, class: "lbl", style: "font-weight:700" }, svg); e.textContent = t; });
+/* ---------- perfil: gráficos comuns às duas abas ---------- */
+// barras = jogo patológico; traço = saúde mental em geral
+function mulheresChart(el, lista, unid) {
+  const W = 520, H = 240, m = { l: 36, r: 8, t: 22, b: 24 }, y = v => H - m.b - v / 80 * (H - m.t - m.b);
+  const svg = s("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Mulheres por ano" }, el);
+  const f = el.closest(".fig"), tp = tipFor(f);
+  for (const v of [0, 20, 40, 60, 80]) { s("line", { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: v ? "var(--rule)" : "var(--axis)" }, svg);
+    const t = s("text", { x: m.l - 6, y: y(v) + 4, "text-anchor": "end", class: "tnum" }, svg); t.textContent = v + "%"; }
+  const bw = (W - m.l - m.r) / lista.length;
+  lista.forEach((d, i) => {
+    const x0 = m.l + i * bw + bw * .2, w = bw * .6;
+    if (d.pct != null) { s("path", { d: `M${x0},${y(0)}V${y(d.pct) + 4}q0,-4 4,-4h${w - 8}q4,0 4,4V${y(0)}Z`, fill: "var(--s1)" }, svg); }
+    s("line", { x1: x0 - 3, x2: x0 + w + 3, y1: y(d.ref), y2: y(d.ref), stroke: "var(--ink-2)", "stroke-width": 2, "stroke-linecap": "round" }, svg);
+    if (d.pct != null) { const yl = Math.abs(y(d.pct) - y(d.ref)) < 14 ? Math.min(y(d.pct), y(d.ref)) - 6 : y(d.pct) - 6;
+      const l = s("text", { x: x0 + w / 2, y: yl, "text-anchor": "middle", class: "lbl tnum" }, svg); l.textContent = fmt(d.pct); }
+    const t = s("text", { x: x0 + w / 2, y: H - 6, "text-anchor": "middle", class: "lbl" }, svg); t.textContent = `'${String(d.ano).slice(2)}`;
+    const hit = s("rect", { x: m.l + i * bw, y: m.t, width: bw, height: H - m.t - m.b, fill: "transparent" }, svg);
+    hit.addEventListener("pointermove", ev => { const fr = f.getBoundingClientRect();
+      tp.show(`<div><b>${d.ano}</b></div><div><span class="k">Jogo patológico:</span> <b>${d.pct == null ? "base pequena" : fmt(d.pct, 1) + "%"}</b></div><div><span class="k">Saúde mental em geral:</span> <b>${fmt(d.ref, 1)}%</b></div><div class="small">% de mulheres entre os ${unid}</div>`, ev.clientX - fr.left, ev.clientY - fr.top); });
+    hit.addEventListener("pointerleave", () => tp.hide());
+  });
+}
+function idadeChart(el, J, R) {
+  const faixas = ["0-17", "18-24", "25-34", "35-44", "45-59", "60+"];
+  const W = 520, rowH = 32, m = { l: 56, r: 50, t: 6, b: 24 }, H = m.t + m.b + faixas.length * rowH;
+  const x = v => m.l + v / 45 * (W - m.l - m.r);
+  const svg = s("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Distribuição por faixa de idade" }, el);
+  const f = el.closest(".fig"), tp = tipFor(f);
+  for (const v of [0, 15, 30, 45]) { s("line", { x1: x(v), x2: x(v), y1: m.t, y2: H - m.b, stroke: v ? "var(--rule)" : "var(--axis)" }, svg);
+    const t = s("text", { x: x(v), y: H - 6, "text-anchor": "middle", class: "tnum" }, svg); t.textContent = v + "%"; }
   faixas.forEach((fx, r) => {
-    const yc = m.t + r * rowH + rowH / 2;
-    const t = s("text", { x: cx, y: yc + 4, "text-anchor": "middle", class: "lbl" }, svg); t.textContent = fx === "60+" ? "60+" : fx.replace("-", "–");
-    for (const [sexo, dir] of [["F", -1], ["M", 1]]) {
-      const d = P[sexo + fx]; const x0 = cx + dir * lab;
-      if (d.pct_f630_2025 != null) { const w = d.pct_f630_2025 * sc; const x = dir < 0 ? x0 - w : x0;
-        s("rect", { x, y: yc - 10, width: w, height: 20, rx: 3, fill: "var(--s1)" }, svg);
-        // rótulo depois do que for mais longo (barra ou traço da saúde mental), para não colidir
-        const fora = Math.max(w, d.pct_mental_2025 * sc) + 6;
-        const v = s("text", { x: x0 + dir * fora, y: yc + 4, "text-anchor": dir < 0 ? "end" : "start", class: "lbl tnum" }, svg); v.textContent = fmt(d.pct_f630_2025, 1) + "%"; }
-      const xm = x0 + dir * d.pct_mental_2025 * sc;
-      s("line", { x1: xm, x2: xm, y1: yc - 14, y2: yc + 14, stroke: "var(--ink-2)", "stroke-width": 2, "stroke-linecap": "round" }, svg);
-      const hit = s("rect", { x: dir < 0 ? cx - lab - max * sc : cx + lab, y: yc - rowH / 2, width: max * sc, height: rowH, fill: "transparent" }, svg);
-      hit.addEventListener("pointermove", ev => { const fr = fig.getBoundingClientRect();
-        tip.show(`<div><b>${sexo === "F" ? "Mulheres" : "Homens"}, ${fx.replace("-", "–")} anos</b></div><div><span class="k">Jogo patológico:</span> <b>${d.pct_f630_2025 == null ? "suprimido" : fmt(d.pct_f630_2025, 1) + "%"}</b></div><div><span class="k">Saúde mental:</span> <b>${fmt(d.pct_mental_2025, 1)}%</b></div>`, ev.clientX - fr.left, ev.clientY - fr.top); });
-      hit.addEventListener("pointerleave", () => tip.hide());
-    }
+    const yc = m.t + r * rowH + rowH / 2, j = J[fx], q = R[fx];
+    const t = s("text", { x: m.l - 8, y: yc + 4, "text-anchor": "end", class: "lbl" }, svg); t.textContent = fx.replace("-", "–");
+    if (j != null) { const w = x(j) - x(0); s("path", { d: `M${x(0)},${yc - 9}h${Math.max(w - 4, 0)}q4,0 4,4v10q0,4 -4,4h${-Math.max(w - 4, 0)}Z`, fill: "var(--s1)" }, svg); }
+    if (q != null) s("line", { x1: x(q), x2: x(q), y1: yc - 13, y2: yc + 13, stroke: "var(--ink-2)", "stroke-width": 2, "stroke-linecap": "round" }, svg);
+    const v = s("text", { x: Math.max(x(j ?? 0), x(q ?? 0)) + 6, y: yc + 4, class: "lbl tnum" }, svg); v.textContent = j == null ? "—" : fmt(j, 1) + "%";
+    const hit = s("rect", { x: 0, y: yc - rowH / 2, width: W, height: rowH, fill: "transparent" }, svg);
+    hit.addEventListener("pointermove", ev => { const fr = f.getBoundingClientRect();
+      tp.show(`<div><b>${fx.replace("-", "–")} anos</b></div><div><span class="k">Jogo patológico:</span> <b>${j == null ? "menos de 5" : fmt(j, 1) + "%"}</b></div><div><span class="k">Saúde mental em geral:</span> <b>${q == null ? "—" : fmt(q, 1) + "%"}</b></div>`, ev.clientX - fr.left, ev.clientY - fr.top); });
+    hit.addEventListener("pointerleave", () => tp.hide());
   });
-  s("line", { x1: cx - lab, x2: cx - lab, y1: m.t, y2: H - m.b, stroke: "var(--axis)" }, svg);
-  s("line", { x1: cx + lab, x2: cx + lab, y1: m.t, y2: H - m.b, stroke: "var(--axis)" }, svg);
-  for (const v of [0, 10, 20]) for (const dir of [-1, 1]) { const xx = cx + dir * (lab + v * sc); const t = s("text", { x: xx, y: H - 6, "text-anchor": "middle", class: "tnum" }, svg); t.textContent = v + "%"; }
+}
+
+/* ---------- aba CAPS ---------- */
+(function caps() {
+  const anual = Object.fromEntries(D.anual.map(d => [d.ano, d]));
+  const CP = D.caps_perfil, ult = CP.mulheres.find(d => d.ano === 2025);  // 2026 só tem o 1º semestre
+  document.getElementById("carimbo-dados").textContent = mesLabel(D.corte);
+  document.getElementById("caps-mulheres").textContent = fmt(ult.pct) + "%";
+  document.getElementById("caps-mulheres-ref").textContent = fmt(ult.ref) + "%";
+  tiles(document.getElementById("tiles"), [
+    [fmt(anual[2026].f630), `pessoas atendidas por jogo patológico nos CAPS só no 1º semestre de 2026, quase o total de 2025 (${fmt(anual[2025].f630)})`],
+    [`${fmt(anual[2025].f630 / anual[2022].f630, 1)}<small>×</small>`, `o número de pessoas de 2022 (${fmt(anual[2022].f630)}) para 2025`],
+    [`${fmt(pctNovo(2026))}<small>%</small>`, "das que receberam o diagnóstico em 2026 não tinham passado pelo CAPS no ano anterior"],
+    [`${fmt(ult.pct)}<small>%</small>`, `dos pacientes em ${ult.ano} eram mulheres`],
+  ]);
+  listaMarcos(document.getElementById("marcos"));
+  const C = Object.fromEntries(D.serie.caps.map(d => [idx(d.cmp), d]));
+  painel(document.getElementById("fig-serie"), [
+    { el: document.getElementById("ch-caps"), altura: 300, series: [
+      { pts: D.serie.caps.map(d => ({ i: idx(d.cmp), v: d.placebo })), cor: "var(--ref)" },
+      { pts: D.serie.caps.map(d => ({ i: idx(d.cmp), v: d.f630 })), cor: "var(--s1)", rotulo: true }] },
+    { el: document.getElementById("ch-trends"), altura: 170, yMax: 100, passoY: 50, series: [trendsSerie] },
+  ], i => { const d = C[i], b = busca[i]; if (!d && b == null) return null; const c = d ? d.cmp : D.serie.trends.find(t => idx(t.cmp) === i).cmp;
+    return `<div><b>${mesLabel(c)}</b></div><div><span class="k">F63.0:</span> <b>${valor(d?.f630, D.corte, c)}</b></div>
+      <div><span class="k">F63.1–3:</span> <b>${valor(d?.placebo, D.corte, c)}</b></div><div><span class="k">Busca:</span> <b>${b == null ? "—" : fmt(b)}</b></div>`; });
+  mulheresChart(document.getElementById("ch-caps-mulheres"), CP.mulheres, "pacientes de cada mês");
+  idadeChart(document.getElementById("ch-caps-idade"), CP.faixas.jogo, CP.faixas.ref);
 })();
 
-/* ---------- perfil: crescimento ---------- */
-(function cresc() {
-  const el = document.getElementById("ch-cresc");
-  const linhas = D.perfil.filter(d => d.cresc_mental != null);
-  const W = 520, rowH = 26, m = { l: 112, r: 46, t: 8, b: 26 }, H = m.t + m.b + linhas.length * rowH;
-  const lo = Math.log(1), hi = Math.log(30);
-  const x = v => m.l + (Math.log(v) - lo) / (hi - lo) * (W - m.l - m.r);
-  const svg = s("svg", { viewBox: `0 0 ${W} ${H}`, role: "img" }, el);
-  const fig = el.closest(".fig"), tip = tipFor(fig);
-  for (const v of [1, 2, 5, 10, 20]) { s("line", { x1: x(v), x2: x(v), y1: m.t, y2: H - m.b, stroke: v === 1 ? "var(--axis)" : "var(--rule)" }, svg);
-    const t = s("text", { x: x(v), y: H - 8, "text-anchor": "middle", class: "tnum" }, svg); t.textContent = v + "×"; }
-  linhas.forEach((d, r) => {
-    const yc = m.t + r * rowH + rowH / 2;
-    const t = s("text", { x: m.l - 8, y: yc + 4, "text-anchor": "end", class: "lbl" }, svg); t.textContent = `${d.sexo === "F" ? "Mulheres" : "Homens"} ${d.faixa.replace("-", "–")}`;
-    if (d.cresc_f630 != null) s("line", { x1: x(d.cresc_mental), x2: x(d.cresc_f630), y1: yc, y2: yc, stroke: "var(--rule)", "stroke-width": 3 }, svg);
-    s("circle", { cx: x(d.cresc_mental), cy: yc, r: 5, fill: "var(--ref)", stroke: "var(--surface)", "stroke-width": 2 }, svg);
-    if (d.cresc_f630 != null) { s("circle", { cx: x(d.cresc_f630), cy: yc, r: 6, fill: "var(--s1)", stroke: "var(--surface)", "stroke-width": 2 }, svg);
-      const v = s("text", { x: x(d.cresc_f630) + 10, y: yc + 4, class: "lbl tnum" }, svg); v.textContent = fmt(d.cresc_f630, 1) + "×"; }
-    const hit = s("rect", { x: 0, y: yc - rowH / 2, width: W, height: rowH, fill: "transparent" }, svg);
-    hit.addEventListener("pointermove", ev => { const fr = fig.getBoundingClientRect();
-      tip.show(`<div><b>${d.sexo === "F" ? "Mulheres" : "Homens"}, ${d.faixa.replace("-", "–")} anos</b></div><div><span class="k">Jogo patológico:</span> <b>${d.cresc_f630 == null ? "base pequena" : fmt(d.cresc_f630, 1) + "×"}</b></div><div><span class="k">Saúde mental:</span> <b>${fmt(d.cresc_mental, 1)}×</b></div>`, ev.clientX - fr.left, ev.clientY - fr.top); });
-    hit.addEventListener("pointerleave", () => tip.hide());
-  });
+/* ---------- aba atenção primária ---------- */
+(function aps() {
+  const A = D.aps, an = Object.fromEntries(A.anual.map(d => [d.ano, d]));
+  const ult = A.mulheres.filter(d => d.pct != null).at(-1);
+  document.getElementById("carimbo-aps").textContent = mesLabel(A.fim);
+  document.querySelectorAll(".aps-fim").forEach(e => e.textContent = mesLabel(A.fim));
+  document.querySelectorAll(".caps-fim").forEach(e => e.textContent = mesLabel(D.corte));
+  for (const [id, v] of [["aps-ultimo", fmt(an[2026].jogo_mes)], ["aps-r22", fmt(an[2022].por10mil, 1)], ["aps-r25", fmt(an[2025].por10mil)],
+                         ["aps-r26", fmt(an[2026].por10mil)], ["aps-menores", fmt(A.faixas.jogo["0-17"], 1) + "%"],
+                         ["aps-mulheres", fmt(ult.pct) + "%"], ["aps-mulheres-ref", fmt(ult.ref) + "%"]])
+    document.querySelectorAll("#" + id).forEach(e => e.textContent = v);
+  tiles(document.getElementById("tiles-aps"), [
+    [fmt(an[2026].jogo_mes), `atendimentos por jogo patológico por mês na atenção primária em 2026 (jan–${MESES[+A.fim.slice(4) - 1]})`],
+    [`${fmt(an[2026].jogo_mes / an[2022].jogo_mes)}<small>×</small>`, `a média mensal de 2022 (${fmt(an[2022].jogo_mes)} atendimentos por mês)`],
+    [`${fmt(an[2026].por10mil / an[2022].por10mil)}<small>×</small>`, "o peso do jogo patológico entre os atendimentos de saúde mental, de 2022 para 2026"],
+    [`${fmt(ult.pct)}<small>%</small>`, `dos atendimentos em ${ult.ano} foram de mulheres`],
+  ]);
+  listaMarcos(document.getElementById("marcos-aps"));
+  const P = Object.fromEntries(A.mensal.map(d => [idx(d.cmp), d]));
+  painel(document.getElementById("fig-aps"), [
+    { el: document.getElementById("ch-aps"), altura: 300, series: [
+      { pts: A.mensal.map(d => ({ i: idx(d.cmp), v: d.placebo })), cor: "var(--ref)" },
+      { pts: A.mensal.map(d => ({ i: idx(d.cmp), v: d.jogo })), cor: "var(--s1)", rotulo: true }] },
+    { el: document.getElementById("ch-aps-trends"), altura: 170, yMax: 100, passoY: 50, series: [trendsSerie] },
+  ], i => { const d = P[i], b = busca[i]; if (!d && b == null) return null; const c = d ? d.cmp : D.serie.trends.find(t => idx(t.cmp) === i).cmp;
+    return `<div><b>${mesLabel(c)}</b></div><div><span class="k">F63.0:</span> <b>${valor(d?.jogo, A.fim, c)}</b></div>
+      <div><span class="k">F63.1–3:</span> <b>${valor(d?.placebo, A.fim, c)}</b></div><div><span class="k">Busca:</span> <b>${b == null ? "—" : fmt(b)}</b></div>`; });
+  painel(document.getElementById("fig-aps-taxa"), [
+    { el: document.getElementById("ch-aps-taxa"), altura: 240, series: [{ pts: A.mensal.map(d => ({ i: idx(d.cmp), v: d.por10mil })), cor: "var(--s1)", rotulo: true }] },
+  ], i => { const d = P[i]; if (!d) return null;
+    return `<div><b>${mesLabel(d.cmp)}</b></div><div><span class="k">Jogo patológico a cada 10 mil:</span> <b>${d.por10mil == null ? "—" : fmt(d.por10mil, 1)}</b></div>`; });
+  listaMarcos(document.getElementById("marcos-aps-taxa"));
+
+  // índice 2022 = 100
+  (function indice() {
+    const el = document.getElementById("ch-indice");
+    const anos = [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
+    const capsMes = {};
+    for (const d of D.serie.caps) { if (d.f630 == null) continue; const a = +d.cmp.slice(0, 4); capsMes[a] = capsMes[a] || []; capsMes[a].push(d.f630); }
+    const media = a => capsMes[a] ? capsMes[a].reduce((x, y) => x + y, 0) / capsMes[a].length : null;
+    const S = [
+      { nome: "Atenção primária", cor: "var(--s1)", v: a => an[a].jogo_mes / an[2022].jogo_mes * 100 },
+      { nome: "CAPS", cor: "var(--ink-2)", v: a => media(a) && media(2022) ? media(a) / media(2022) * 100 : null },
+      { nome: "Outros diagnósticos", cor: "var(--ref)", v: a => an[a].ref_mes / an[2022].ref_mes * 100 },
+    ];
+    const W = 1000, H = 300, m = { l: 52, r: 150, t: 14, b: 24 };
+    const lo = Math.log(25), hi = Math.log(5000);
+    const x = a => m.l + (a - 2019) / 7 * (W - m.l - m.r);
+    const y = v => H - m.b - (Math.log(v) - lo) / (hi - lo) * (H - m.t - m.b);
+    const svg = s("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Crescimento desde 2022" }, el);
+    const f = el.closest(".fig"), tp = tipFor(f);
+    for (const v of [25, 50, 100, 250, 500, 1000, 2500, 5000]) {
+      s("line", { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: v === 100 ? "var(--axis)" : "var(--rule)" }, svg);
+      const t = s("text", { x: m.l - 6, y: y(v) + 4, "text-anchor": "end", class: "tnum" }, svg); t.textContent = fmt(v);
+    }
+    for (const a of anos) { const t = s("text", { x: x(a), y: H - 6, "text-anchor": "middle", class: "lbl" }, svg); t.textContent = a + (a === 2026 ? "*" : ""); }
+    const fins = [];
+    for (const se of S) {
+      const p = anos.map(a => [a, se.v(a)]).filter(([, v]) => v != null && v > 0);
+      s("path", { d: p.map(([a, v], k) => (k ? "L" : "M") + x(a).toFixed(1) + "," + y(v).toFixed(1)).join(""), fill: "none", stroke: se.cor, "stroke-width": 2, "stroke-linejoin": "round" }, svg);
+      for (const [a, v] of p) s("circle", { cx: x(a), cy: y(v), r: 4, fill: se.cor, stroke: "var(--surface)", "stroke-width": 2 }, svg);
+      const [a, v] = p[p.length - 1]; fins.push({ y: y(v), t: `${se.nome}: ${fmt(v)}`, x: x(a) });
+    }
+    fins.sort((a, b) => a.y - b.y); for (let k = 1; k < fins.length; k++) fins[k].y = Math.max(fins[k].y, fins[k - 1].y + 16);
+    for (const e of fins) { const t = s("text", { x: e.x + 10, y: e.y + 4, class: "lbl tnum" }, svg); t.textContent = e.t; }
+    anos.forEach(a => {
+      const hit = s("rect", { x: x(a) - (W - m.l - m.r) / 14, y: m.t, width: (W - m.l - m.r) / 7, height: H - m.t - m.b, fill: "transparent" }, svg);
+      hit.addEventListener("pointermove", ev => { const fr = f.getBoundingClientRect();
+        tp.show(`<div><b>${a}</b></div>` + S.map(se => `<div><span class="k">${se.nome}:</span> <b>${se.v(a) == null ? "—" : fmt(se.v(a))}</b></div>`).join(""), ev.clientX - fr.left, ev.clientY - fr.top); });
+      hit.addEventListener("pointerleave", () => tp.hide());
+    });
+  })();
+  mulheresChart(document.getElementById("ch-aps-mulheres"), A.mulheres, "atendimentos");
+  idadeChart(document.getElementById("ch-aps-idade"), A.faixas.jogo, A.faixas.ref);
 })();
 
 /* ---------- Congresso ---------- */
@@ -744,152 +819,14 @@ const linhas = [cA, cB].map(ch => s("line", { y1: ch.m.t, y2: ch.H - ch.m.b, str
   }
 })();
 
-/* ---------- atenção primária ---------- */
-(function aps() {
-  const A = D.aps, an = Object.fromEntries(A.anual.map(d => [d.ano, d]));
-  document.getElementById("carimbo-aps").textContent = mesLabel(A.fim);
-  document.querySelectorAll(".aps-fim").forEach(e => e.textContent = mesLabel(A.fim));
-  document.querySelectorAll(".caps-fim").forEach(e => e.textContent = mesLabel(D.corte));
-  document.getElementById("aps-ultimo").textContent = fmt(an[2026].jogo_mes);
-  document.getElementById("aps-r22").textContent = fmt(an[2022].por10mil, 1);
-  document.getElementById("aps-r26").textContent = fmt(an[2026].por10mil, 1);
-  document.getElementById("aps-menores").textContent = fmt(A.faixas.jogo_cid["0-17"], 1) + "%";
-  const ms = A.mulheres.filter(d => d.pct != null);
-  const tiles = [
-    [fmt(an[2026].jogo_mes), `atendimentos por jogo patológico por mês na atenção primária em 2026 (jan–${MESES[+A.fim.slice(4) - 1]})`],
-    [`${fmt(an[2026].jogo_mes / an[2022].jogo_mes)}<small>×</small>`, `a média mensal de 2022 (${fmt(an[2022].jogo_mes)} atendimentos por mês)`],
-    [`${fmt(an[2026].por10mil / an[2022].por10mil)}<small>×</small>`, "o peso do jogo patológico entre os atendimentos de saúde mental, de 2022 para 2026"],
-    [`${fmt(ms[ms.length - 1].pct)}<small>%</small>`, `dos atendimentos em ${ms[ms.length - 1].ano} foram de mulheres`],
-  ];
-  const tw = document.getElementById("tiles-aps");
-  for (const [v, d] of tiles) tw.appendChild(h("div", { class: "tile" }, `<div class="v">${v}</div><div class="d">${d}</div>`));
 
-  const olM = document.getElementById("marcos-aps");
-  marcos.forEach(([d, rot], i) => { const n = D.noticias[d];
-    olM.appendChild(h("li", {}, `<b>${i + 1}</b>${rot}, ${mesLabel(d.slice(0, 4) + d.slice(5, 7))}` +
-      (n ? ` · <a href="${n[1]}" target="_blank" rel="noopener">notícia (${n[0]})</a>` : ""))); });
-
-  const pts = A.mensal.map(d => ({ i: idx(d.cmp), c: d.cmp, j: d.jogo, r: d.por10mil }));
-  const teto = (v, p) => Math.ceil(v / p) * p;
-  const maxJ = Math.max(...pts.map(d => d.j ?? 0)), maxR = Math.max(...pts.map(d => d.r ?? 0));
-  const pJ = maxJ > 600 ? 250 : 100, pR = maxR > 30 ? 10 : 5;
-  const c1 = serieChart(document.getElementById("ch-aps"), [{ pts: pts.map(d => ({ i: d.i, v: d.j })), cor: "var(--s1)", rotulo: true }], { altura: 280, yMax: teto(maxJ, pJ), passoY: pJ });
-  const c2 = serieChart(document.getElementById("ch-aps-taxa"), [{ pts: pts.map(d => ({ i: d.i, v: d.r })), cor: "var(--s1)", rotulo: true }], { altura: 200, yMax: teto(maxR, pR), passoY: pR });
-  const fig = document.getElementById("fig-aps"), tip = tipFor(fig);
-  const porI = Object.fromEntries(pts.map(d => [d.i, d]));
-  const ls = [c1, c2].map(ch => s("line", { y1: ch.m.t, y2: ch.H - ch.m.b, stroke: "var(--ink-2)", "stroke-width": 1, visibility: "hidden" }, ch.svg));
-  [c1, c2].forEach(ch => {
-    const hit = s("rect", { x: ch.m.l, y: 0, width: ch.W - ch.m.l - ch.m.r, height: ch.H, fill: "transparent" }, ch.svg);
-    hit.addEventListener("pointermove", ev => {
-      const r = ch.svg.getBoundingClientRect(); const px = (ev.clientX - r.left) / r.width * ch.W;
-      const i = Math.round(X0 + (px - ch.m.l) / (ch.W - ch.m.l - ch.m.r) * (X1 - X0));
-      const d = porI[i]; if (!d) return;
-      ls.forEach((l, k) => { const xx = [c1, c2][k].x(i); l.setAttribute("x1", xx); l.setAttribute("x2", xx); l.setAttribute("visibility", "visible"); });
-      const marco = marcos.findIndex(([dd]) => idxDate(dd) === i);
-      const fr = fig.getBoundingClientRect();
-      tip.show(`<div><b>${mesLabel(d.c)}</b></div>
-        <div><span class="k">Atendimentos F63.0:</span> <b>${d.j == null ? "menos de 5" : fmt(d.j)}</b></div>
-        <div><span class="k">Por 10 mil de saúde mental:</span> <b>${d.r == null ? "—" : fmt(d.r, 1)}</b></div>
-        ${marco >= 0 ? `<div style="color:var(--mark)">${marcos[marco][1]}</div>` : ""}`, ev.clientX - fr.left, ev.clientY - fr.top);
-    });
-    hit.addEventListener("pointerleave", () => { ls.forEach(l => l.setAttribute("visibility", "hidden")); tip.hide(); });
-  });
-
-  // índice 2022 = 100
-  (function indice() {
-    const el = document.getElementById("ch-indice");
-    const anos = [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
-    const capsMes = {};
-    for (const d of D.serie.caps) { if (d.f630 == null) continue; const a = +d.cmp.slice(0, 4); capsMes[a] = capsMes[a] || []; capsMes[a].push(d.f630); }
-    const media = a => capsMes[a] ? capsMes[a].reduce((x, y) => x + y, 0) / capsMes[a].length : null;
-    const S = [
-      { nome: "Atenção primária", cor: "var(--s1)", v: a => an[a].jogo_mes / an[2022].jogo_mes * 100 },
-      { nome: "CAPS", cor: "var(--ink-2)", v: a => media(a) && media(2022) ? media(a) / media(2022) * 100 : null },
-      { nome: "Outros diagnósticos", cor: "var(--ref)", v: a => an[a].ref_mes / an[2022].ref_mes * 100 },
-    ];
-    const W = 1000, H = 300, m = { l: 52, r: 150, t: 14, b: 24 };
-    const lo = Math.log(25), hi = Math.log(5000);
-    const x = a => m.l + (a - 2019) / 7 * (W - m.l - m.r);
-    const y = v => H - m.b - (Math.log(v) - lo) / (hi - lo) * (H - m.t - m.b);
-    const svg = s("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Crescimento desde 2022" }, el);
-    const f = el.closest(".fig"), tp = tipFor(f);
-    for (const v of [25, 50, 100, 250, 500, 1000, 2500, 5000]) {
-      s("line", { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: v === 100 ? "var(--axis)" : "var(--rule)" }, svg);
-      const t = s("text", { x: m.l - 6, y: y(v) + 4, "text-anchor": "end", class: "tnum" }, svg); t.textContent = fmt(v);
-    }
-    for (const a of anos) { const t = s("text", { x: x(a), y: H - 6, "text-anchor": "middle", class: "lbl" }, svg); t.textContent = a + (a === 2026 ? "*" : ""); }
-    const fins = [];
-    for (const se of S) {
-      const p = anos.map(a => [a, se.v(a)]).filter(([, v]) => v != null && v > 0);
-      s("path", { d: p.map(([a, v], k) => (k ? "L" : "M") + x(a).toFixed(1) + "," + y(v).toFixed(1)).join(""), fill: "none", stroke: se.cor, "stroke-width": 2, "stroke-linejoin": "round" }, svg);
-      for (const [a, v] of p) s("circle", { cx: x(a), cy: y(v), r: 4, fill: se.cor, stroke: "var(--surface)", "stroke-width": 2 }, svg);
-      const [a, v] = p[p.length - 1]; fins.push({ y: y(v), t: `${se.nome}: ${fmt(v)}`, x: x(a) });
-    }
-    fins.sort((a, b) => a.y - b.y); for (let k = 1; k < fins.length; k++) fins[k].y = Math.max(fins[k].y, fins[k - 1].y + 16);
-    for (const e of fins) { const t = s("text", { x: e.x + 10, y: e.y + 4, class: "lbl tnum" }, svg); t.textContent = e.t; }
-    anos.forEach(a => {
-      const hit = s("rect", { x: x(a) - (W - m.l - m.r) / 14, y: m.t, width: (W - m.l - m.r) / 7, height: H - m.t - m.b, fill: "transparent" }, svg);
-      hit.addEventListener("pointermove", ev => { const fr = f.getBoundingClientRect();
-        tp.show(`<div><b>${a}</b></div>` + S.map(se => `<div><span class="k">${se.nome}:</span> <b>${se.v(a) == null ? "—" : fmt(se.v(a))}</b></div>`).join(""), ev.clientX - fr.left, ev.clientY - fr.top); });
-      hit.addEventListener("pointerleave", () => tp.hide());
-    });
-  })();
-
-  // mulheres por ano
-  (function mulheres() {
-    const el = document.getElementById("ch-aps-mulheres");
-    const W = 520, H = 240, m = { l: 36, r: 8, t: 22, b: 24 }, y = v => H - m.b - v / 60 * (H - m.t - m.b);
-    const svg = s("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Mulheres entre os atendimentos por ano" }, el);
-    const f = el.closest(".fig"), tp = tipFor(f);
-    for (const v of [0, 20, 40, 60]) { s("line", { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: v ? "var(--rule)" : "var(--axis)" }, svg);
-      const t = s("text", { x: m.l - 6, y: y(v) + 4, "text-anchor": "end", class: "tnum" }, svg); t.textContent = v + "%"; }
-    s("line", { x1: m.l, x2: W - m.r, y1: y(50), y2: y(50), stroke: "var(--ink-2)", "stroke-dasharray": "4 4" }, svg);
-    const bw = (W - m.l - m.r) / A.mulheres.length;
-    A.mulheres.forEach((d, i) => {
-      const x0 = m.l + i * bw + bw * .2, w = bw * .6;
-      if (d.pct != null) { s("path", { d: `M${x0},${y(0)}V${y(d.pct) + 4}q0,-4 4,-4h${w - 8}q4,0 4,4V${y(0)}Z`, fill: "var(--s1)" }, svg);
-        const l = s("text", { x: x0 + w / 2, y: y(d.pct) - 6, "text-anchor": "middle", class: "lbl tnum" }, svg); l.textContent = fmt(d.pct); }
-      const t = s("text", { x: x0 + w / 2, y: H - 6, "text-anchor": "middle", class: "lbl" }, svg); t.textContent = `'${String(d.ano).slice(2)}`;
-      const hit = s("rect", { x: m.l + i * bw, y: m.t, width: bw, height: H - m.t - m.b, fill: "transparent" }, svg);
-      hit.addEventListener("pointermove", ev => { const fr = f.getBoundingClientRect();
-        tp.show(`<div><b>${d.ano}</b></div><div><span class="k">Mulheres:</span> <b>${d.pct == null ? "base pequena" : fmt(d.pct, 1) + "%"}</b></div>`, ev.clientX - fr.left, ev.clientY - fr.top); });
-      hit.addEventListener("pointerleave", () => tp.hide());
-    });
-  })();
-
-  // idade
-  (function idade() {
-    const el = document.getElementById("ch-aps-idade");
-    const faixas = ["0-17", "18-24", "25-34", "35-44", "45-59", "60+"];
-    const J = A.faixas.jogo_cid, Q = A.faixas.ansiedade_cid;
-    const W = 520, rowH = 32, m = { l: 56, r: 50, t: 6, b: 24 }, H = m.t + m.b + faixas.length * rowH;
-    const x = v => m.l + v / 45 * (W - m.l - m.r);
-    const svg = s("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Atendimentos por faixa de idade" }, el);
-    const f = el.closest(".fig"), tp = tipFor(f);
-    for (const v of [0, 15, 30, 45]) { s("line", { x1: x(v), x2: x(v), y1: m.t, y2: H - m.b, stroke: v ? "var(--rule)" : "var(--axis)" }, svg);
-      const t = s("text", { x: x(v), y: H - 6, "text-anchor": "middle", class: "tnum" }, svg); t.textContent = v + "%"; }
-    faixas.forEach((fx, r) => {
-      const yc = m.t + r * rowH + rowH / 2;
-      const t = s("text", { x: m.l - 8, y: yc + 4, "text-anchor": "end", class: "lbl" }, svg); t.textContent = fx.replace("-", "–");
-      const w = x(J[fx]) - x(0);
-      s("path", { d: `M${x(0)},${yc - 9}h${w - 4}q4,0 4,4v10q0,4 -4,4h${-(w - 4)}Z`, fill: "var(--s1)" }, svg);
-      s("line", { x1: x(Q[fx]), x2: x(Q[fx]), y1: yc - 13, y2: yc + 13, stroke: "var(--ink-2)", "stroke-width": 2, "stroke-linecap": "round" }, svg);
-      const v = s("text", { x: Math.max(x(J[fx]), x(Q[fx])) + 6, y: yc + 4, class: "lbl tnum" }, svg); v.textContent = fmt(J[fx], 1) + "%";
-      const hit = s("rect", { x: 0, y: yc - rowH / 2, width: W, height: rowH, fill: "transparent" }, svg);
-      hit.addEventListener("pointermove", ev => { const fr = f.getBoundingClientRect();
-        tp.show(`<div><b>${fx.replace("-", "–")} anos</b></div><div><span class="k">Jogo patológico:</span> <b>${fmt(J[fx], 1)}%</b></div><div><span class="k">Ansiedade:</span> <b>${fmt(Q[fx], 1)}%</b></div>`, ev.clientX - fr.left, ev.clientY - fr.top); });
-      hit.addEventListener("pointerleave", () => tp.hide());
-    });
-  })();
-})();
-
-document.getElementById("lk-cpi").href = D.cpi.url;
+document.querySelectorAll(".lk-cpi").forEach(a => a.href = D.cpi.url);
 
 /* ---------- abas ---------- */
 (function abas() {
-  const nomes = ["saude", "aps", "votacao", "metodo"].filter(n => document.getElementById("aba-" + n));
+  const nomes = ["aps", "caps", "votacao", "metodo"].filter(n => document.getElementById("aba-" + n));
   function abrir(nome, rolar) {
-    if (!nomes.includes(nome)) nome = "saude";
+    if (!nomes.includes(nome)) nome = "aps";
     for (const n of nomes) {
       document.getElementById("aba-" + n).hidden = n !== nome;
       document.getElementById("tab-" + n).setAttribute("aria-selected", n === nome ? "true" : "false");

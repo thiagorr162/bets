@@ -113,27 +113,51 @@ def perfil(r):
 
 
 
+def perfil_comum(r):
+    """CAPS no mesmo formato da atenção primária: % de mulheres por ano e distribuição por idade em 2025–2026,
+    jogo patológico × saúde mental em geral. Unidade: pacientes-mês (CAPS)."""
+    f = r.filter(pl.col("cid") == "F630").unique(["id", "cmp"])
+    m = (pl.read_parquet(pasta("caps") / "sia_perfil.parquet")
+         .filter((pl.col("grupo") == "mental") & pl.col("cmp").is_between(pl.lit("201801"), pl.lit(CORTE)))
+         .with_columns(pl.col("cmp").str.slice(0, 4).cast(pl.Int32).alias("ano")))
+    fs = f.group_by("ano").agg((pl.col("SEXOPAC") == "F").sum().alias("F"), pl.col("SEXOPAC").is_in(["F", "M"]).sum().alias("t"))
+    ms = m.group_by("ano").agg(pl.col("pacientes").filter(pl.col("SEXOPAC") == "F").sum().alias("F"),
+                               pl.col("pacientes").filter(pl.col("SEXOPAC").is_in(["F", "M"])).sum().alias("t"))
+    x = fs.join(ms, on="ano", suffix="_m").sort("ano")
+    mulheres = [{"ano": d["ano"], "pct": round(d["F"] / d["t"] * 100, 1) if d["t"] >= 20 else None,
+                 "ref": round(d["F_m"] / d["t_m"] * 100, 1)} for d in x.to_dicts()]
+    def dist(df, col):
+        d = df.filter(pl.col("ano") >= 2025).drop_nulls("faixa").group_by("faixa").agg(col.alias("n"))
+        tot = d["n"].sum()
+        return {k: (round(v / tot * 100, 1) if v >= MIN else None) for k, v in zip(d["faixa"], d["n"])}
+    return {"mulheres": mulheres, "faixas": {"jogo": dist(f, pl.len()), "ref": dist(m, pl.col("pacientes").sum())}}
+
+
 def atencao_primaria():
     """SISAB: atendimentos individuais com F63.0 por mês, referência de saúde mental, perfil por idade e sexo."""
     a = pl.read_parquet(pasta("atencao_primaria") / "sisab_aps.parquet")
+    PLACEBO = ["piromania_cid", "cleptomania_cid", "tricotilomania_cid"]  # controle, como no CAPS
     REF = ["depressao_cid", "depressao_rec_cid", "ansiedade_cid", "estresse_cid", "alcool_cid", "esquizofrenia_cid"]
     t = a.filter(pl.col("recorte") == "total")
     m = (t.group_by("cmp").agg(pl.col("atendimentos").filter(pl.col("grupo") == "jogo_cid").sum().alias("jogo"),
-                               pl.col("atendimentos").filter(pl.col("grupo").is_in(REF)).sum().alias("ref")).sort("cmp"))
-    mensal = [{"cmp": d["cmp"], "jogo": sup(d["jogo"]), "por10mil": round(d["jogo"] / d["ref"] * 1e4, 2) if d["jogo"] >= MIN else None}
+                               pl.col("atendimentos").filter(pl.col("grupo").is_in(REF)).sum().alias("ref"),
+                               pl.col("atendimentos").filter(pl.col("grupo").is_in(PLACEBO)).sum().alias("placebo")).sort("cmp"))
+    mensal = [{"cmp": d["cmp"], "jogo": sup(d["jogo"]), "placebo": sup(d["placebo"]), "por10mil": round(d["jogo"] / d["ref"] * 1e4, 2) if d["jogo"] >= MIN else None}
               for d in m.to_dicts()]
     an = (m.with_columns(pl.col("cmp").str.slice(0, 4).cast(pl.Int32).alias("ano")).group_by("ano")
           .agg((pl.col("jogo").sum() / pl.len()).alias("jogo_mes"), (pl.col("jogo").sum() / pl.col("ref").sum() * 1e4).alias("por10mil"), (pl.col("ref").sum() / pl.len()).alias("ref_mes"),
                pl.len().alias("meses")).sort("ano"))
-    fx = (a.filter((pl.col("recorte") == "faixa") & pl.col("cmp").str.slice(0, 4).is_in(["2025", "2026"])
-                   & pl.col("grupo").is_in(["jogo_cid", "ansiedade_cid", "depressao_cid"]))
-          .group_by("grupo", "valor").agg(pl.col("atendimentos").sum())
-          .with_columns((pl.col("atendimentos") / pl.col("atendimentos").sum().over("grupo") * 100).alias("pct")))
-    faixas = {g: {d["valor"]: round(d["pct"], 1) for d in fx.filter(pl.col("grupo") == g).to_dicts()} for g in ["jogo_cid", "ansiedade_cid", "depressao_cid"]}
-    sx = (a.filter((pl.col("recorte") == "sexo") & (pl.col("grupo") == "jogo_cid"))
-          .with_columns(pl.col("cmp").str.slice(0, 4).cast(pl.Int32).alias("ano")).group_by("ano", "valor").agg(pl.col("atendimentos").sum())
-          .pivot(on="valor", index="ano", values="atendimentos").sort("ano"))
-    mulheres = [{"ano": d["ano"], "pct": round(d["F"] / (d["F"] + d["M"]) * 100, 1) if d["F"] + d["M"] >= 20 else None} for d in sx.to_dicts()]
+    # saúde mental em geral = soma dos diagnósticos de referência (mesmo papel do "mental" no CAPS)
+    g = pl.when(pl.col("grupo") == "jogo_cid").then(pl.lit("jogo")).when(pl.col("grupo").is_in(REF)).then(pl.lit("ref"))
+    fx = (a.filter((pl.col("recorte") == "faixa") & pl.col("cmp").str.slice(0, 4).is_in(["2025", "2026"]))
+          .with_columns(g.alias("g")).drop_nulls("g").group_by("g", "valor").agg(pl.col("atendimentos").sum())
+          .with_columns((pl.col("atendimentos") / pl.col("atendimentos").sum().over("g") * 100).alias("pct")))
+    faixas = {k: {d["valor"]: round(d["pct"], 1) for d in fx.filter(pl.col("g") == k).to_dicts()} for k in ["jogo", "ref"]}
+    sx = (a.filter(pl.col("recorte") == "sexo").with_columns(g.alias("g"), pl.col("cmp").str.slice(0, 4).cast(pl.Int32).alias("ano"))
+          .drop_nulls("g").group_by("ano", "g", "valor").agg(pl.col("atendimentos").sum())
+          .with_columns(pl.col("g") + "_" + pl.col("valor")).pivot(on="g", index="ano", values="atendimentos").sort("ano"))
+    mulheres = [{"ano": d["ano"], "pct": round(d["jogo_F"] / (d["jogo_F"] + d["jogo_M"]) * 100, 1) if d["jogo_F"] + d["jogo_M"] >= 20 else None,
+                 "ref": round(d["ref_F"] / (d["ref_F"] + d["ref_M"]) * 100, 1)} for d in sx.to_dicts()]
     return {"mensal": mensal, "anual": [{k: (round(v, 1) if isinstance(v, float) else v) for k, v in d.items()} for d in an.to_dicts()],
             "faixas": faixas, "mulheres": mulheres, "fim": m["cmp"].max()}
 
@@ -194,7 +218,7 @@ def main():
     dados = {
         "corte": CORTE, "choques": CHOQUES, "noticias": NOTICIAS, "pandemia": PANDEMIA, "cpi": CPI,
         "serie": serie_nacional(r), "anual": anual(r), "novos": novos(r),
-        "perfil": perf, "mulheres": mulheres, "aps": atencao_primaria(), "trajetorias": trajetorias(), "congresso": congresso() if MOSTRAR_CONGRESSO else None,
+        "perfil": perf, "mulheres": mulheres, "caps_perfil": perfil_comum(r), "aps": atencao_primaria(), "trajetorias": trajetorias(), "congresso": congresso() if MOSTRAR_CONGRESSO else None,
     }
     js = json.dumps(dados, ensure_ascii=False, separators=(",", ":"))
     corpo = (ROOT / "site" / "modelo.html").read_text().replace("/*__DADOS__*/null", js)
