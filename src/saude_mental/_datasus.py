@@ -1,5 +1,5 @@
-"""Download dos microdados do DATASUS direto do FTP: baixa cada .dbc, agrega na hora, guarda o agregado
-e apaga o bruto.
+"""Download dos microdados do DATASUS direto do FTP: cada .dbc fica guardado em data/raw/datasus/ (e é
+reaproveitado nas próximas execuções) e é agregado na hora.
 
 Os agregados ficam em data/interim/<fonte>/<arquivo>.parquet, então dá para interromper e retomar.
 Códigos de município do DATASUS têm 6 dígitos (IBGE sem dígito verificador).
@@ -31,8 +31,26 @@ def listar_ftp(diretorio: str) -> list[str]:
     return [ln.split()[-1] for ln in linhas if ln.strip()]
 
 
+RAW_DATASUS = INTERIM.parent / "raw" / "datasus"
+
+
+def bruto(url: str) -> Path:
+    """Caminho do .dbc original em data/raw/datasus/<pasta do FTP>/; baixa só se ainda não estiver lá."""
+    from urllib.request import urlopen
+
+    destino = RAW_DATASUS / url.split("/dissemin/publicos/", 1)[1]
+    if not destino.exists():
+        destino.parent.mkdir(parents=True, exist_ok=True)
+        tmp = destino.with_suffix(".part")
+        with urlopen(url, timeout=600) as r, open(tmp, "wb") as f:
+            f.write(r.read())
+        tmp.rename(destino)
+    return destino
+
+
 def _processar_ftp(args) -> str:
-    """Roda num processo separado: baixa, converte .dbc → .dbf, lê só as colunas úteis, agrega, apaga."""
+    """Roda num processo separado: usa o .dbc guardado em data/raw/datasus/ (ou baixa e guarda lá),
+    converte para .dbf, lê só as colunas úteis e agrega. O .dbc original nunca é apagado."""
     import tempfile
     from urllib.request import urlopen
 
@@ -40,10 +58,9 @@ def _processar_ftp(args) -> str:
     from pyreaddbc import dbc2dbf
 
     url, destino, agregador, colunas = args
+    dbc = bruto(url)
     with tempfile.TemporaryDirectory() as tmp:
-        dbc, dbf = Path(tmp) / "a.dbc", Path(tmp) / "a.dbf"
-        with urlopen(url, timeout=600) as r, open(dbc, "wb") as f:
-            f.write(r.read())
+        dbf = Path(tmp) / "a.dbf"
         dbc2dbf(str(dbc), str(dbf))
         tabela = DBF(str(dbf), encoding="iso-8859-1", char_decode_errors="replace")
         cols = [c for c in colunas if c in tabela.field_names]
@@ -94,3 +111,18 @@ def rodar_ftp(fonte: str, diretorio: str, nomes: list[str], agregador, colunas: 
             except Exception as e:
                 print(f"  [{i}/{len(tarefas)}] {futuros[f][1].stem} ! {e}", flush=True)
     return pasta
+
+
+def baixar_brutos(diretorio: str, prefixos: list[str], threads: int = 8) -> int:
+    """Baixa para data/raw/datasus/ os .dbc de `diretorio` cujo nome começa por algum dos `prefixos`
+    (ex.: ["PS"]), sem processar. Pula os que já estão no disco. Retorna quantos foram baixados."""
+    from concurrent.futures import ThreadPoolExecutor
+
+    arqs = [a for a in listar_ftp(diretorio) if a.lower().endswith(".dbc") and a.upper().startswith(tuple(prefixos))]
+    faltam = [a for a in arqs if not (RAW_DATASUS / diretorio / a).exists()]
+    print(f"  {len(arqs)} arquivos no FTP, {len(faltam)} a baixar para {RAW_DATASUS / diretorio}")
+    with ThreadPoolExecutor(threads) as ex:
+        for i, _ in enumerate(ex.map(lambda a: bruto(f"{FTP}/{diretorio}/{a}"), faltam), 1):
+            if i % 200 == 0:
+                print(f"  {i}/{len(faltam)}", flush=True)
+    return len(faltam)

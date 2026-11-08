@@ -18,6 +18,9 @@ sys.path.insert(0, str(ROOT))
 from src.config import CHOQUES, PANDEMIA, PROCESSED  # noqa: E402
 
 MIN = 5
+# Aba e trechos do Congresso (votação de 2023, emendas à MP 1.394, projetos). Desligado por enquanto: o site foca
+# em saúde mental. O conteúdo continua no modelo (marcado com data-congresso); para religar, troque para True.
+MOSTRAR_CONGRESSO = False
 # CPI das Bets no Senado: instalada em 12/11/2024, encerrada com o relatório rejeitado em 12/06/2025.
 CPI = {"inicio": "2024-11-12", "fim": "2025-06-12",
        "url": "https://www12.senado.leg.br/radio/1/noticia/2024/11/12/cpi-das-bets-e-instalada-e-vai-investigar-influenciadores-donos-das-apostas-e-crime-de-lavagem-de-dinheiro"}
@@ -132,7 +135,7 @@ def main():
     dados = {
         "corte": CORTE, "choques": CHOQUES, "noticias": NOTICIAS, "pandemia": PANDEMIA, "cpi": CPI,
         "serie": serie_nacional(r), "anual": anual(r), "novos": novos(r),
-        "perfil": perf, "mulheres": mulheres, "congresso": congresso(),
+        "perfil": perf, "mulheres": mulheres, "congresso": congresso() if MOSTRAR_CONGRESSO else None,
     }
     js = json.dumps(dados, ensure_ascii=False, separators=(",", ":"))
     corpo = (ROOT / "site" / "modelo.html").read_text().replace("/*__DADOS__*/null", js)

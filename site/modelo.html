@@ -118,15 +118,15 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 
 <div class="wrap">
 <header class="top">
-  <div class="eyebrow">Apostas online · saúde mental · Congresso · 2018–2026</div>
+  <div class="eyebrow">Apostas online · saúde mental<span data-congresso> · Congresso</span> · 2018–2026</div>
   <h1>Bets no Brasil</h1>
-  <p class="lede">O que mudou desde que as apostas online foram liberadas, em 2018: quantas pessoas passaram a procurar tratamento por jogo patológico no SUS, e como o Congresso votou e o que propõe para a proibição de 2026.</p>
-  <div class="carimbo small"><span><b>Saúde:</b> DATASUS, atendimentos nos CAPS até <span id="carimbo-dados"></span></span><span><b>Congresso:</b> dados abertos da Câmara e do Senado</span><span>Só dados agregados e registros públicos</span></div>
+  <p class="lede"><span data-sem-congresso>O que mudou desde que as apostas online foram liberadas, em 2018: quantas pessoas passaram a procurar tratamento por jogo patológico no SUS, quem são essas pessoas e como isso acompanhou as leis e a proibição de 2026.</span><span data-congresso>O que mudou desde que as apostas online foram liberadas, em 2018: quantas pessoas passaram a procurar tratamento por jogo patológico no SUS, e como o Congresso votou e o que propõe para a proibição de 2026.</span></p>
+  <div class="carimbo small"><span><b>Saúde:</b> DATASUS, atendimentos nos CAPS até <span id="carimbo-dados"></span></span><span data-congresso><b>Congresso:</b> dados abertos da Câmara e do Senado</span><span>Só dados agregados e registros públicos</span></div>
 </header>
 
 <nav class="abas" role="tablist" aria-label="Seções do site">
   <button type="button" role="tab" id="tab-saude" data-aba="saude" aria-controls="aba-saude" aria-selected="true">Saúde mental</button>
-  <button type="button" role="tab" id="tab-votacao" data-aba="votacao" aria-controls="aba-votacao" aria-selected="false">Votação no Congresso</button>
+  <button type="button" role="tab" data-congresso id="tab-votacao" data-aba="votacao" aria-controls="aba-votacao" aria-selected="false">Votação no Congresso</button>
   <button type="button" role="tab" id="tab-metodo" data-aba="metodo" aria-controls="aba-metodo" aria-selected="false">Como foi feito</button>
 </nav>
 
@@ -189,7 +189,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 
 </div>
 
-<div id="aba-votacao" role="tabpanel" aria-labelledby="tab-votacao" hidden>
+<div id="aba-votacao" data-congresso role="tabpanel" aria-labelledby="tab-votacao" hidden>
 <section id="congresso">
   <div class="prose">
     <h2>O que o Congresso decidiu e propõe</h2>
@@ -261,7 +261,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 <section id="metodo" style="border-top:0;padding-top:0">
   <div class="prose">
     <h2>Como foi feito</h2>
-    <p>Este site junta duas análises sobre as apostas online no Brasil: a procura por tratamento de jogo patológico no SUS e as posições do Congresso. Tudo foi feito com dados públicos e código aberto, e qualquer pessoa pode refazer os cálculos.</p>
+    <p data-sem-congresso>Este site analisa a procura por tratamento de jogo patológico no SUS desde a liberação das apostas online. Tudo foi feito com dados públicos e código aberto, e qualquer pessoa pode refazer os cálculos.</p>
+    <p data-congresso>Este site junta duas análises sobre as apostas online no Brasil: a procura por tratamento de jogo patológico no SUS e as posições do Congresso. Tudo foi feito com dados públicos e código aberto, e qualquer pessoa pode refazer os cálculos.</p>
   </div>
 
   <div class="prose">
@@ -277,7 +278,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     </ul>
   </div>
 
-  <div class="prose">
+  <div class="prose" data-congresso>
     <h3>Congresso</h3>
     <ul class="limites">
       <li><b>Votação de 2023.</b> Votos nominais das APIs de dados abertos da Câmara (votação 2374400-121, em 21/12/2023) e do Senado (votação 6797, emenda nº 139 ao PL 3.626/2023, em 12/12/2023).</li>
@@ -289,7 +290,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 
   <div class="prose">
     <h3>Privacidade</h3>
-    <p>Dado de saúde é dado pessoal sensível pela LGPD. A página só mostra totais, e toda contagem com menos de 5 pessoas é suprimida. Os dados por pessoa usados nos cálculos ficam fora do site e do repositório, com o código do paciente pseudonimizado de novo, a idade em faixas e a localização só por estado. Votos e emendas de parlamentares são registros públicos.</p>
+    <p>Dado de saúde é dado pessoal sensível pela LGPD. A página só mostra totais, e toda contagem com menos de 5 pessoas é suprimida. Os dados por pessoa usados nos cálculos ficam fora do site e do repositório, com o código do paciente pseudonimizado de novo, a idade em faixas e a localização só por estado. <span data-congresso>Votos e emendas de parlamentares são registros públicos.</span></p>
   </div>
 
   <div class="prose">
@@ -297,15 +298,15 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     <p>O código está no GitHub: <a href="https://github.com/thiagorr162/bets" target="_blank" rel="noopener">github.com/thiagorr162/bets</a>, branch <code>saude-mental</code>. Os dados não ficam no repositório. Para baixá-los e refazer o site:</p>
     <pre style="overflow-x:auto;background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:.8rem;font-family:var(--f-mono);font-size:.85rem"><code>uv sync
 uv run python -m src.pipeline --pesado     # DATASUS, Google Trends, DataSenado
-uv run python -m src.politica.emendas_mp1394
+<span data-congresso>uv run python -m src.politica.emendas_mp1394
 uv run python -m src.politica.congresso
-uv run python site/montar_dados.py         # gera site/index.html</code></pre>
+</span>uv run python site/montar_dados.py         # gera site/index.html</code></pre>
     <p class="small">Resultados preliminares, sem revisão por pares.</p>
   </div>
 
   <div class="prose">
     <h3>Uso de inteligência artificial</h3>
-    <p>A análise e o site foram feitos com a ajuda de uma inteligência artificial (Claude, da Anthropic). Ela foi usada para escrever o código que baixa e processa os dados, para ler e classificar as 99 emendas à MP 1.394, para montar os gráficos e para redigir os textos. Ferramentas como essa podem errar. Por isso, o código, a classificação das emendas e as fontes estão abertos para quem quiser conferir.</p>
+    <p>A análise e o site foram feitos com a ajuda de uma inteligência artificial (Claude, da Anthropic). Ela foi usada para escrever o código que baixa e processa os dados, <span data-congresso>para ler e classificar as 99 emendas à MP 1.394, </span>para montar os gráficos e para redigir os textos. Ferramentas como essa podem errar. Por isso, o código<span data-congresso>, a classificação das emendas</span> e as fontes estão abertos para quem quiser conferir.</p>
   </div>
 
   <div class="prose">
@@ -314,10 +315,10 @@ uv run python site/montar_dados.py         # gera site/index.html</code></pre>
       <li><b>Dados de saúde:</b> <a href="https://datasus.saude.gov.br/transferencia-de-arquivos/" target="_blank" rel="noopener">DATASUS, transferência de arquivos</a> (SIA-PS; arquivos em ftp.datasus.gov.br).</li>
       <li><b>Busca por apostas:</b> <a href="https://trends.google.com/trends/" target="_blank" rel="noopener">Google Trends</a>.</li>
       <li><b>Apostadores por sexo:</b> <a href="https://www12.senado.leg.br/noticias/arquivos/2024/09/30/relatorio_apostasesportivas-golpesdigitais-endividamento-1.pdf" target="_blank" rel="noopener">DataSenado, Panorama Político 2024: apostas esportivas, golpes digitais e endividamento</a>.</li>
-      <li><b>Câmara dos Deputados:</b> <a href="https://dadosabertos.camara.leg.br/" target="_blank" rel="noopener">dados abertos</a>.</li>
-      <li><b>Senado Federal:</b> <a href="https://legis.senado.leg.br/dadosabertos/" target="_blank" rel="noopener">dados abertos</a>.</li>
+      <li data-congresso><b>Câmara dos Deputados:</b> <a href="https://dadosabertos.camara.leg.br/" target="_blank" rel="noopener">dados abertos</a>.</li>
+      <li data-congresso><b>Senado Federal:</b> <a href="https://legis.senado.leg.br/dadosabertos/" target="_blank" rel="noopener">dados abertos</a>.</li>
       <li><b>MP 1.394/2026:</b> <a href="https://www12.senado.leg.br/publicacoes/estudos-legislativos/tipos-de-estudos/sumarios-de-proposicoes/mpv1394" target="_blank" rel="noopener">resumo do Senado</a>.</li>
-      <li><b>Votação de 2023:</b> <a href="https://www12.senado.leg.br/noticias/materias/2023/12/12/plenario-aprova-regulamentacao-das-bets-texto-volta-a-camara" target="_blank" rel="noopener">Agência Senado</a>; <a href="https://www.cnnbrasil.com.br/politica/governo-lula-foi-contra-proibir-do-jogo-do-tigrinho-em-2023/" target="_blank" rel="noopener">CNN Brasil</a>.</li>
+      <li data-congresso><b>Votação de 2023:</b> <a href="https://www12.senado.leg.br/noticias/materias/2023/12/12/plenario-aprova-regulamentacao-das-bets-texto-volta-a-camara" target="_blank" rel="noopener">Agência Senado</a>; <a href="https://www.cnnbrasil.com.br/politica/governo-lula-foi-contra-proibir-do-jogo-do-tigrinho-em-2023/" target="_blank" rel="noopener">CNN Brasil</a>.</li>
       <li><b>CPI das Bets:</b> <a href="https://www12.senado.leg.br/radio/1/noticia/2024/11/12/cpi-das-bets-e-instalada-e-vai-investigar-influenciadores-donos-das-apostas-e-crime-de-lavagem-de-dinheiro" target="_blank" rel="noopener">instalação</a> e <a href="https://www12.senado.leg.br/noticias/materias/2025/06/12/cpi-das-bets-rejeita-relatorio-final" target="_blank" rel="noopener">encerramento</a> (Agência Senado).</li>
       <li><b>Marcos regulatórios:</b> as notícias de cada marco estão linkadas abaixo do gráfico da aba Saúde mental.</li>
     </ul>
@@ -325,7 +326,7 @@ uv run python site/montar_dados.py         # gera site/index.html</code></pre>
 </section>
 </div>
 
-<footer>Dados: DATASUS (SIA-PS), Google Trends, DataSenado, Câmara dos Deputados e Senado Federal. <span id="rodape"></span></footer>
+<footer>Dados: DATASUS (SIA-PS), Google Trends, DataSenado<span data-congresso>, Câmara dos Deputados e Senado Federal</span>. <span id="rodape"></span></footer>
 </div>
 
 <script>const D = /*__DADOS__*/null;</script>
@@ -342,6 +343,9 @@ const idxDate = d => idx(d.slice(0, 4) + d.slice(5, 7));
 const norm = t => t.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 
 /* ---------- carimbo e destaques ---------- */
+// chave do Congresso (site/montar_dados.py: MOSTRAR_CONGRESSO). O conteúdo fica no modelo, só não é exibido.
+document.querySelectorAll(D.congresso ? "[data-sem-congresso]" : "[data-congresso]").forEach(e => e.remove());
+
 const anual = Object.fromEntries(D.anual.map(d => [d.ano, d]));
 const nov = Object.fromEntries(D.novos.map(d => [d.ano, d]));
 const pctNovo = a => nov[a] && nov[a].novos != null && nov[a].ja != null ? nov[a].novos / (nov[a].novos + nov[a].ja) * 100 : null;
@@ -505,6 +509,7 @@ const linhas = [cA, cB].map(ch => s("line", { y1: ch.m.t, y2: ch.H - ch.m.b, str
 
 /* ---------- Congresso ---------- */
 (function congresso() {
+  if (!D.congresso) return;
   const C = D.congresso;
   const TIPOS = {1: "derruba ou esvazia a proibição", 2: "proíbe só o cassino online", 3: "mantém o cassino online, com regras",
     4: "ameniza para empresas e esporte", 5: "regras que pressupõem o mercado funcionando", 6: "endurece a proibição",
@@ -636,7 +641,7 @@ document.getElementById("lk-cpi").href = D.cpi.url;
 
 /* ---------- abas ---------- */
 (function abas() {
-  const nomes = ["saude", "votacao", "metodo"];
+  const nomes = ["saude", "votacao", "metodo"].filter(n => document.getElementById("aba-" + n));
   function abrir(nome, rolar) {
     if (!nomes.includes(nome)) nome = "saude";
     for (const n of nomes) {

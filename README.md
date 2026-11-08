@@ -27,8 +27,8 @@ uv run jupyter lab notebooks/
 | `src/saude_mental/graves_f63` | DATASUS SIH (internações) e SIM (óbitos), agregados por UF × mês × sexo × faixa etária | `sih_graves`, `sim_graves` |
 | — | IBGE, projeção da população por sexo e idade (SIDRA 7358), em `data/raw/ibge/` | usada no `suicidio.ipynb` |
 
-Os microdados do DATASUS são baixados direto do FTP (`ftp.datasus.gov.br`), em paralelo, e agregados na hora: os
-`.dbc` originais não ficam guardados.
+Os microdados do DATASUS são baixados direto do FTP (`ftp.datasus.gov.br`), em paralelo. Os `.dbc` originais ficam
+guardados em `data/raw/datasus/` e são reaproveitados: um recorte novo não precisa baixar tudo de novo.
 
 ## Notebooks
 
