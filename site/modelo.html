@@ -1,4 +1,4 @@
-<title>Bets no Brasil</title>
+<title>Bets e saúde mental</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56,7 +56,11 @@ a { color: var(--accent) }
 .small { font-size: var(--s-1); color: var(--ink-2) }
 .tnum { font-variant-numeric: tabular-nums }
 
-header.top { padding-block: 3rem 2rem; display: grid; gap: 1rem }
+header.top { padding-block: 2rem 2rem; display: grid; gap: 1rem }
+.topo { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap }
+.topo-link, .voltar { font-family: var(--f-display); font-weight: 600; font-size: var(--s0); color: var(--accent); text-decoration: none; border-bottom: 1.5px solid currentColor }
+.topo-link:hover, .voltar:hover { color: var(--ink) }
+.voltar { justify-self: start }
 header.top .lede { font-size: var(--s1t); color: var(--ink-2); max-width: 60ch }
 .carimbo { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem }
 
@@ -126,16 +130,15 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 
 <div class="wrap">
 <header class="top">
-  <div class="eyebrow">Apostas online · saúde mental<span data-congresso> · Congresso</span> · 2018–2026</div>
-  <h1>Bets no Brasil</h1>
-  <p class="lede"><span data-sem-congresso>O que mudou desde que as apostas online foram liberadas, em 2018: quantas pessoas passaram a procurar tratamento por jogo patológico no SUS, nas unidades básicas de saúde e nos CAPS, quem são essas pessoas e como isso acompanhou as leis e a proibição de 2026.</span><span data-congresso>O que mudou desde que as apostas online foram liberadas, em 2018: quantas pessoas passaram a procurar tratamento por jogo patológico no SUS, e como o Congresso votou e o que propõe para a proibição de 2026.</span></p>
+  <div class="topo"><div class="eyebrow">Jogo patológico no SUS<span data-congresso> · Congresso</span> · 2018–2026</div><a class="topo-link" href="#metodo">Como foi feito</a></div>
+  <h1>Bets e saúde mental no Brasil</h1>
+  <p class="lede"><span data-sem-congresso>Desde que as apostas online foram liberadas, em 2018, cada vez mais gente procura o SUS por causa do jogo. Esta página mostra quantas pessoas passaram a ser atendidas por jogo patológico nas unidades básicas de saúde e nos CAPS, quem são elas, o que acontece com elas depois do diagnóstico e como tudo isso acompanhou a regulação das bets, a CPI e a proibição de 2026.</span><span data-congresso>O que mudou desde que as apostas online foram liberadas, em 2018: quantas pessoas passaram a procurar tratamento por jogo patológico no SUS, e como o Congresso votou e o que propõe para a proibição de 2026.</span></p>
   <div class="carimbo small"><span><b>Atenção primária:</b> SISAB, até <span id="carimbo-aps"></span></span><span><b>CAPS:</b> DATASUS, até <span id="carimbo-dados"></span></span><span data-congresso><b>Congresso:</b> dados abertos da Câmara e do Senado</span><span>Só dados agregados e registros públicos</span></div>
 </header>
 
-<nav class="abas" role="tablist" aria-label="Seções do site">
+<nav class="abas" data-congresso role="tablist" aria-label="Seções do site">
   <button type="button" role="tab" id="tab-saude" data-aba="saude" aria-controls="aba-saude" aria-selected="true">Saúde mental</button>
   <button type="button" role="tab" data-congresso id="tab-votacao" data-aba="votacao" aria-controls="aba-votacao" aria-selected="false">Votação no Congresso</button>
-  <button type="button" role="tab" id="tab-metodo" data-aba="metodo" aria-controls="aba-metodo" aria-selected="false">Como foi feito</button>
 </nav>
 
 <div id="aba-saude" role="tabpanel" aria-labelledby="tab-saude">
@@ -314,8 +317,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 
 </div>
 
-<div id="aba-metodo" role="tabpanel" aria-labelledby="tab-metodo" hidden>
+<div id="aba-metodo" hidden>
 <section id="metodo" style="border-top:0;padding-top:0">
+  <a class="voltar" href="#">← Voltar para os dados</a>
   <div class="prose">
     <h2>Como foi feito</h2>
     <p data-sem-congresso>Este site analisa a procura por tratamento de jogo patológico no SUS, na atenção primária e nos CAPS, desde a liberação das apostas online. Tudo foi feito com dados públicos e código aberto, e qualquer pessoa pode refazer os cálculos.</p>
@@ -389,7 +393,7 @@ uv run python -m src.politica.congresso
       <li><b>MP 1.394/2026:</b> <a href="https://www12.senado.leg.br/publicacoes/estudos-legislativos/tipos-de-estudos/sumarios-de-proposicoes/mpv1394" target="_blank" rel="noopener">resumo do Senado</a>.</li>
       <li data-congresso><b>Votação de 2023:</b> <a href="https://www12.senado.leg.br/noticias/materias/2023/12/12/plenario-aprova-regulamentacao-das-bets-texto-volta-a-camara" target="_blank" rel="noopener">Agência Senado</a>; <a href="https://www.cnnbrasil.com.br/politica/governo-lula-foi-contra-proibir-do-jogo-do-tigrinho-em-2023/" target="_blank" rel="noopener">CNN Brasil</a>.</li>
       <li><b>CPI das Bets:</b> <a href="https://www12.senado.leg.br/radio/1/noticia/2024/11/12/cpi-das-bets-e-instalada-e-vai-investigar-influenciadores-donos-das-apostas-e-crime-de-lavagem-de-dinheiro" target="_blank" rel="noopener">instalação</a> e <a href="https://www12.senado.leg.br/noticias/materias/2025/06/12/cpi-das-bets-rejeita-relatorio-final" target="_blank" rel="noopener">encerramento</a> (Agência Senado).</li>
-      <li><b>Marcos regulatórios:</b> as notícias de cada marco estão linkadas abaixo do gráfico da aba Saúde mental.</li>
+      <li><b>Marcos regulatórios:</b> as notícias de cada marco estão linkadas abaixo do primeiro gráfico da página.</li>
     </ul>
   </div>
 </section>
@@ -780,14 +784,16 @@ document.querySelectorAll(".lk-cpi").forEach(a => a.href = D.cpi.url);
 
 /* ---------- abas ---------- */
 (function abas() {
+  // "Como foi feito" abre por link no topo (#metodo); as abas só existem se o Congresso estiver ligado
   const nomes = ["saude", "votacao", "metodo"].filter(n => document.getElementById("aba-" + n));
   function abrir(nome, rolar) {
     if (!nomes.includes(nome)) nome = "saude";
     for (const n of nomes) {
       document.getElementById("aba-" + n).hidden = n !== nome;
-      document.getElementById("tab-" + n).setAttribute("aria-selected", n === nome ? "true" : "false");
+      const t = document.getElementById("tab-" + n); if (t) t.setAttribute("aria-selected", n === nome ? "true" : "false");
     }
-    if (rolar) document.querySelector(".abas").scrollIntoView({ block: "start" });
+    document.querySelector(".topo-link").hidden = nome === "metodo";
+    if (rolar) window.scrollTo({ top: 0 });
   }
   document.querySelectorAll(".abas button").forEach(b => b.addEventListener("click", () => {
     if (location.hash !== "#" + b.dataset.aba) location.hash = b.dataset.aba; else abrir(b.dataset.aba, true);
