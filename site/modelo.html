@@ -90,6 +90,8 @@ svg .strong { fill: var(--ink); font-weight: 700 }
 .nota { font-size: var(--s-1); color: var(--ink-2); border-left: 3px solid var(--rule); padding-left: .7rem; margin: 0 }
 
 .limites code { overflow-wrap: anywhere }
+section > * { min-width: 0 }
+#metodo pre { max-width: 100%; white-space: pre }
 .limites { padding-left: 1.1rem; margin: 0; display: grid; gap: .45rem; max-width: 72ch }
 footer { padding-top: 2rem; border-top: 1px solid var(--rule); font-size: var(--s-1); color: var(--ink-2) }
 .cong-busca { display: grid; gap: .5rem; max-width: 640px }
@@ -125,6 +127,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 <nav class="abas" role="tablist" aria-label="Seções do site">
   <button type="button" role="tab" id="tab-saude" data-aba="saude" aria-controls="aba-saude" aria-selected="true">Saúde mental</button>
   <button type="button" role="tab" id="tab-votacao" data-aba="votacao" aria-controls="aba-votacao" aria-selected="false">Votação no Congresso</button>
+  <button type="button" role="tab" id="tab-metodo" data-aba="metodo" aria-controls="aba-metodo" aria-selected="false">Como foi feito</button>
 </nav>
 
 <div id="aba-saude" role="tabpanel" aria-labelledby="tab-saude">
@@ -219,9 +222,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 
   <div class="prose">
     <h3>Por que o PT votou para permitir e o PL para proibir?</h3>
-    <p><b>Em 2023, o PT votou com o governo.</b> O projeto da lei das bets era do governo Lula. Naquele ano, o Ministério da Fazenda buscava aumentar a arrecadação, e permitir os cassinos online aumentava o imposto pago pelas empresas. O governo orientou a votar por permitir, e todos os 57 deputados do PT seguiram.</p>
-    <p><b>O PL votou como oposição.</b> Boa parte do partido é ligada à bancada evangélica, contrária a jogos de azar, e a proposta de proibir os cassinos online foi de um senador do PL. Mesmo assim, 21 deputados do PL votaram para permitir.</p>
-    <p><b>Em 2026, os lados se inverteram.</b> Foi o governo do PT que proibiu todas as bets, com a MP 1.394, e o PL 1.808/2026, de proibição total, é assinado por dezenas de deputados do PT. Já entre as emendas à MP, quem mais propõe afrouxar a proibição são deputados do PL e do PP.</p>
+    <p>Em 2023, o PT votou com o governo. O projeto da lei das bets era do governo Lula. Naquele ano, o Ministério da Fazenda buscava aumentar a arrecadação, e permitir os cassinos online aumentava o imposto pago pelas empresas. O governo orientou a votar por permitir, e todos os 57 deputados do PT seguiram.</p>
+    <p>O PL votou como oposição. Boa parte do partido é ligada à bancada evangélica, contrária a jogos de azar, e a proposta de proibir os cassinos online foi de um senador do PL. Mesmo assim, 21 deputados do PL votaram para permitir.</p>
+    <p>Em 2026, os lados se inverteram. Foi o governo do PT que proibiu todas as bets, com a MP 1.394, e o PL 1.808/2026, de proibição total, é assinado por dezenas de deputados do PT. Já entre as emendas à MP, quem mais propõe afrouxar a proibição são deputados do PL e do PP.</p>
     <p class="small">Fonte: <a href="https://www.cnnbrasil.com.br/politica/governo-lula-foi-contra-proibir-do-jogo-do-tigrinho-em-2023/" target="_blank" rel="noopener">CNN Brasil, "Base de Lula no Congresso votou contra proibir 'jogo do tigrinho' em 2023"</a>.</p>
   </div>
 
@@ -254,18 +257,68 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 
 </div>
 
-<section id="metodo">
-  <h2>Como foi feito e limites</h2>
-  <ul class="limites">
-    <li><b>Fonte.</b> Microdados do SIA-PS (RAAS), a produção dos CAPS no SUS, baixados do FTP do DATASUS para todos os estados, jan/2018 a jun/2026. Pessoas contadas pelo código do cartão SUS, que o DATASUS já publica criptografado.</li>
-    <li><b>Diagnóstico.</b> <span class="cid">F63.0</span> (jogo patológico) como CID principal ou associado. Os códigos <span class="cid">F63.8</span> e <span class="cid">F63.9</span> ficam de fora porque mais de um terço dos registros com eles são de menores de idade, em que indicam outros transtornos de impulso.</li>
-    <li><b>Atendimento, não prevalência.</b> Os dados contam quem chegou ao CAPS. Não separam mais casos de mais procura, e não incluem a rede privada, a atenção básica nem quem não procura ajuda.</li>
-    <li><b>Congresso.</b> Votos nominais das APIs de dados abertos da Câmara (votação 2374400-121) e do Senado (votação 6797, emenda nº 139 ao PL 3.626/2023). Emendas à MP 1.394 e projetos de lei também dos dados abertos. A classificação das emendas foi feita lendo o texto de cada uma, e está em <code>src/politica/classificacao_mp1394.csv</code>.</li>
-    <li><b>Busca e aposta.</b> Google Trends (cesta de termos: bet, apostas, betano, bet365, tigrinho) e DataSenado, Panorama Político 2024 (proporção de mulheres entre os apostadores).</li>
-    <li><b>Privacidade.</b> A página só contém totais. Toda contagem com menos de 5 pessoas é suprimida. Os dados de pacientes usados no cálculo ficam fora da página, com código pseudonimizado de novo, idade em faixas e localização só por estado.</li>
-    <li><b>Resultados preliminares,</b> sem revisão por pares.</li>
-  </ul>
+<div id="aba-metodo" role="tabpanel" aria-labelledby="tab-metodo" hidden>
+<section id="metodo" style="border-top:0;padding-top:0">
+  <div class="prose">
+    <h2>Como foi feito</h2>
+    <p>Este site junta duas análises sobre as apostas online no Brasil: a procura por tratamento de jogo patológico no SUS e as posições do Congresso. Tudo foi feito com dados públicos e código aberto, e qualquer pessoa pode refazer os cálculos.</p>
+  </div>
+
+  <div class="prose">
+    <h3>Saúde mental</h3>
+    <ul class="limites">
+      <li><b>De onde vêm os dados.</b> Do SIA-PS (RAAS), o registro mensal dos atendimentos nos Centros de Atenção Psicossocial (CAPS) do SUS, publicado pelo DATASUS. Baixamos os arquivos de todos os estados, de jan/2018 a jun/2026. Os dois meses mais recentes ficaram de fora porque os CAPS ainda estão enviando a produção.</li>
+      <li><b>O que contamos.</b> Pessoas distintas atendidas por mês com o diagnóstico <span class="cid">F63.0</span> (jogo patológico, na CID-10), como diagnóstico principal ou secundário. Cada pessoa é identificada pelo número do cartão do SUS, que o DATASUS já publica criptografado.</li>
+      <li><b>A comparação.</b> Os outros transtornos de impulso (<span class="cid">F63.1</span> a <span class="cid">F63.3</span>: piromania, cleptomania e tricotilomania) não têm relação com apostas. Eles servem de controle: se subissem junto, a alta seria uma mudança no jeito de registrar, não nas apostas. Ficaram estáveis.</li>
+      <li><b>Novos ou já em tratamento.</b> Para cada pessoa, olhamos os 12 meses antes do primeiro diagnóstico de jogo patológico. Quem não tinha nenhum atendimento no CAPS nesse período conta como "nova no CAPS".</li>
+      <li><b>Por que não usamos <span class="cid">F63.8</span> e <span class="cid">F63.9</span>.</b> Mais de um terço dos registros com esses códigos é de crianças e adolescentes, em que eles indicam outros transtornos de impulso, não jogo.</li>
+      <li><b>Busca por apostas.</b> Google Trends para o Brasil, com os termos bet, apostas, betano, bet365 e tigrinho. O índice vai de 0 a 100 e mede o interesse relativo, não o número de buscas.</li>
+      <li><b>Limites.</b> Os dados contam quem chegou ao CAPS. Não dizem quantas pessoas têm o problema, e não incluem a rede privada, a atenção básica nem quem não procura ajuda. Mais casos e mais procura por ajuda aparecem do mesmo jeito.</li>
+    </ul>
+  </div>
+
+  <div class="prose">
+    <h3>Congresso</h3>
+    <ul class="limites">
+      <li><b>Votação de 2023.</b> Votos nominais das APIs de dados abertos da Câmara (votação 2374400-121, em 21/12/2023) e do Senado (votação 6797, emenda nº 139 ao PL 3.626/2023, em 12/12/2023).</li>
+      <li><b>Emendas à MP 1.394.</b> As 99 emendas e seus autores vêm dos dados abertos do Senado. O texto de cada uma foi extraído do PDF original. A classificação em afrouxa, reforça ou neutra foi feita <b>lendo o texto de cada emenda</b>, e pode ter erros. Ela está publicada, com um resumo de uma linha por emenda, no arquivo <code>src/politica/classificacao_mp1394.csv</code> do repositório.</li>
+      <li><b>Projetos de lei.</b> Busca na API da Câmara por projetos que proíbem as apostas, conferidos pela ementa. O partido mostrado é o atual do deputado.</li>
+      <li><b>Limites.</b> Emenda não é voto. Só 25 parlamentares apresentaram emendas, e os demais não têm posição registrada. A posição real sobre a proibição só aparecerá quando a MP for votada, até mar/2027.</li>
+    </ul>
+  </div>
+
+  <div class="prose">
+    <h3>Privacidade</h3>
+    <p>Dado de saúde é dado pessoal sensível pela LGPD. A página só mostra totais, e toda contagem com menos de 5 pessoas é suprimida. Os dados por pessoa usados nos cálculos ficam fora do site e do repositório, com o código do paciente pseudonimizado de novo, a idade em faixas e a localização só por estado. Votos e emendas de parlamentares são registros públicos.</p>
+  </div>
+
+  <div class="prose">
+    <h3>Código e reprodução</h3>
+    <p>O código está no GitHub: <a href="https://github.com/thiagorr162/bets" target="_blank" rel="noopener">github.com/thiagorr162/bets</a>, branch <code>saude-mental</code>. Os dados não ficam no repositório. Para baixá-los e refazer o site:</p>
+    <pre style="overflow-x:auto;background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:.8rem;font-family:var(--f-mono);font-size:.85rem"><code>uv sync
+uv run python -m src.pipeline --pesado     # DATASUS, Google Trends, DataSenado
+uv run python -m src.politica.emendas_mp1394
+uv run python -m src.politica.congresso
+uv run python site/montar_dados.py         # gera site/index.html</code></pre>
+    <p class="small">Resultados preliminares, sem revisão por pares.</p>
+  </div>
+
+  <div class="prose">
+    <h3>Referências</h3>
+    <ul class="limites">
+      <li><b>Dados de saúde:</b> <a href="https://datasus.saude.gov.br/transferencia-de-arquivos/" target="_blank" rel="noopener">DATASUS, transferência de arquivos</a> (SIA-PS; arquivos em ftp.datasus.gov.br).</li>
+      <li><b>Busca por apostas:</b> <a href="https://trends.google.com/trends/" target="_blank" rel="noopener">Google Trends</a>.</li>
+      <li><b>Apostadores por sexo:</b> <a href="https://www12.senado.leg.br/noticias/arquivos/2024/09/30/relatorio_apostasesportivas-golpesdigitais-endividamento-1.pdf" target="_blank" rel="noopener">DataSenado, Panorama Político 2024: apostas esportivas, golpes digitais e endividamento</a>.</li>
+      <li><b>Câmara dos Deputados:</b> <a href="https://dadosabertos.camara.leg.br/" target="_blank" rel="noopener">dados abertos</a>.</li>
+      <li><b>Senado Federal:</b> <a href="https://legis.senado.leg.br/dadosabertos/" target="_blank" rel="noopener">dados abertos</a>.</li>
+      <li><b>MP 1.394/2026:</b> <a href="https://www12.senado.leg.br/publicacoes/estudos-legislativos/tipos-de-estudos/sumarios-de-proposicoes/mpv1394" target="_blank" rel="noopener">resumo do Senado</a>.</li>
+      <li><b>Votação de 2023:</b> <a href="https://www12.senado.leg.br/noticias/materias/2023/12/12/plenario-aprova-regulamentacao-das-bets-texto-volta-a-camara" target="_blank" rel="noopener">Agência Senado</a>; <a href="https://www.cnnbrasil.com.br/politica/governo-lula-foi-contra-proibir-do-jogo-do-tigrinho-em-2023/" target="_blank" rel="noopener">CNN Brasil</a>.</li>
+      <li><b>CPI das Bets:</b> <a href="https://www12.senado.leg.br/radio/1/noticia/2024/11/12/cpi-das-bets-e-instalada-e-vai-investigar-influenciadores-donos-das-apostas-e-crime-de-lavagem-de-dinheiro" target="_blank" rel="noopener">instalação</a> e <a href="https://www12.senado.leg.br/noticias/materias/2025/06/12/cpi-das-bets-rejeita-relatorio-final" target="_blank" rel="noopener">encerramento</a> (Agência Senado).</li>
+      <li><b>Marcos regulatórios:</b> as notícias de cada marco estão linkadas abaixo do gráfico da aba Saúde mental.</li>
+    </ul>
+  </div>
 </section>
+</div>
 
 <footer>Dados: DATASUS (SIA-PS), Google Trends, DataSenado, Câmara dos Deputados e Senado Federal. <span id="rodape"></span></footer>
 </div>
@@ -577,7 +630,7 @@ document.getElementById("lk-cpi").href = D.cpi.url;
 
 /* ---------- abas ---------- */
 (function abas() {
-  const nomes = ["saude", "votacao"];
+  const nomes = ["saude", "votacao", "metodo"];
   function abrir(nome, rolar) {
     if (!nomes.includes(nome)) nome = "saude";
     for (const n of nomes) {
