@@ -14,7 +14,7 @@ uv run python -m src.politica.congresso
 import polars as pl
 import requests
 
-from src.config import PROCESSED
+from src.config import pasta
 from src.utils import salvar
 
 CAMARA = "https://dadosabertos.camara.leg.br/api/v2"
@@ -75,8 +75,8 @@ def projetos() -> pl.DataFrame:
 
 
 def main():
-    salvar(pl.concat([votacao_camara(), votacao_senado()]), PROCESSED / "congresso_votacao_cassino_2023.parquet")
-    salvar(projetos(), PROCESSED / "congresso_pls_proibicao.parquet")
+    salvar(pl.concat([votacao_camara(), votacao_senado()]), pasta("congresso") / "congresso_votacao_cassino_2023.parquet")
+    salvar(projetos(), pasta("congresso") / "congresso_pls_proibicao.parquet")
 
 
 if __name__ == "__main__":

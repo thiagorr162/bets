@@ -13,12 +13,12 @@ import polars as pl
 import requests
 from pypdf import PdfReader
 
-from src.config import PROCESSED, RAW
+from src.config import pasta
 from src.utils import salvar
 
 API = "https://legis.senado.leg.br/dadosabertos/processo/emenda"
 ID_PROCESSO = 9110686  # MPV 1394/2026
-PASTA = RAW / "congresso" / "mp1394"
+PASTA = pasta("congresso", "raw") / "mp1394"
 
 
 def autoria(a: str) -> dict:
@@ -51,7 +51,7 @@ def main():
         linhas.append({"numero": n, "data": e["dataApresentacao"], "autoria": e["autoria"], **autoria(e["autoria"]),
                        "tipo": e["tipo"], "url": e["urlDocumentoEmenda"], "texto": texto})
         print(f"  emenda {n} ✓ ({len(texto)} caracteres)")
-    salvar(pl.DataFrame(linhas), PROCESSED / "mp1394_emendas.parquet")
+    salvar(pl.DataFrame(linhas), pasta("congresso") / "mp1394_emendas.parquet")
 
 
 if __name__ == "__main__":

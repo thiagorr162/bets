@@ -6,7 +6,7 @@ formulário. Linha = competência (mês); coluna = CIAP/CID; tipo de produção 
 - Conta ATENDIMENTOS com o problema/condição registrado, não pessoas distintas (o relatório não identifica pacientes).
 - O SISAB aceita no máximo 12 meses por consulta; cada consulta leva ~30 s.
 - Cobertura: o e-SUS foi implantado aos poucos; os anos iniciais têm bem menos registros (usar proporções).
-- Toda resposta é guardada em data/raw/sisab/ (tabela em CSV) e reaproveitada: consulta já feita não é repetida.
+- Toda resposta é guardada em data/atencao_primaria/raw/ (tabela em CSV) e reaproveitada: consulta já feita não é repetida.
 
 uv run python -m src.saude_mental.sisab_aps
 """
@@ -20,10 +20,10 @@ import time
 import polars as pl
 import requests
 
-from src.config import PROCESSED, RAW
+from src.config import pasta
 
 URL = "https://sisab.saude.gov.br/paginas/acessoRestrito/relatorio/federal/saude/RelSauProducao.xhtml"
-PASTA = RAW / "sisab"
+PASTA = pasta("atencao_primaria", "raw")
 # sufixo -1 = CID-10; -4 = CIAP-2 (formato do formulário do SISAB)
 CODIGOS = {
     "F32-1": "depressao_cid", "F33-1": "depressao_rec_cid", "F41-1": "ansiedade_cid", "F43-1": "estresse_cid",
@@ -102,8 +102,8 @@ def main():
                 linhas.append({"cmp": r[0], "recorte": tipo, "valor": valor or "total", "codigo": cod,
                                "grupo": CODIGOS.get(cod, cod), "atendimentos": int(v.replace(".", "") or 0)})
     df = pl.DataFrame(linhas).sort("recorte", "valor", "grupo", "cmp")
-    df.write_parquet(PROCESSED / "sisab_aps.parquet")
-    print(f"✓ data/processed/sisab_aps.parquet ({df.height:,} linhas)")
+    df.write_parquet(pasta("atencao_primaria") / "sisab_aps.parquet")
+    print(f"✓ data/atencao_primaria/processed/sisab_aps.parquet ({df.height:,} linhas)")
 
 
 if __name__ == "__main__":

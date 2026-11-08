@@ -14,7 +14,7 @@ import argparse
 
 import polars as pl
 
-from src.config import ANO_FIM, ANO_INICIO, INTERIM, PROCESSED, UFS
+from src.config import ANO_FIM, ANO_INICIO, UFS, pasta
 from src.saude_mental._datasus import AUTOLESAO, F63, MENTAL, rodar_ftp
 from src.utils import juntar
 
@@ -99,14 +99,14 @@ def main():
     nomes = [f"DO{uf}{ano}" for uf in a.ufs for ano in a.anos]
     rodar_ftp("sim_graves", "SIM/CID10/DORES", nomes, agregar_sim, COLS_SIM, a.processos)
     rodar_ftp("sim_graves", "SIM/PRELIM/DORES", nomes, agregar_sim, COLS_SIM, a.processos)  # 2025+ preliminar
-    juntar(INTERIM / "sim_graves", PROCESSED / "sim_graves.parquet")
+    juntar(pasta("internacoes_obitos", "interim") / "sim_graves", pasta("internacoes_obitos") / "sim_graves.parquet")
     if a.so_sim:
         return
 
     print("SIH (internações)")
     nomes = [f"RD{uf}{ano % 100:02d}{mes:02d}" for uf in a.ufs for ano in a.anos for mes in range(1, 13)]
     rodar_ftp("sih_graves", "SIHSUS/200801_/Dados", nomes, agregar_sih, COLS_SIH, a.processos)
-    juntar(INTERIM / "sih_graves", PROCESSED / "sih_graves.parquet")
+    juntar(pasta("internacoes_obitos", "interim") / "sih_graves", pasta("internacoes_obitos") / "sih_graves.parquet")
 
 
 if __name__ == "__main__":

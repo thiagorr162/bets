@@ -15,7 +15,7 @@ import polars as pl
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from src.config import CHOQUES, PANDEMIA, PROCESSED  # noqa: E402
+from src.config import CHOQUES, PANDEMIA, pasta  # noqa: E402
 
 MIN = 5
 # Aba e trechos do Congresso (votação de 2023, emendas à MP 1.394, projetos). Desligado por enquanto: o site foca
@@ -40,7 +40,7 @@ def sup(v):
 
 
 def registros():
-    r = pl.read_parquet(PROCESSED / "sia_f63_registros.parquet").filter(pl.col("cmp").is_between(pl.lit("201801"), pl.lit(CORTE)))
+    r = pl.read_parquet(pasta("caps") / "sia_f63_registros.parquet").filter(pl.col("cmp").is_between(pl.lit("201801"), pl.lit(CORTE)))
     return r.with_columns(
         pl.when(pl.col("CIDPRI").str.starts_with("F63")).then(pl.col("CIDPRI")).otherwise(pl.col("CIDASSOC")).alias("cid"),
         pl.col("cmp").str.slice(0, 4).cast(pl.Int32).alias("ano"),
@@ -52,7 +52,7 @@ def serie_nacional(r):
             pl.col("id").filter(pl.col("cid") == "F630").n_unique().alias("f630"),
             pl.col("id").filter(pl.col("cid").is_in(["F631", "F632", "F633"])).n_unique().alias("placebo"))
          .sort("cmp"))
-    gt = (pl.read_parquet(PROCESSED / "google_trends_uf.parquet").filter(pl.col("uf") == "BR")
+    gt = (pl.read_parquet(pasta("exposicao") / "google_trends_uf.parquet").filter(pl.col("uf") == "BR")
           .select(pl.col("data").dt.strftime("%Y%m").alias("cmp"), pl.col("indice").cast(pl.Int32).alias("trends")))
     gt = gt.filter(pl.col("cmp") < "202611")  # nov/2026 é parcial
     caps = [{"cmp": d["cmp"], "f630": sup(d["f630"]), "placebo": sup(d["placebo"])} for d in m.to_dicts()]
@@ -68,7 +68,7 @@ def anual(r):
 
 
 def novos(r):
-    h = pl.read_parquet(PROCESSED / "sia_f63_historico.parquet").with_columns(pl.col("cmp").str.to_date("%Y%m").alias("data"))
+    h = pl.read_parquet(pasta("caps") / "sia_f63_historico.parquet").with_columns(pl.col("cmp").str.to_date("%Y%m").alias("data"))
     t0 = (r.filter(pl.col("cid") == "F630").with_columns(pl.col("cmp").str.to_date("%Y%m").alias("data"))
           .group_by("id").agg(pl.col("data").min().alias("t0")))
     ant = h.join(t0, on="id").filter((pl.col("data") < pl.col("t0")) & (pl.col("data") >= pl.col("t0").dt.offset_by("-12mo")))
@@ -83,7 +83,7 @@ def perfil(r):
     faixas = ["0-17", "18-24", "25-34", "35-44", "45-59", "60+"]
     f = (r.filter((pl.col("cid") == "F630") & pl.col("faixa").is_not_null()).unique(["id", "cmp"])
          .group_by("ano", "SEXOPAC", "faixa").len("n"))
-    p = (pl.read_parquet(PROCESSED / "sia_perfil.parquet").filter((pl.col("grupo") == "mental") & pl.col("faixa").is_not_null()
+    p = (pl.read_parquet(pasta("caps") / "sia_perfil.parquet").filter((pl.col("grupo") == "mental") & pl.col("faixa").is_not_null()
                                                                    & pl.col("cmp").is_between(pl.lit("201801"), pl.lit(CORTE)))
          .with_columns(pl.col("cmp").str.slice(0, 4).cast(pl.Int32).alias("ano"))
          .group_by("ano", "SEXOPAC", "faixa").agg(pl.col("pacientes").sum().alias("n")))
@@ -115,12 +115,12 @@ def perfil(r):
 
 def congresso():
     """Votação nominal de 2023 sobre o cassino online, emendas à MP 1.394 e projetos de proibição (dados públicos)."""
-    v = pl.read_parquet(PROCESSED / "congresso_votacao_cassino_2023.parquet").filter(pl.col("voto") != "outro")
+    v = pl.read_parquet(pasta("congresso") / "congresso_votacao_cassino_2023.parquet").filter(pl.col("voto") != "outro")
     votos = [[d["casa"], d["nome"], d["partido"], d["uf"], 1 if d["voto"] == "tirar o cassino" else 0, d["url"]] for d in v.to_dicts()]
-    em = pl.read_parquet(PROCESSED / "mp1394_emendas.parquet").drop("texto").join(
+    em = pl.read_parquet(pasta("congresso") / "mp1394_emendas.parquet").drop("texto").join(
         pl.read_csv(ROOT / "src" / "politica" / "classificacao_mp1394.csv"), on="numero")
     emendas = [[d["numero"], d["parlamentar"], d["partido"], d["uf"], d["cargo"], d["categoria"], d["resumo"], d["url"]] for d in em.sort("numero").to_dicts()]
-    pls = pl.read_parquet(PROCESSED / "congresso_pls_proibicao.parquet")
+    pls = pl.read_parquet(pasta("congresso") / "congresso_pls_proibicao.parquet")
     projetos = []
     for (proj, data, alc, ementa, url), g in pls.group_by(["projeto", "data", "alcance", "ementa", "url"], maintain_order=True):
         projetos.append({"projeto": proj, "data": data, "alcance": alc, "ementa": ementa, "url": url,

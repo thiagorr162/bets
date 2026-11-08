@@ -19,7 +19,7 @@ from functools import partial
 
 import polars as pl
 
-from src.config import ANO_FIM, ANO_INICIO, INTERIM, PROCESSED, UFS
+from src.config import ANO_FIM, ANO_INICIO, UFS, pasta
 from src.saude_mental._datasus import F63, MENTAL, SUBST, rodar_ftp
 
 DIR = "SIASUS/200801_/Dados"
@@ -89,15 +89,15 @@ def main():
     pasta1 = rodar_ftp("sia_f63", DIR, nomes, passada1, COLS_P1, a.processos)
     f63 = pl.concat([pl.read_parquet(f) for f in (pasta1 / "f63").glob("*.parquet")], how="diagonal_relaxed")
     perfil = pl.concat([pl.read_parquet(f) for f in (pasta1 / "perfil").glob("*.parquet")], how="diagonal_relaxed")
-    f63.write_parquet(PROCESSED / "sia_f63_registros.parquet")
-    perfil.group_by("cmp", "grupo", "SEXOPAC", "faixa").agg(pl.col("pacientes").sum()).write_parquet(PROCESSED / "sia_perfil.parquet")
+    f63.write_parquet(pasta("caps") / "sia_f63_registros.parquet")
+    perfil.group_by("cmp", "grupo", "SEXOPAC", "faixa").agg(pl.col("pacientes").sum()).write_parquet(pasta("caps") / "sia_perfil.parquet")
     print(f"✓ {f63['CNS_PAC'].n_unique():,} pacientes distintos com F63")
 
     print("Passada 2: histórico no CAPS dos pacientes com F63")
     cns = frozenset(f63["CNS_PAC"].unique().to_list())
     pasta2 = rodar_ftp("sia_f63_hist", DIR, nomes, partial(passada2, cns=cns), COLS_P2, a.processos)
     hist = pl.concat([pl.read_parquet(f) for f in pasta2.glob("*.parquet")], how="diagonal_relaxed")
-    hist.write_parquet(PROCESSED / "sia_f63_historico.parquet")
+    hist.write_parquet(pasta("caps") / "sia_f63_historico.parquet")
     print(f"✓ histórico: {hist.height:,} linhas")
 
     # LGPD: pseudonimiza de novo, reduz detalhe e apaga os intermediários por paciente

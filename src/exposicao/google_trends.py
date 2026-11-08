@@ -23,12 +23,12 @@ import polars as pl
 from pytrends.exceptions import TooManyRequestsError
 from pytrends.request import TrendReq
 
-from src.config import ANO_INICIO, HOJE, INTERIM, PROCESSED, UFS
+from src.config import ANO_INICIO, HOJE, UFS, pasta
 from src.utils import salvar
 
 TERMO = "bet + apostas + betano + bet365 + tigrinho"
 PERIODO = f"{ANO_INICIO}-01-01 {HOJE.isoformat()}"
-PASTA = INTERIM / "google_trends"
+PASTA = pasta("exposicao", "interim") / "google_trends"
 NOME_UF = {  # nome devolvido pelo interest_by_region -> sigla
     "Acre": "AC", "Alagoas": "AL", "Amapá": "AP", "Amazonas": "AM", "Bahia": "BA", "Ceará": "CE",
     "Distrito Federal": "DF", "Espírito Santo": "ES", "Goiás": "GO", "Maranhão": "MA",
@@ -101,7 +101,7 @@ def main():
         .with_columns((pl.col("indice") / pl.col("indice").mean().over("uf") * pl.col("nivel")).alias("indice_comparavel"))
         .sort("uf", "data")
     )
-    salvar(out, PROCESSED / "google_trends_uf.parquet")
+    salvar(out, pasta("exposicao") / "google_trends_uf.parquet")
 
 
 if __name__ == "__main__":

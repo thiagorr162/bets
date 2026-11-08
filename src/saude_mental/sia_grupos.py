@@ -15,7 +15,7 @@ import argparse
 
 import polars as pl
 
-from src.config import ANO_FIM, ANO_INICIO, PROCESSED, UFS
+from src.config import ANO_FIM, ANO_INICIO, UFS, pasta as pasta_dados
 from src.saude_mental._datasus import rodar_ftp
 from src.saude_mental.sia_f63_pacientes import _faixa, _idade
 from src.utils import juntar
@@ -49,11 +49,11 @@ def main():
     x = a.parse_args()
     nomes = [f"PS{uf}{ano % 100:02d}{mes:02d}" for uf in x.ufs for ano in x.anos for mes in range(1, 13)]
     pasta = rodar_ftp("sia_grupos", DIR, nomes, agregar, COLS, x.processos)
-    df = juntar(pasta, PROCESSED / "sia_grupos_tmp.parquet")
+    df = juntar(pasta, pasta_dados("caps") / "sia_grupos_tmp.parquet")
     (df.group_by("cmp", "grupo", "SEXOPAC", "faixa").agg(pl.col("pacientes").sum())
-       .write_parquet(PROCESSED / "sia_grupos.parquet"))
-    (PROCESSED / "sia_grupos_tmp.parquet").unlink()
-    print("✓ data/processed/sia_grupos.parquet")
+       .write_parquet(pasta_dados("caps") / "sia_grupos.parquet"))
+    (pasta_dados("caps") / "sia_grupos_tmp.parquet").unlink()
+    print("✓ data/caps/processed/sia_grupos.parquet")
 
 
 if __name__ == "__main__":

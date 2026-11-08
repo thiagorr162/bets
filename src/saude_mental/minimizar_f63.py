@@ -9,7 +9,7 @@ O que faz:
   A ligação entre meses continua funcionando, mas o código deixa de bater com qualquer outra base;
 - reduz a geografia de município para UF, a idade para faixa etária e a data de início para mês/ano;
 - descarta as colunas que a análise não usa (estabelecimento, raça/cor, situação de rua, tipo de droga, origem);
-- apaga os arquivos intermediários por paciente em data/interim/ (o perfil agregado já está em data/processed/).
+- apaga os arquivos intermediários por paciente em data/caps/interim/ (o perfil agregado já está em data/caps/processed/).
 
 Consequência: refazer a extração exige baixar tudo de novo do FTP (~40 min). É o preço da minimização.
 """
@@ -21,7 +21,7 @@ import shutil
 
 import polars as pl
 
-from src.config import DATA, INTERIM, PROCESSED
+from src.config import DATA, pasta
 
 CHAVE = DATA / ".chave_pseudonimo"
 
@@ -41,7 +41,7 @@ def pseudonimo(k: bytes) -> pl.Expr:
 
 def main():
     k = chave()
-    reg_p, hist_p = PROCESSED / "sia_f63_registros.parquet", PROCESSED / "sia_f63_historico.parquet"
+    reg_p, hist_p = pasta("caps") / "sia_f63_registros.parquet", pasta("caps") / "sia_f63_historico.parquet"
     reg = pl.read_parquet(reg_p)
     if "CNS_PAC" not in reg.columns:
         print("registros já minimizados")
@@ -62,10 +62,10 @@ def main():
         hist.write_parquet(hist_p)
         print(f"✓ histórico minimizado: {hist.height:,} linhas, colunas {hist.columns}")
 
-    for pasta in (INTERIM / "sia_f63", INTERIM / "sia_f63_hist"):
-        if pasta.exists():
-            shutil.rmtree(pasta)
-            print(f"✓ apagado {pasta.relative_to(DATA.parent)}")
+    for p in (pasta("caps", "interim") / "sia_f63", pasta("caps", "interim") / "sia_f63_hist"):
+        if p.exists():
+            shutil.rmtree(p)
+            print(f"✓ apagado {p.relative_to(DATA.parent)}")
 
 
 if __name__ == "__main__":

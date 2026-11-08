@@ -6,7 +6,7 @@ uv run python -m src.exposicao.municipios
 import polars as pl
 from unidecode import unidecode
 
-from src.config import ANO_FIM, ANO_INICIO, PROCESSED
+from src.config import ANO_FIM, ANO_INICIO, pasta
 from src.utils import get_json, salvar
 
 LOCALIDADES = "https://servicodados.ibge.gov.br/api/v1/localidades/municipios"
@@ -30,7 +30,7 @@ def main():
             for m in get_json(LOCALIDADES)
         ]
     ).with_columns(pl.col("municipio").map_elements(normalizar, return_dtype=pl.String).alias("municipio_norm"))
-    salvar(mun, PROCESSED / "municipios.parquet")
+    salvar(mun, pasta("ibge") / "municipios.parquet")
 
     # SIDRA limita ~100k valores por consulta: baixa em blocos de anos
     rows = []
@@ -45,7 +45,7 @@ def main():
         pl.col("D3N").cast(pl.Int32).alias("ano"),
         pl.col("V").cast(pl.Int64, strict=False).alias("populacao"),
     )
-    salvar(pop, PROCESSED / "populacao_municipio.parquet")
+    salvar(pop, pasta("ibge") / "populacao_municipio.parquet")
 
 
 if __name__ == "__main__":

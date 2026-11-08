@@ -5,12 +5,18 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
-RAW = DATA / "raw"  # arquivos baixados como vieram
-INTERIM = DATA / "interim"  # agregados por arquivo (permite retomar downloads)
-PROCESSED = DATA / "processed"  # tabelas finais usadas no notebook
+# data/<tema>/<etapa>/: raw = arquivos baixados como vieram (nunca apagados); interim = agregados por arquivo
+# (permite retomar downloads); processed = tabelas finais usadas nos notebooks e no site.
+TEMAS = ["caps", "atencao_primaria", "internacoes_obitos", "exposicao", "ibge", "congresso", "economia"]
 
-for _d in (RAW, INTERIM, PROCESSED):
-    _d.mkdir(parents=True, exist_ok=True)
+
+def pasta(tema: str, etapa: str = "processed") -> Path:
+    """Pasta de dados de um tema, por exemplo pasta("caps", "raw"). Cria se não existir."""
+    assert tema in TEMAS and etapa in ("raw", "interim", "processed"), (tema, etapa)
+    p = DATA / tema / etapa
+    p.mkdir(parents=True, exist_ok=True)
+    return p
+
 
 ANO_INICIO = 2018
 HOJE = date.today()

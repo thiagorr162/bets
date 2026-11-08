@@ -8,7 +8,7 @@ import argparse
 
 import polars as pl
 
-from src.config import ANO_FIM, ANO_INICIO, PROCESSED, UFS
+from src.config import ANO_FIM, ANO_INICIO, UFS, pasta as pasta_dados
 from src.saude_mental._datasus import F63, MENTAL, SUBST, rodar_ftp
 from src.utils import juntar
 
@@ -43,7 +43,7 @@ def main():
     nomes = [f"PS{uf}{ano % 100:02d}{mes:02d}" for uf in a.ufs for ano in a.anos for mes in range(1, 13)]
     colunas = ["CIDPRI", "PA_QTDAPR", "PA_CMP", "DT_ATEND", "MUNPAC", "CNS_PAC"]
     pasta = rodar_ftp("sia", "SIASUS/200801_/Dados", nomes, agregar, colunas, a.processos)
-    juntar(pasta, PROCESSED / "sia_caps_municipio.parquet")
+    juntar(pasta, pasta_dados("caps") / "sia_caps_municipio.parquet")
 
 
 if __name__ == "__main__":

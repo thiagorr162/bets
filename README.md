@@ -17,7 +17,7 @@ uv run jupyter lab notebooks/
 
 ## Dados
 
-| Script | Fonte | Saída (`data/processed/`) |
+| Script | Fonte | Saída (`data/<tema>/processed/`) |
 |---|---|---|
 | `src/exposicao/municipios` | IBGE: municípios e população estimada (SIDRA 6579) | `municipios`, `populacao_municipio` |
 | `src/exposicao/google_trends` | Google Trends: busca por apostas, UF × mês | `google_trends_uf` |
@@ -25,10 +25,26 @@ uv run jupyter lab notebooks/
 | `src/saude_mental/sia_caps` | DATASUS SIA-PS (CAPS), agregado por município × mês | `sia_caps_municipio` |
 | `src/saude_mental/sia_f63_pacientes` | DATASUS SIA-PS, pacientes com F63 (pseudonimizado por `minimizar_f63`) | `sia_f63_registros`, `sia_f63_historico`, `sia_perfil` |
 | `src/saude_mental/graves_f63` | DATASUS SIH (internações) e SIM (óbitos), agregados por UF × mês × sexo × faixa etária | `sih_graves`, `sim_graves` |
-| — | IBGE, projeção da população por sexo e idade (SIDRA 7358), em `data/raw/ibge/` | usada no `suicidio.ipynb` |
+| — | IBGE, projeção da população por sexo e idade (SIDRA 7358), em `data/ibge/raw/` | usada no `suicidio.ipynb` |
 
 Os microdados do DATASUS são baixados direto do FTP (`ftp.datasus.gov.br`), em paralelo. Os `.dbc` originais ficam
-guardados em `data/raw/datasus/` e são reaproveitados: um recorte novo não precisa baixar tudo de novo.
+guardados em `data/caps/raw/datasus/` (SIA-PS) e `data/internacoes_obitos/raw/datasus/` (SIH, SIM) e são reaproveitados:
+um recorte novo não precisa baixar tudo de novo.
+
+Os dados ficam organizados por tema, cada um com `raw/` (como baixado, nunca apagado), `interim/` (agregados por arquivo)
+e `processed/` (tabelas finais). Nos scripts, use `pasta("caps", "raw")` de `src/config.py`.
+
+```
+data/
+  caps/                SIA-PS: atendimentos nos CAPS
+  atencao_primaria/    SISAB: atendimentos na atenção primária
+  internacoes_obitos/  SIH e SIM
+  exposicao/           Google Trends, DataSenado
+  ibge/                municípios, população, malha das UFs
+  congresso/           votações, emendas e projetos
+  economia/            dados do branch master (SCR, Pix, Bolsa Família, SGS, PMC)
+  .chave_pseudonimo    chave local do pseudônimo dos pacientes (não compartilhar)
+```
 
 ## Notebooks
 

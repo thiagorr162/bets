@@ -12,7 +12,7 @@ import re
 import polars as pl
 from pypdf import PdfReader
 
-from src.config import PROCESSED, RAW
+from src.config import pasta
 from src.exposicao.google_trends import NOME_UF
 from src.utils import baixar, salvar
 
@@ -38,14 +38,14 @@ def extrair(paginas: list[str], titulo: str) -> pl.DataFrame:
 
 
 def main():
-    pdf = baixar(URL, RAW / "datasenado" / "panorama_politico_2024_apostas.pdf")
+    pdf = baixar(URL, pasta("exposicao", "raw") / "panorama_politico_2024_apostas.pdf")
     paginas = [p.extract_text() or "" for p in PdfReader(pdf).pages]
     apostou = extrair(paginas, 'Tabela 15: "Distribuição da população que, nos últimos 30 dias, gastou em apostas')
     divida = extrair(paginas, 'Tabela 8: "Distribuição da população que possui dívidas em atraso há mais de 90')
     out = apostou.rename({"pct": "pct_apostou", "margem": "me_apostou"}).join(
         divida.rename({"pct": "pct_divida90", "margem": "me_divida90"}), on="uf"
     ).sort("uf")
-    salvar(out, PROCESSED / "datasenado_uf_2024.parquet")
+    salvar(out, pasta("exposicao") / "datasenado_uf_2024.parquet")
 
 
 if __name__ == "__main__":
