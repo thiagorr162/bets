@@ -174,6 +174,22 @@ def atencao_primaria():
             "faixas": faixas, "mulheres": mulheres, "fim": m["cmp"].max()}
 
 
+def conduta():
+    """Conduta ao fim do atendimento na atenção primária, jan/2025–último mês: % dos atendimentos de cada diagnóstico
+    com cada conduta (um atendimento pode ter mais de uma, então não soma 100)."""
+    c = pl.read_parquet(pasta("atencao_primaria") / "sisab_conduta.parquet").filter(pl.col("cmp") >= "202501")
+    a = (pl.read_parquet(pasta("atencao_primaria") / "sisab_aps.parquet")
+         .filter((pl.col("recorte") == "total") & (pl.col("cmp") >= "202501")).group_by("grupo").agg(pl.col("atendimentos").sum()))
+    COND = {"Alta do episódio": "alta", "Retorno para consulta agendada": "retorno", "Retorno p/ cuidado continuado/": "continuado",
+            "Encaminhamento p/ serviço espe": "especializado", "Encaminhamento p/ CAPS": "caps"}
+    out = {}
+    for g in ["jogo_cid", "ansiedade_cid", "depressao_cid", "alcool_cid"]:
+        n = a.filter(pl.col("grupo") == g)["atendimentos"].item()
+        x = c.filter(pl.col("grupo") == g).group_by("conduta").agg(pl.col("n").sum())
+        out[g] = {"n": n, **{k: round(x.filter(pl.col("conduta") == nome)["n"].sum() / n * 100, 1) for nome, k in COND.items()}}
+    return {"grupos": out, "fim": c["cmp"].max()}
+
+
 def trajetorias():
     """Diagnóstico novo nos 12 meses após o 1º diagnóstico (jan/2019–jun/2025), padronizado por sexo e idade dos
     pacientes de jogo patológico. Mesma lógica de notebooks/f63_trajetoria.ipynb."""
@@ -230,7 +246,7 @@ def main():
     dados = {
         "corte": CORTE, "choques": CHOQUES, "noticias": NOTICIAS, "pandemia": PANDEMIA, "cpi": CPI,
         "serie": serie_nacional(r), "anual": anual(r), "novos": novos(r),
-        "perfil": perf, "mulheres": mulheres, "caps_perfil": perfil_comum(r), "aps": atencao_primaria(), "trajetorias": trajetorias(), "congresso": congresso() if MOSTRAR_CONGRESSO else None,
+        "perfil": perf, "mulheres": mulheres, "caps_perfil": perfil_comum(r), "aps": atencao_primaria(), "conduta": conduta(), "trajetorias": trajetorias(), "congresso": congresso() if MOSTRAR_CONGRESSO else None,
     }
     js = json.dumps(dados, ensure_ascii=False, separators=(",", ":"))
     corpo = (ROOT / "site" / "modelo.html").read_text().replace("/*__DADOS__*/null", js)

@@ -130,7 +130,7 @@ footer { padding-top: 2rem; border-top: 1px solid var(--rule); font-size: var(--
 .mapa td:first-child, .mapa th:first-child { text-align: left; white-space: normal }
 .mapa td.c { font-variant-numeric: tabular-nums }
 .mapa td.diag { color: var(--muted) }
-.mapa tr.jogo td { font-weight: 700; border-bottom: 2px solid var(--caps) }
+.mapa tr.jogo td { font-weight: 700; border-bottom: 2px solid var(--cor, var(--caps)) }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg) }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important } }
 </style>
@@ -218,6 +218,19 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     </div>
   </div>
   <p class="nota">Em cada gráfico, as barras de mulheres e homens somam 100% e mostram como os atendidos por jogo patológico se dividem por sexo e idade. Os traços mostram a mesma divisão na saúde mental em geral. Saúde mental em geral: na atenção primária, os atendimentos com CID de depressão, ansiedade, estresse, álcool ou esquizofrenia; no CAPS, todos os pacientes com diagnóstico do capítulo F da CID-10, contados em pacientes-mês. Na atenção primária, o diagnóstico pode ser registrado pela CID-10 ou pela CIAP-2, a classificação própria da atenção básica. A CIAP-2 não tem código para jogo, então só aparecem aqui os atendimentos em que o profissional usou a CID.</p>
+</section>
+
+<section id="conduta">
+  <div class="prose">
+    <h2>Na atenção primária, o que acontece depois do atendimento</h2>
+    <p>Ao fim de cada atendimento, o profissional registra o que foi feito: alta, retorno marcado ou encaminhamento para outro serviço. Em 2025 e 2026, <span id="cd-esp"></span> dos atendimentos por jogo patológico terminaram com encaminhamento para um serviço especializado, mais que o dobro do que acontece com ansiedade, depressão ou álcool. O jogo patológico também recebe menos alta (<span id="cd-alta"></span>, contra cerca de metade nos outros diagnósticos) e mais retornos marcados.</p>
+    <p>O encaminhamento direto para o CAPS é raro (<span id="cd-caps"></span>), mas fica no mesmo nível do álcool e bem acima da ansiedade e da depressão. Juntando tudo, a atenção primária acompanha e encaminha o jogo patológico com mais frequência que os outros diagnósticos de saúde mental, e dá alta menos vezes.</p>
+  </div>
+  <div class="fig tbl-wrap">
+    <div class="fig-title">Conduta registrada nos atendimentos da atenção primária, jan/2025 a <span class="aps-fim"></span> (% dos atendimentos)</div>
+    <table class="tbl mapa" id="tbl-conduta" style="--cor:var(--s1)"><thead><tr><th>Diagnóstico</th><th>Atendimentos</th><th>Alta</th><th>Retorno<br>agendado</th><th>Retorno para<br>cuidado contínuo</th><th>Serviço<br>especializado</th><th>CAPS</th></tr></thead><tbody></tbody></table>
+    <p class="small" style="margin:.6rem 0 0">Um atendimento pode ter mais de uma conduta, então as linhas não somam 100%. Em cada coluna, o tom mais escuro marca o maior valor e o mais claro, o menor. O registro não diz qual é o serviço especializado (psiquiatria, psicologia ou outro).</p>
+  </div>
 </section>
 
 <section id="novos">
@@ -331,6 +344,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       <li><b>De onde vêm os dados.</b> Do relatório público de produção do SISAB, o sistema que reúne os registros do e-SUS APS das unidades básicas de saúde. Consultamos os atendimentos individuais por problema ou condição avaliada, mês a mês, de jan/2018 a set/2026, no total do Brasil, por sexo e por faixa de idade.</li>
       <li><b>O que contamos.</b> Atendimentos individuais com a CID-10 <span class="cid">F63.0</span>. O relatório não identifica pessoas, então não dá para contar pacientes nem ver se a mesma pessoa voltou.</li>
       <li><b>A referência.</b> A soma dos atendimentos com CID de depressão (<span class="cid">F32</span>, <span class="cid">F33</span>), ansiedade (<span class="cid">F41</span>), estresse (<span class="cid">F43</span>), álcool (<span class="cid">F10</span>) e esquizofrenia (<span class="cid">F20</span>). Dividir por ela tira o efeito de o SUS estar registrando mais diagnósticos em geral.</li>
+      <li><b>Conduta.</b> O mesmo relatório, com a coluna "Conduta" no lugar do diagnóstico, consultado separadamente para cada diagnóstico (jogo patológico, ansiedade, depressão, álcool). Cada conduta é dividida pelo número de atendimentos do mesmo diagnóstico no período. Um atendimento pode ter mais de uma conduta.</li>
       <li><b>Limites.</b> Muitos profissionais da atenção primária registram pela CIAP-2, que não tem código para jogo. Os meses mais recentes ainda podem receber registros atrasados.</li>
     </ul>
   </div>
@@ -791,6 +805,23 @@ function idadeChart(el, J, R, cor) {
       tip.show(`<div><b>${d.ano}${d.ano === 2026 ? " (jan–jun)" : ""}</b></div><div><span class="k">Novas no CAPS:</span> <b>${d.novos == null ? "menos de 5" : fmt(d.novos)}</b></div><div><span class="k">Já estavam:</span> <b>${d.ja == null ? "menos de 5" : fmt(d.ja)}</b></div>`, ev.clientX - fr.left, ev.clientY - fr.top); });
     hit.addEventListener("pointerleave", () => tip.hide());
   });
+})();
+
+/* ---------- conduta na atenção primária ---------- */
+(function conduta() {
+  const G = D.conduta.grupos, ROT = { jogo_cid: "Jogo patológico", ansiedade_cid: "Ansiedade", depressao_cid: "Depressão", alcool_cid: "Álcool" };
+  const COLS = ["alta", "retorno", "continuado", "especializado", "caps"];
+  const ext = Object.fromEntries(COLS.map(c => { const v = Object.values(G).map(r => r[c]); return [c, [Math.min(...v), Math.max(...v)]]; }));
+  const tb = document.querySelector("#tbl-conduta tbody");
+  for (const g of Object.keys(ROT)) {
+    const r = G[g];
+    tb.appendChild(h("tr", g === "jogo_cid" ? { class: "jogo" } : {}, `<td>${ROT[g]}</td><td class="c">${fmt(r.n)}</td>` +
+      COLS.map(c => `<td class="c" style="background:color-mix(in srgb, var(--s1) ${Math.round(4 + (r[c] - ext[c][0]) / (ext[c][1] - ext[c][0] || 1) * 40)}%, transparent)">${fmt(r[c], 1)}</td>`).join("")));
+  }
+  const J = G.jogo_cid;
+  document.getElementById("cd-esp").textContent = fmt(J.especializado) + "%";
+  document.getElementById("cd-alta").textContent = fmt(J.alta) + "%";
+  document.getElementById("cd-caps").textContent = fmt(J.caps, 1) + "%";
 })();
 
 /* ---------- trajetórias ---------- */
