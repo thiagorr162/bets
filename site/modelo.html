@@ -1,4 +1,4 @@
-<title>Jogo patológico no SUS</title>
+<title>Bets no Brasil</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,6 +21,7 @@
   --pro: #1baf7a;          /* Congresso: proibir o cassino / reforça a proibição */
   --contra: #eda100;       /* Congresso: liberar o cassino / afrouxa a proibição */
   --band-pand: rgba(120,124,128,.13);
+  --band-cpi: rgba(98,80,214,.13);   /* CPI das Bets */
   --mark: #c8352f;        /* marcos regulatórios */
   --f-display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
   --f-body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -30,11 +31,11 @@
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #0f1112; --surface: #17191a; --ink: #eef0f0; --ink-2: #c2c6c8; --muted: #8a8e91; --rule: #2a2d2f; --axis: #3a3e40;
   --accent: #7fb2f0; --s1: #3987e5; --s1-soft: #1c5cab; --s2: #d95926; --ref: #7c8083; --pro: #199e70; --contra: #c98500;
-  --band-pand: rgba(160,165,170,.12); --mark: #e66767; color-scheme: dark } }
+  --band-pand: rgba(160,165,170,.12); --band-cpi: rgba(144,133,233,.18); --mark: #e66767; color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #0f1112; --surface: #17191a; --ink: #eef0f0; --ink-2: #c2c6c8; --muted: #8a8e91; --rule: #2a2d2f; --axis: #3a3e40;
   --accent: #7fb2f0; --s1: #3987e5; --s1-soft: #1c5cab; --s2: #d95926; --ref: #7c8083; --pro: #199e70; --contra: #c98500;
-  --band-pand: rgba(160,165,170,.12); --mark: #e66767; color-scheme: dark }
+  --band-pand: rgba(160,165,170,.12); --band-cpi: rgba(144,133,233,.18); --mark: #e66767; color-scheme: dark }
 
 * { box-sizing: border-box }
 body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: var(--s0); line-height: 1.55;
@@ -105,16 +106,28 @@ footer { padding-top: 2rem; border-top: 1px solid var(--rule); font-size: var(--
 .tbl th, .tbl td { text-align: left; padding: .4rem .5rem; border-bottom: 1px solid var(--rule); vertical-align: top }
 .tbl th { color: var(--ink-2); font-size: var(--s-1) }
 .tbl-wrap { overflow-x: auto }
+.abas { display: flex; gap: .3rem; border-bottom: 1px solid var(--rule); margin-bottom: 1.5rem; position: sticky; top: env(safe-area-inset-top, 0px); background: var(--bg); z-index: 8; padding-top: .4rem; flex-wrap: wrap }
+.abas button { font: inherit; font-family: var(--f-display); font-weight: 600; font-size: var(--s1t); border: 0; background: transparent; color: var(--ink-2); padding: .6rem .9rem; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -1px }
+.abas button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--s1) }
+.abas button:hover { color: var(--ink) }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg) }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important } }
 </style>
 
 <div class="wrap">
 <header class="top">
-  <div class="eyebrow">Vigilância em saúde mental · CAPS / SUS · 2018–2026</div>
-  <h1>Jogo patológico no SUS</h1>
-  <p class="lede">Quantas pessoas chegam aos Centros de Atenção Psicossocial com diagnóstico de <span class="cid">F63.0</span> (jogo patológico), como isso mudou com a chegada das bets e quem são essas pessoas.</p>
-  <div class="carimbo small"><span id="carimbo-dados"></span><span>Fonte principal: DATASUS, SIA-PS (RAAS)</span><span>Só dados agregados</span></div>
+  <div class="eyebrow">Apostas online · saúde mental · Congresso · 2018–2026</div>
+  <h1>Bets no Brasil</h1>
+  <p class="lede">O que mudou desde que as apostas online foram liberadas, em 2018: quantas pessoas passaram a procurar tratamento por jogo patológico no SUS, e como o Congresso votou e o que propõe para a proibição de 2026.</p>
+  <div class="carimbo small"><span><b>Saúde:</b> DATASUS, atendimentos nos CAPS até <span id="carimbo-dados"></span></span><span><b>Congresso:</b> dados abertos da Câmara e do Senado</span><span>Só dados agregados e registros públicos</span></div>
 </header>
+
+<nav class="abas" role="tablist" aria-label="Seções do site">
+  <button type="button" role="tab" id="tab-saude" data-aba="saude" aria-controls="aba-saude" aria-selected="true">Saúde mental</button>
+  <button type="button" role="tab" id="tab-votacao" data-aba="votacao" aria-controls="aba-votacao" aria-selected="false">Votação no Congresso</button>
+</nav>
+
+<div id="aba-saude" role="tabpanel" aria-labelledby="tab-saude">
 
 <div class="tiles" id="tiles"></div>
 
@@ -122,10 +135,11 @@ footer { padding-top: 2rem; border-top: 1px solid var(--rule); font-size: var(--
   <div class="prose">
     <h2>Busca por apostas e procura por tratamento</h2>
     <p>As buscas por apostas no Google explodiram de 2021 a 2023. No CAPS, o jogo patológico quase não se mexeu nesse período. A alta começa em meados de 2024, cerca de um ano depois do pico das buscas, e acelera em 2025–2026, quando as buscas já estão caindo. Os outros transtornos de impulso (piromania, cleptomania, tricotilomania), que não têm relação com jogo, ficaram estáveis.</p>
+    <p>A aceleração coincide com a <b>CPI das Bets</b> do Senado (nov/2024 a jun/2025), que deu grande visibilidade ao tema, com depoimentos de donos de casas de apostas e de influenciadoras. Mais atenção pública ao problema pode ter levado mais gente a procurar ajuda.</p>
   </div>
   <div class="fig" id="fig-serie">
     <div class="fig-title">Pessoas em acompanhamento nos CAPS, por mês</div>
-    <div class="legend"><span><i style="background:var(--s1)"></i>Jogo patológico <span class="cid">F63.0</span></span><span><i style="background:var(--ref)"></i>Outros transtornos de impulso <span class="cid">F63.1–F63.3</span></span><span><i class="box" style="background:var(--band-pand)"></i>Pandemia</span></div>
+    <div class="legend"><span><i style="background:var(--s1)"></i>Jogo patológico <span class="cid">F63.0</span></span><span><i style="background:var(--ref)"></i>Outros transtornos de impulso <span class="cid">F63.1–F63.3</span></span><span><i class="box" style="background:var(--band-pand)"></i>Pandemia</span><span><i class="box" style="background:var(--band-cpi)"></i><a href="" id="lk-cpi" target="_blank" rel="noopener">CPI das Bets</a> (Senado, nov/2024–jun/2025)</span></div>
     <div id="ch-caps"></div>
     <div class="fig-title" style="margin-top:.8rem">Busca por apostas no Google, Brasil (0–100)</div>
     <div class="legend"><span><i style="background:var(--s2)"></i>bet, apostas, betano, bet365, tigrinho</span></div>
@@ -170,6 +184,9 @@ footer { padding-top: 2rem; border-top: 1px solid var(--rule); font-size: var(--
   </div>
 </section>
 
+</div>
+
+<div id="aba-votacao" role="tabpanel" aria-labelledby="tab-votacao" hidden>
 <section id="congresso">
   <div class="prose">
     <h2>O que o Congresso decidiu e propõe</h2>
@@ -201,6 +218,14 @@ footer { padding-top: 2rem; border-top: 1px solid var(--rule); font-size: var(--
   </div>
 
   <div class="prose">
+    <h3>Por que o PT votou para permitir e o PL para proibir?</h3>
+    <p><b>Em 2023, o PT votou com o governo.</b> O projeto da lei das bets era do governo Lula. Naquele ano, o Ministério da Fazenda buscava aumentar a arrecadação, e permitir os cassinos online aumentava o imposto pago pelas empresas. O governo orientou a votar por permitir, e todos os 57 deputados do PT seguiram.</p>
+    <p><b>O PL votou como oposição.</b> Boa parte do partido é ligada à bancada evangélica, contrária a jogos de azar, e a proposta de proibir os cassinos online foi de um senador do PL. Mesmo assim, 21 deputados do PL votaram para permitir.</p>
+    <p><b>Em 2026, os lados se inverteram.</b> Foi o governo do PT que proibiu todas as bets, com a MP 1.394, e o PL 1.808/2026, de proibição total, é assinado por dezenas de deputados do PT. Já entre as emendas à MP, quem mais propõe afrouxar a proibição são deputados do PL e do PP.</p>
+    <p class="small">Fonte: <a href="https://www.cnnbrasil.com.br/politica/governo-lula-foi-contra-proibir-do-jogo-do-tigrinho-em-2023/" target="_blank" rel="noopener">CNN Brasil, "Base de Lula no Congresso votou contra proibir 'jogo do tigrinho' em 2023"</a>.</p>
+  </div>
+
+  <div class="prose">
     <h3>2026: as emendas à proibição</h3>
     <p>A MP 1.394 ainda não foi votada. Até agora, 25 parlamentares apresentaram 99 emendas a ela. Cerca de metade afrouxa a proibição: algumas derrubam a MP, várias trocam a proibição total por uma proibição só do cassino online e mantêm as apostas esportivas, outras devolvem dinheiro às empresas ou criam prazos de transição. Cerca de um terço reforça a proibição. As demais tratam de saúde ou de ajustes técnicos.</p>
   </div>
@@ -226,6 +251,8 @@ footer { padding-top: 2rem; border-top: 1px solid var(--rule); font-size: var(--
   <div id="ficha-parl"></div>
   <p class="nota">Votar para permitir os cassinos online, ou propor afrouxar a proibição, não equivale a defender o vício em apostas: os argumentos incluem regular um mercado que já existia na ilegalidade, arrecadar impostos e proteger o apostador. O site registra posições, sem julgá-las.</p>
 </section>
+
+</div>
 
 <section id="metodo">
   <h2>Como foi feito e limites</h2>
@@ -260,7 +287,7 @@ const norm = t => t.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 const anual = Object.fromEntries(D.anual.map(d => [d.ano, d]));
 const nov = Object.fromEntries(D.novos.map(d => [d.ano, d]));
 const pctNovo = a => nov[a] && nov[a].novos != null && nov[a].ja != null ? nov[a].novos / (nov[a].novos + nov[a].ja) * 100 : null;
-document.getElementById("carimbo-dados").textContent = `CAPS até ${mesLabel(D.corte)}`;
+document.getElementById("carimbo-dados").textContent = mesLabel(D.corte);
 document.getElementById("pct-mulheres").textContent = fmt(D.mulheres.f630_2025) + "%";
 document.getElementById("pct-mulheres-caps").textContent = fmt(D.mulheres.mental_2025) + "%";
 const tiles = [
@@ -298,6 +325,10 @@ function serieChart(el, series, { altura, yMax, passoY }) {
   // faixa da pandemia
   const [p0, p1] = D.pandemia.map(idxDate);
   s("rect", { x: x(p0), y: m.t, width: x(p1) - x(p0), height: H - m.t - m.b, fill: "var(--band-pand)" }, svg);
+  // faixa da CPI das Bets (Senado)
+  const [c0, c1] = [idxDate(D.cpi.inicio), idxDate(D.cpi.fim)];
+  s("rect", { x: x(c0), y: m.t, width: x(c1) - x(c0), height: H - m.t - m.b, fill: "var(--band-cpi)" }, svg);
+  const tc = s("text", { x: x(c0) + 3, y: H - m.b - 5, style: "font-size:10px;fill:var(--ink-2)" }, svg); tc.textContent = "CPI";
   // grade e eixo y
   const g = s("g", { class: "grid" }, svg);
   for (let v = 0; v <= yMax; v += passoY) {
@@ -540,6 +571,26 @@ const linhas = [cA, cB].map(ch => s("line", { y1: ch.m.t, y2: ch.H - ch.m.b, str
       tip.show(`<div><b>${d.ano}${d.ano === 2026 ? " (jan–jun)" : ""}</b></div><div><span class="k">Novas no CAPS:</span> <b>${d.novos == null ? "menos de 5" : fmt(d.novos)}</b></div><div><span class="k">Já estavam:</span> <b>${d.ja == null ? "menos de 5" : fmt(d.ja)}</b></div>`, ev.clientX - fr.left, ev.clientY - fr.top); });
     hit.addEventListener("pointerleave", () => tip.hide());
   });
+})();
+
+document.getElementById("lk-cpi").href = D.cpi.url;
+
+/* ---------- abas ---------- */
+(function abas() {
+  const nomes = ["saude", "votacao"];
+  function abrir(nome, rolar) {
+    if (!nomes.includes(nome)) nome = "saude";
+    for (const n of nomes) {
+      document.getElementById("aba-" + n).hidden = n !== nome;
+      document.getElementById("tab-" + n).setAttribute("aria-selected", n === nome ? "true" : "false");
+    }
+    if (rolar) document.querySelector(".abas").scrollIntoView({ block: "start" });
+  }
+  document.querySelectorAll(".abas button").forEach(b => b.addEventListener("click", () => {
+    if (location.hash !== "#" + b.dataset.aba) location.hash = b.dataset.aba; else abrir(b.dataset.aba, true);
+  }));
+  window.addEventListener("hashchange", () => abrir(location.hash.slice(1), true));
+  abrir(location.hash.slice(1), false);
 })();
 
 document.getElementById("rodape").textContent = `Dados do CAPS até ${mesLabel(D.corte)}; buscas até out/2026.`;

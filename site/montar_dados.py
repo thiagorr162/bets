@@ -18,6 +18,9 @@ sys.path.insert(0, str(ROOT))
 from src.config import CHOQUES, PANDEMIA, PROCESSED  # noqa: E402
 
 MIN = 5
+# CPI das Bets no Senado: instalada em 12/11/2024, encerrada com o relatório rejeitado em 12/06/2025.
+CPI = {"inicio": "2024-11-12", "fim": "2025-06-12",
+       "url": "https://www12.senado.leg.br/radio/1/noticia/2024/11/12/cpi-das-bets-e-instalada-e-vai-investigar-influenciadores-donos-das-apostas-e-crime-de-lavagem-de-dinheiro"}
 # Uma notícia por marco regulatório (mesma ordem de src.config.CHOQUES). Trocar aqui para mudar o link.
 NOTICIAS = {
     "2018-12-12": ("Agência Brasil", "https://agenciabrasil.ebc.com.br/politica/noticia/2026-10/origem-das-bets-passa-por-lobby-estrangeiro-e-jabutis-no-congresso"),
@@ -127,7 +130,7 @@ def main():
     r = registros()
     perf, mulheres = perfil(r)
     dados = {
-        "corte": CORTE, "choques": CHOQUES, "noticias": NOTICIAS, "pandemia": PANDEMIA,
+        "corte": CORTE, "choques": CHOQUES, "noticias": NOTICIAS, "pandemia": PANDEMIA, "cpi": CPI,
         "serie": serie_nacional(r), "anual": anual(r), "novos": novos(r),
         "perfil": perf, "mulheres": mulheres, "congresso": congresso(),
     }
