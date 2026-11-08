@@ -14,15 +14,17 @@
   --rule: #dfe2e3;
   --axis: #c3c6c7;
   --accent: #1d5fae;      /* tinta de destaque (texto/links), mais escura que a série */
-  --s1: #2a78d6;          /* série: F63.0 jogo patológico */
+  --s1: #2a78d6;          /* atenção primária (azul) */
+  --caps: #d03b3b;        /* CAPS (vermelho) */
+  --caps-soft: #f1aea8;   /* mesma família: parte "já estava no CAPS" */
   --s1-soft: #9ec5f4;     /* mesma família: parte "já estava no CAPS" */
-  --s2: #eb6834;          /* série: busca por apostas (gráfico próprio) */
+  --s2: #c98500;          /* busca por apostas (âmbar) */
   --ref: #9a9c9e;         /* referência: placebo / saúde mental */
   --pro: #1baf7a;          /* Congresso: proibir o cassino / reforça a proibição */
   --contra: #eda100;       /* Congresso: liberar o cassino / afrouxa a proibição */
   --band-pand: rgba(120,124,128,.13);
   --band-cpi: rgba(98,80,214,.13);   /* CPI das Bets */
-  --mark: #c8352f;        /* marcos regulatórios */
+  --mark: #4c4f52;        /* marcos regulatórios (neutro: o vermelho é do CAPS) */
   --f-display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
   --f-body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
   --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
@@ -30,12 +32,12 @@
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #0f1112; --surface: #17191a; --ink: #eef0f0; --ink-2: #c2c6c8; --muted: #8a8e91; --rule: #2a2d2f; --axis: #3a3e40;
-  --accent: #7fb2f0; --s1: #3987e5; --s1-soft: #1c5cab; --s2: #d95926; --ref: #7c8083; --pro: #199e70; --contra: #c98500;
-  --band-pand: rgba(160,165,170,.12); --band-cpi: rgba(144,133,233,.18); --mark: #e66767; color-scheme: dark } }
+  --accent: #7fb2f0; --s1: #3987e5; --s1-soft: #1c5cab; --caps: #e8615a; --caps-soft: #8a2e2a; --s2: #d9a21f; --ref: #7c8083; --pro: #199e70; --contra: #c98500;
+  --band-pand: rgba(160,165,170,.12); --band-cpi: rgba(144,133,233,.18); --mark: #c2c6c8; color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #0f1112; --surface: #17191a; --ink: #eef0f0; --ink-2: #c2c6c8; --muted: #8a8e91; --rule: #2a2d2f; --axis: #3a3e40;
-  --accent: #7fb2f0; --s1: #3987e5; --s1-soft: #1c5cab; --s2: #d95926; --ref: #7c8083; --pro: #199e70; --contra: #c98500;
-  --band-pand: rgba(160,165,170,.12); --band-cpi: rgba(144,133,233,.18); --mark: #e66767; color-scheme: dark }
+  --accent: #7fb2f0; --s1: #3987e5; --s1-soft: #1c5cab; --caps: #e8615a; --caps-soft: #8a2e2a; --s2: #d9a21f; --ref: #7c8083; --pro: #199e70; --contra: #c98500;
+  --band-pand: rgba(160,165,170,.12); --band-cpi: rgba(144,133,233,.18); --mark: #c2c6c8; color-scheme: dark }
 
 * { box-sizing: border-box }
 body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: var(--s0); line-height: 1.55;
@@ -117,7 +119,7 @@ footer { padding-top: 2rem; border-top: 1px solid var(--rule); font-size: var(--
 .mapa td:first-child, .mapa th:first-child { text-align: left; white-space: normal }
 .mapa td.c { font-variant-numeric: tabular-nums }
 .mapa td.diag { color: var(--muted) }
-.mapa tr.jogo td { font-weight: 700; border-bottom: 2px solid var(--s1) }
+.mapa tr.jogo td { font-weight: 700; border-bottom: 2px solid var(--caps) }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg) }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important } }
 </style>
@@ -131,39 +133,43 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 </header>
 
 <nav class="abas" role="tablist" aria-label="Seções do site">
-  <button type="button" role="tab" id="tab-aps" data-aba="aps" aria-controls="aba-aps" aria-selected="true">Atenção primária</button>
-  <button type="button" role="tab" id="tab-caps" data-aba="caps" aria-controls="aba-caps" aria-selected="false">CAPS</button>
+  <button type="button" role="tab" id="tab-saude" data-aba="saude" aria-controls="aba-saude" aria-selected="true">Saúde mental</button>
   <button type="button" role="tab" data-congresso id="tab-votacao" data-aba="votacao" aria-controls="aba-votacao" aria-selected="false">Votação no Congresso</button>
   <button type="button" role="tab" id="tab-metodo" data-aba="metodo" aria-controls="aba-metodo" aria-selected="false">Como foi feito</button>
 </nav>
 
-<div id="aba-aps" role="tabpanel" aria-labelledby="tab-aps">
+<div id="aba-saude" role="tabpanel" aria-labelledby="tab-saude">
 
-<div class="tiles" id="tiles-aps"></div>
+<div class="tiles" id="tiles"></div>
 
-<section id="serie-aps">
+<section id="serie">
   <div class="prose">
-    <h2>Busca por apostas e procura por atendimento</h2>
-    <p>A atenção primária é a porta de entrada do SUS: as unidades básicas de saúde e as equipes de saúde da família. Ali, os atendimentos com o diagnóstico de jogo patológico ficaram em torno de 10 a 20 por mês até 2022. Começaram a subir em 2023, ainda no pico das buscas por apostas e um ano antes do CAPS, e chegaram a <b id="aps-ultimo"></b> por mês em 2026.</p>
-    <p>Os outros transtornos de impulso (piromania, cleptomania, tricotilomania), que não têm relação com jogo, também cresceram, mas devagar: cerca de 2,5 vezes de 2022 para 2026, no ritmo em que a atenção primária passou a registrar mais diagnósticos em geral. O jogo patológico cresceu mais de 30 vezes.</p>
+    <h2>Busca por apostas e procura por tratamento</h2>
+    <p>O SUS atende o jogo patológico em dois lugares. A atenção primária (unidades básicas de saúde e equipes de saúde da família) é a porta de entrada. Os Centros de Atenção Psicossocial (CAPS) são os serviços especializados em saúde mental, para onde vão os casos mais graves.</p>
+    <p>As buscas por apostas no Google explodiram de 2021 a 2023. Na atenção primária, os atendimentos por jogo patológico começam a subir em 2023, ainda no pico das buscas. No CAPS, a alta vem cerca de um ano depois, em meados de 2024, e acelera em 2025–2026, quando as buscas já estão caindo.</p>
+    <p>Os outros transtornos de impulso (piromania, cleptomania, tricotilomania) não têm relação com jogo e servem de controle. No CAPS, ficaram estáveis. Na atenção primária, cresceram cerca de 2,5 vezes de 2022 para 2026, no ritmo em que ela passou a registrar mais diagnósticos em geral, enquanto o jogo patológico cresceu mais de 30 vezes.</p>
+    <p>A aceleração coincide com a <b>CPI das Bets</b> do Senado (nov/2024 a jun/2025), que deu grande visibilidade ao tema, com depoimentos de donos de casas de apostas e de influenciadoras. Mais atenção pública ao problema pode ter levado mais gente a procurar ajuda.</p>
   </div>
-  <div class="fig" id="fig-aps">
-    <div class="fig-title">Atendimentos na atenção primária, por mês</div>
+  <div class="fig" id="fig-serie">
+    <div class="fig-title">Atenção primária: atendimentos por mês</div>
     <div class="legend"><span><i style="background:var(--s1)"></i>Jogo patológico <span class="cid">F63.0</span></span><span><i style="background:var(--ref)"></i>Outros transtornos de impulso <span class="cid">F63.1–F63.3</span></span><span><i class="box" style="background:var(--band-pand)"></i>Pandemia</span><span><i class="box" style="background:var(--band-cpi)"></i><a href="" class="lk-cpi" target="_blank" rel="noopener">CPI das Bets</a> (Senado, nov/2024–jun/2025)</span></div>
     <div id="ch-aps"></div>
+    <div class="fig-title" style="margin-top:.8rem">CAPS: pessoas em acompanhamento por mês</div>
+    <div class="legend"><span><i style="background:var(--caps)"></i>Jogo patológico <span class="cid">F63.0</span></span><span><i style="background:var(--ref)"></i>Outros transtornos de impulso <span class="cid">F63.1–F63.3</span></span></div>
+    <div id="ch-caps"></div>
     <div class="fig-title" style="margin-top:.8rem">Busca por apostas no Google, Brasil (0–100)</div>
     <div class="legend"><span><i style="background:var(--s2)"></i>bet, apostas, betano, bet365, tigrinho</span></div>
-    <div id="ch-aps-trends"></div>
-    <ol class="marcos" id="marcos-aps"></ol>
+    <div id="ch-trends"></div>
+    <ol class="marcos" id="marcos"></ol>
   </div>
-  <p class="nota">Os dois gráficos usam escalas diferentes e por isso estão separados. Atendimentos individuais registrados no e-SUS APS com o diagnóstico entre os problemas avaliados. É contagem de atendimentos, não de pessoas: quem volta várias vezes conta várias vezes. Meses com menos de 5 atendimentos ficam em branco. Dados até <span class="aps-fim"></span>.</p>
+  <p class="nota">Os gráficos usam escalas diferentes e por isso estão separados. Atenção primária: atendimentos individuais registrados no e-SUS APS com o diagnóstico entre os problemas avaliados; quem volta várias vezes conta várias vezes. CAPS: pessoas distintas por mês, com o diagnóstico principal ou associado. Meses com menos de 5 ficam em branco. Os dados vão até <span class="aps-fim"></span> (atenção primária) e <span class="caps-fim"></span> (CAPS); os efeitos da proibição (MP 1.394) ainda não aparecem.</p>
 </section>
 
-<section id="peso-aps">
+<section id="peso">
   <div class="prose">
     <h2>Não é só o SUS registrando mais</h2>
-    <p>O número de atendimentos registrados na atenção primária cresce todo ano, por qualquer motivo, porque mais unidades passaram a usar o sistema. Para descontar isso, comparamos o jogo patológico com os atendimentos de saúde mental por outros diagnósticos: depressão, ansiedade, estresse, álcool e esquizofrenia.</p>
-    <p>Em 2022, para cada 10 mil desses atendimentos, havia <span id="aps-r22"></span> por jogo patológico. Em 2025 eram <span id="aps-r25"></span>, e em 2026, <span id="aps-r26"></span>. Se a alta fosse só mais registro, essa conta ficaria parada.</p>
+    <p>O número de atendimentos registrados na atenção primária também cresce todo ano, por qualquer motivo, porque mais unidades passaram a usar o sistema. Para descontar isso, comparamos o jogo patológico com os atendimentos de saúde mental por outros diagnósticos: depressão, ansiedade, estresse, álcool e esquizofrenia.</p>
+    <p>Na atenção primária, em 2022, para cada 10 mil desses atendimentos, havia <span id="aps-r22"></span> por jogo patológico. Em 2025 eram <span id="aps-r25"></span>, e em 2026, <span id="aps-r26"></span>. Se a alta fosse só mais registro, essa conta ficaria parada.</p>
   </div>
   <div class="fig" id="fig-aps-taxa">
     <div class="fig-title">Atendimentos por jogo patológico para cada 10 mil atendimentos de saúde mental com outros diagnósticos</div>
@@ -173,87 +179,53 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   </div>
   <div class="fig">
     <div class="fig-title">Crescimento desde 2022 (média mensal de 2022 = 100, escala logarítmica)</div>
-    <div class="legend"><span><i style="background:var(--s1)"></i>Jogo patológico, atenção primária (atendimentos)</span><span><i style="background:var(--ink-2)"></i>Jogo patológico, CAPS (pessoas)</span><span><i style="background:var(--ref)"></i>Outros diagnósticos de saúde mental, atenção primária</span></div>
+    <div class="legend"><span><i style="background:var(--s1)"></i>Jogo patológico, atenção primária (atendimentos)</span><span><i style="background:var(--caps)"></i>Jogo patológico, CAPS (pessoas)</span><span><i style="background:var(--ref)"></i>Outros diagnósticos de saúde mental, atenção primária</span></div>
     <div id="ch-indice"></div>
     <p class="small" style="margin:0">A atenção primária cresceu mais rápido que o CAPS a partir de 2023. 2026: atenção primária até <span class="aps-fim"></span>, CAPS até <span class="caps-fim"></span>. O CAPS conta pessoas por mês e a atenção primária conta atendimentos; por isso a comparação é só do ritmo de crescimento.</p>
   </div>
 </section>
 
-<section id="perfil-aps">
+<section id="perfil">
   <div class="prose">
     <h2>Quem está sendo atendido</h2>
-    <p>Em 2021 e 2022, as mulheres eram cerca de um quinto dos atendimentos por jogo patológico na atenção primária. Desde 2024 são quase metade (<span id="aps-mulheres"></span> em 2026), ainda menos que na saúde mental em geral (<span id="aps-mulheres-ref"></span>). Dois terços dos atendimentos são de pessoas de 25 a 44 anos, mais concentrados nessa faixa que os outros diagnósticos de saúde mental. Menores de 18 anos são <span id="aps-menores"></span>.</p>
+    <p>O perfil é parecido nos dois serviços. Em 2021 e 2022, as mulheres eram cerca de um quinto dos atendimentos por jogo patológico na atenção primária e um terço dos pacientes no CAPS. Desde 2024 são quase metade nos dois. Entre os apostadores, segundo o DataSenado, elas são cerca de 38%: homens apostam mais e procuram menos tratamento.</p>
+    <p>Dois terços são adultos de 25 a 44 anos, uma concentração bem maior que entre os outros pacientes de saúde mental, e há poucos menores de idade (<span id="aps-menores"></span> na atenção primária, <span id="caps-menores"></span> no CAPS).</p>
   </div>
   <div class="duo">
     <div class="fig">
-      <div class="fig-title">Mulheres entre os atendimentos, por ano (%)</div>
+      <div class="fig-title">Atenção primária: mulheres entre os atendimentos (%)</div>
       <div class="legend"><span><i class="box" style="background:var(--s1)"></i>Jogo patológico</span><span><i style="background:var(--ink-2);height:2px"></i>Saúde mental em geral</span></div>
       <div id="ch-aps-mulheres"></div>
       <p class="small" style="margin:0">Antes de 2021 eram cerca de 10 atendimentos por jogo por mês, então a proporção oscila muito.</p>
     </div>
     <div class="fig">
-      <div class="fig-title">Atendimentos por faixa de idade, 2025–2026 (%)</div>
+      <div class="fig-title">Atenção primária: atendimentos por idade, 2025–2026 (%)</div>
       <div class="legend"><span><i class="box" style="background:var(--s1)"></i>Jogo patológico</span><span><i style="background:var(--ink-2);height:2px"></i>Saúde mental em geral</span></div>
       <div id="ch-aps-idade"></div>
     </div>
-  </div>
-  <p class="nota">Saúde mental em geral = atendimentos com CID de depressão, ansiedade, estresse, álcool ou esquizofrenia. Na atenção primária, o diagnóstico pode ser registrado pela CID-10 ou pela CIAP-2, a classificação própria da atenção básica. A CIAP-2 não tem código para jogo, então só aparecem aqui os atendimentos em que o profissional usou a CID. O número real deve ser maior.</p>
-</section>
-
-</div>
-
-<div id="aba-caps" role="tabpanel" aria-labelledby="tab-caps" hidden>
-
-<div class="tiles" id="tiles"></div>
-
-<section id="serie">
-  <div class="prose">
-    <h2>Busca por apostas e procura por tratamento</h2>
-    <p>As buscas por apostas no Google explodiram de 2021 a 2023. No CAPS, o jogo patológico quase não se mexeu nesse período. A alta começa em meados de 2024, cerca de um ano depois do pico das buscas, e acelera em 2025–2026, quando as buscas já estão caindo. Os outros transtornos de impulso (piromania, cleptomania, tricotilomania), que não têm relação com jogo, ficaram estáveis.</p>
-    <p>A aceleração coincide com a <b>CPI das Bets</b> do Senado (nov/2024 a jun/2025), que deu grande visibilidade ao tema, com depoimentos de donos de casas de apostas e de influenciadoras. Mais atenção pública ao problema pode ter levado mais gente a procurar ajuda.</p>
-  </div>
-  <div class="fig" id="fig-serie">
-    <div class="fig-title">Pessoas em acompanhamento nos CAPS, por mês</div>
-    <div class="legend"><span><i style="background:var(--s1)"></i>Jogo patológico <span class="cid">F63.0</span></span><span><i style="background:var(--ref)"></i>Outros transtornos de impulso <span class="cid">F63.1–F63.3</span></span><span><i class="box" style="background:var(--band-pand)"></i>Pandemia</span><span><i class="box" style="background:var(--band-cpi)"></i><a href="" class="lk-cpi" target="_blank" rel="noopener">CPI das Bets</a> (Senado, nov/2024–jun/2025)</span></div>
-    <div id="ch-caps"></div>
-    <div class="fig-title" style="margin-top:.8rem">Busca por apostas no Google, Brasil (0–100)</div>
-    <div class="legend"><span><i style="background:var(--s2)"></i>bet, apostas, betano, bet365, tigrinho</span></div>
-    <div id="ch-trends"></div>
-    <ol class="marcos" id="marcos"></ol>
-  </div>
-  <p class="nota">Os dois gráficos usam escalas diferentes e por isso estão separados. Pessoas distintas por mês, com F63.0 como diagnóstico principal ou associado. Meses com menos de 5 pessoas ficam em branco. Os dados do CAPS vão até jun/2026; os efeitos da proibição (MP 1.394) ainda não aparecem.</p>
-</section>
-
-<section id="perfil">
-  <div class="prose">
-    <h2>Quem está sendo atendido</h2>
-    <p>Em 2025, as mulheres eram <b id="caps-mulheres"></b> dos pacientes de jogo patológico nos CAPS, perto da proporção na saúde mental em geral (<span id="caps-mulheres-ref"></span>). Entre os apostadores, segundo o DataSenado, elas são cerca de 38%: homens apostam mais e procuram menos tratamento. Como na atenção primária, a participação delas caiu em 2021–2022 e voltou a subir desde então.</p>
-    <p>São sobretudo adultos de 25 a 44 anos, uma concentração bem maior que entre os pacientes de saúde mental em geral, e quase não há menores de idade.</p>
-  </div>
-  <div class="duo">
     <div class="fig">
-      <div class="fig-title">Mulheres entre os pacientes, por ano (%)</div>
-      <div class="legend"><span><i class="box" style="background:var(--s1)"></i>Jogo patológico</span><span><i style="background:var(--ink-2);height:2px"></i>Saúde mental em geral</span></div>
+      <div class="fig-title">CAPS: mulheres entre os pacientes (%)</div>
+      <div class="legend"><span><i class="box" style="background:var(--caps)"></i>Jogo patológico</span><span><i style="background:var(--ink-2);height:2px"></i>Saúde mental em geral</span></div>
       <div id="ch-caps-mulheres"></div>
       <p class="small" style="margin:0">Em 2026, só até junho.</p>
     </div>
     <div class="fig">
-      <div class="fig-title">Pacientes por faixa de idade, 2025–2026 (%)</div>
-      <div class="legend"><span><i class="box" style="background:var(--s1)"></i>Jogo patológico</span><span><i style="background:var(--ink-2);height:2px"></i>Saúde mental em geral</span></div>
+      <div class="fig-title">CAPS: pacientes por idade, 2025–2026 (%)</div>
+      <div class="legend"><span><i class="box" style="background:var(--caps)"></i>Jogo patológico</span><span><i style="background:var(--ink-2);height:2px"></i>Saúde mental em geral</span></div>
       <div id="ch-caps-idade"></div>
     </div>
   </div>
-  <p class="nota">Saúde mental em geral = todos os pacientes dos CAPS com diagnóstico do capítulo F da CID-10. Contagem em pacientes-mês: cada pessoa conta uma vez em cada mês em que foi atendida.</p>
+  <p class="nota">Saúde mental em geral: na atenção primária, os atendimentos com CID de depressão, ansiedade, estresse, álcool ou esquizofrenia; no CAPS, todos os pacientes com diagnóstico do capítulo F da CID-10, contados em pacientes-mês. Na atenção primária, o diagnóstico pode ser registrado pela CID-10 ou pela CIAP-2, a classificação própria da atenção básica. A CIAP-2 não tem código para jogo, então só aparecem aqui os atendimentos em que o profissional usou a CID. O número real deve ser maior.</p>
 </section>
 
 <section id="novos">
   <div class="prose">
-    <h2>Gente nova chegando, não diagnóstico trocado</h2>
+    <h2>No CAPS, gente nova chegando, não diagnóstico trocado</h2>
     <p>Uma explicação possível para a alta seria os profissionais passarem a registrar o jogo patológico em quem já estava em tratamento por outro motivo. Os dados não mostram isso. Entre as pessoas que recebem o diagnóstico de <span class="cid">F63.0</span> pela primeira vez, a fração que <b>não tinha nenhum atendimento no CAPS nos 12 meses anteriores</b> subiu de cerca de 60% para quase 80%.</p>
   </div>
   <div class="fig">
     <div class="fig-title">Pessoas que receberam F63.0 pela primeira vez, por ano</div>
-    <div class="legend"><span><i class="box" style="background:var(--s1)"></i>Novas no CAPS</span><span><i class="box" style="background:var(--s1-soft)"></i>Já estavam no CAPS com outro diagnóstico</span></div>
+    <div class="legend"><span><i class="box" style="background:var(--caps)"></i>Novas no CAPS</span><span><i class="box" style="background:var(--caps-soft)"></i>Já estavam no CAPS com outro diagnóstico</span></div>
     <div id="ch-novos"></div>
     <p class="small" style="margin:0">Rótulo acima da barra: % de novas. 2026 vai só até junho. "Novo no CAPS" não quer dizer caso novo de vício: a pessoa pode ter sido tratada antes na rede privada.</p>
   </div>
@@ -261,7 +233,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 
 <section id="trajetoria">
   <div class="prose">
-    <h2>O que aparece depois do diagnóstico</h2>
+    <h2>No CAPS, o que aparece depois do diagnóstico</h2>
     <p>Acompanhamos as <b id="traj-n"></b> pessoas que receberam o diagnóstico de jogo patológico no CAPS entre jan/2019 e jun/2025 e olhamos os 12 meses seguintes. <span id="traj-ans"></span> receberam um diagnóstico novo de ansiedade, <span id="traj-dep"></span> de depressão e <span id="traj-drog"></span> de uso de drogas. "Novo" quer dizer que esse diagnóstico não aparecia nos 12 meses anteriores.</p>
     <p>Para saber se isso é muito ou pouco, comparamos com quem chega ao CAPS por outros motivos, ajustando para a mesma composição de sexo e idade. O jogo patológico fica entre os dois mundos. A ansiedade e a depressão novas aparecem no mesmo patamar de quem já chega por ansiedade ou depressão, bem acima do que acontece com quem chega por álcool ou drogas. Já o uso de drogas novo é o dobro do que se vê entre quem chega por ansiedade ou depressão. A permanência também é a das dependências: só cerca de um terço ainda está no CAPS de 6 a 12 meses depois.</p>
   </div>
@@ -417,7 +389,7 @@ uv run python -m src.politica.congresso
       <li><b>MP 1.394/2026:</b> <a href="https://www12.senado.leg.br/publicacoes/estudos-legislativos/tipos-de-estudos/sumarios-de-proposicoes/mpv1394" target="_blank" rel="noopener">resumo do Senado</a>.</li>
       <li data-congresso><b>Votação de 2023:</b> <a href="https://www12.senado.leg.br/noticias/materias/2023/12/12/plenario-aprova-regulamentacao-das-bets-texto-volta-a-camara" target="_blank" rel="noopener">Agência Senado</a>; <a href="https://www.cnnbrasil.com.br/politica/governo-lula-foi-contra-proibir-do-jogo-do-tigrinho-em-2023/" target="_blank" rel="noopener">CNN Brasil</a>.</li>
       <li><b>CPI das Bets:</b> <a href="https://www12.senado.leg.br/radio/1/noticia/2024/11/12/cpi-das-bets-e-instalada-e-vai-investigar-influenciadores-donos-das-apostas-e-crime-de-lavagem-de-dinheiro" target="_blank" rel="noopener">instalação</a> e <a href="https://www12.senado.leg.br/noticias/materias/2025/06/12/cpi-das-bets-rejeita-relatorio-final" target="_blank" rel="noopener">encerramento</a> (Agência Senado).</li>
-      <li><b>Marcos regulatórios:</b> as notícias de cada marco estão linkadas abaixo dos gráficos das abas Atenção primária e CAPS.</li>
+      <li><b>Marcos regulatórios:</b> as notícias de cada marco estão linkadas abaixo do gráfico da aba Saúde mental.</li>
     </ul>
   </div>
 </section>
@@ -526,7 +498,7 @@ function tiles(el, lista) { for (const [v, d] of lista) el.appendChild(h("div", 
 
 /* ---------- perfil: gráficos comuns às duas abas ---------- */
 // barras = jogo patológico; traço = saúde mental em geral
-function mulheresChart(el, lista, unid) {
+function mulheresChart(el, lista, unid, cor) {
   const W = 520, H = 240, m = { l: 36, r: 8, t: 22, b: 24 }, y = v => H - m.b - v / 80 * (H - m.t - m.b);
   const svg = s("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Mulheres por ano" }, el);
   const f = el.closest(".fig"), tp = tipFor(f);
@@ -535,7 +507,7 @@ function mulheresChart(el, lista, unid) {
   const bw = (W - m.l - m.r) / lista.length;
   lista.forEach((d, i) => {
     const x0 = m.l + i * bw + bw * .2, w = bw * .6;
-    if (d.pct != null) { s("path", { d: `M${x0},${y(0)}V${y(d.pct) + 4}q0,-4 4,-4h${w - 8}q4,0 4,4V${y(0)}Z`, fill: "var(--s1)" }, svg); }
+    if (d.pct != null) { s("path", { d: `M${x0},${y(0)}V${y(d.pct) + 4}q0,-4 4,-4h${w - 8}q4,0 4,4V${y(0)}Z`, fill: cor }, svg); }
     s("line", { x1: x0 - 3, x2: x0 + w + 3, y1: y(d.ref), y2: y(d.ref), stroke: "var(--ink-2)", "stroke-width": 2, "stroke-linecap": "round" }, svg);
     if (d.pct != null) { const yl = Math.abs(y(d.pct) - y(d.ref)) < 14 ? Math.min(y(d.pct), y(d.ref)) - 6 : y(d.pct) - 6;
       const l = s("text", { x: x0 + w / 2, y: yl, "text-anchor": "middle", class: "lbl tnum" }, svg); l.textContent = fmt(d.pct); }
@@ -546,7 +518,7 @@ function mulheresChart(el, lista, unid) {
     hit.addEventListener("pointerleave", () => tp.hide());
   });
 }
-function idadeChart(el, J, R) {
+function idadeChart(el, J, R, cor) {
   const faixas = ["0-17", "18-24", "25-34", "35-44", "45-59", "60+"];
   const W = 520, rowH = 32, m = { l: 56, r: 50, t: 6, b: 24 }, H = m.t + m.b + faixas.length * rowH;
   const x = v => m.l + v / 45 * (W - m.l - m.r);
@@ -557,7 +529,7 @@ function idadeChart(el, J, R) {
   faixas.forEach((fx, r) => {
     const yc = m.t + r * rowH + rowH / 2, j = J[fx], q = R[fx];
     const t = s("text", { x: m.l - 8, y: yc + 4, "text-anchor": "end", class: "lbl" }, svg); t.textContent = fx.replace("-", "–");
-    if (j != null) { const w = x(j) - x(0); s("path", { d: `M${x(0)},${yc - 9}h${Math.max(w - 4, 0)}q4,0 4,4v10q0,4 -4,4h${-Math.max(w - 4, 0)}Z`, fill: "var(--s1)" }, svg); }
+    if (j != null) { const w = x(j) - x(0); s("path", { d: `M${x(0)},${yc - 9}h${Math.max(w - 4, 0)}q4,0 4,4v10q0,4 -4,4h${-Math.max(w - 4, 0)}Z`, fill: cor }, svg); }
     if (q != null) s("line", { x1: x(q), x2: x(q), y1: yc - 13, y2: yc + 13, stroke: "var(--ink-2)", "stroke-width": 2, "stroke-linecap": "round" }, svg);
     const v = s("text", { x: Math.max(x(j ?? 0), x(q ?? 0)) + 6, y: yc + 4, class: "lbl tnum" }, svg); v.textContent = j == null ? "—" : fmt(j, 1) + "%";
     const hit = s("rect", { x: 0, y: yc - rowH / 2, width: W, height: rowH, fill: "transparent" }, svg);
@@ -567,65 +539,49 @@ function idadeChart(el, J, R) {
   });
 }
 
-/* ---------- aba CAPS ---------- */
-(function caps() {
+/* ---------- aba saúde mental ---------- */
+(function saude() {
   const anual = Object.fromEntries(D.anual.map(d => [d.ano, d]));
-  const CP = D.caps_perfil, ult = CP.mulheres.find(d => d.ano === 2025);  // 2026 só tem o 1º semestre
+  const A = D.aps, an = Object.fromEntries(A.anual.map(d => [d.ano, d])), CP = D.caps_perfil;
   document.getElementById("carimbo-dados").textContent = mesLabel(D.corte);
-  document.getElementById("caps-mulheres").textContent = fmt(ult.pct) + "%";
-  document.getElementById("caps-mulheres-ref").textContent = fmt(ult.ref) + "%";
-  tiles(document.getElementById("tiles"), [
-    [fmt(anual[2026].f630), `pessoas atendidas por jogo patológico nos CAPS só no 1º semestre de 2026, quase o total de 2025 (${fmt(anual[2025].f630)})`],
-    [`${fmt(anual[2025].f630 / anual[2022].f630, 1)}<small>×</small>`, `o número de pessoas de 2022 (${fmt(anual[2022].f630)}) para 2025`],
-    [`${fmt(pctNovo(2026))}<small>%</small>`, "das que receberam o diagnóstico em 2026 não tinham passado pelo CAPS no ano anterior"],
-    [`${fmt(ult.pct)}<small>%</small>`, `dos pacientes em ${ult.ano} eram mulheres`],
-  ]);
-  listaMarcos(document.getElementById("marcos"));
-  const C = Object.fromEntries(D.serie.caps.map(d => [idx(d.cmp), d]));
-  painel(document.getElementById("fig-serie"), [
-    { el: document.getElementById("ch-caps"), altura: 300, series: [
-      { pts: D.serie.caps.map(d => ({ i: idx(d.cmp), v: d.placebo })), cor: "var(--ref)" },
-      { pts: D.serie.caps.map(d => ({ i: idx(d.cmp), v: d.f630 })), cor: "var(--s1)", rotulo: true }] },
-    { el: document.getElementById("ch-trends"), altura: 170, yMax: 100, passoY: 50, series: [trendsSerie] },
-  ], i => { const d = C[i], b = busca[i]; if (!d && b == null) return null; const c = d ? d.cmp : D.serie.trends.find(t => idx(t.cmp) === i).cmp;
-    return `<div><b>${mesLabel(c)}</b></div><div><span class="k">F63.0:</span> <b>${valor(d?.f630, D.corte, c)}</b></div>
-      <div><span class="k">F63.1–3:</span> <b>${valor(d?.placebo, D.corte, c)}</b></div><div><span class="k">Busca:</span> <b>${b == null ? "—" : fmt(b)}</b></div>`; });
-  mulheresChart(document.getElementById("ch-caps-mulheres"), CP.mulheres, "pacientes de cada mês");
-  idadeChart(document.getElementById("ch-caps-idade"), CP.faixas.jogo, CP.faixas.ref);
-})();
-
-/* ---------- aba atenção primária ---------- */
-(function aps() {
-  const A = D.aps, an = Object.fromEntries(A.anual.map(d => [d.ano, d]));
-  const ult = A.mulheres.filter(d => d.pct != null).at(-1);
   document.getElementById("carimbo-aps").textContent = mesLabel(A.fim);
   document.querySelectorAll(".aps-fim").forEach(e => e.textContent = mesLabel(A.fim));
   document.querySelectorAll(".caps-fim").forEach(e => e.textContent = mesLabel(D.corte));
-  for (const [id, v] of [["aps-ultimo", fmt(an[2026].jogo_mes)], ["aps-r22", fmt(an[2022].por10mil, 1)], ["aps-r25", fmt(an[2025].por10mil)],
-                         ["aps-r26", fmt(an[2026].por10mil)], ["aps-menores", fmt(A.faixas.jogo["0-17"], 1) + "%"],
-                         ["aps-mulheres", fmt(ult.pct) + "%"], ["aps-mulheres-ref", fmt(ult.ref) + "%"]])
-    document.querySelectorAll("#" + id).forEach(e => e.textContent = v);
-  tiles(document.getElementById("tiles-aps"), [
-    [fmt(an[2026].jogo_mes), `atendimentos por jogo patológico por mês na atenção primária em 2026 (jan–${MESES[+A.fim.slice(4) - 1]})`],
-    [`${fmt(an[2026].jogo_mes / an[2022].jogo_mes)}<small>×</small>`, `a média mensal de 2022 (${fmt(an[2022].jogo_mes)} atendimentos por mês)`],
-    [`${fmt(an[2026].por10mil / an[2022].por10mil)}<small>×</small>`, "o peso do jogo patológico entre os atendimentos de saúde mental, de 2022 para 2026"],
-    [`${fmt(ult.pct)}<small>%</small>`, `dos atendimentos em ${ult.ano} foram de mulheres`],
+  for (const [id, v] of [["aps-r22", fmt(an[2022].por10mil, 1)], ["aps-r25", fmt(an[2025].por10mil)], ["aps-r26", fmt(an[2026].por10mil)],
+                         ["aps-menores", fmt(A.faixas.jogo["0-17"], 1) + "%"], ["caps-menores", fmt(CP.faixas.jogo["0-17"], 1) + "%"]])
+    document.getElementById(id).textContent = v;
+  tiles(document.getElementById("tiles"), [
+    [fmt(an[2026].jogo_mes), `atendimentos por jogo patológico por mês na atenção primária em 2026, ${fmt(an[2026].jogo_mes / an[2022].jogo_mes)} vezes a média de 2022`],
+    [fmt(anual[2026].f630), `pessoas atendidas nos CAPS só no 1º semestre de 2026, quase o total de 2025 (${fmt(anual[2025].f630)})`],
+    [`${fmt(an[2026].por10mil / an[2022].por10mil)}<small>×</small>`, "o peso do jogo patológico entre os atendimentos de saúde mental na atenção primária, de 2022 para 2026"],
+    [`${fmt(pctNovo(2026))}<small>%</small>`, "das pessoas que receberam o diagnóstico no CAPS em 2026 não tinham passado por lá no ano anterior"],
   ]);
-  listaMarcos(document.getElementById("marcos-aps"));
+  listaMarcos(document.getElementById("marcos"));
+  const C = Object.fromEntries(D.serie.caps.map(d => [idx(d.cmp), d]));
   const P = Object.fromEntries(A.mensal.map(d => [idx(d.cmp), d]));
-  painel(document.getElementById("fig-aps"), [
-    { el: document.getElementById("ch-aps"), altura: 300, series: [
+  const cmpDe = i => { const a = 2018 + Math.floor(i / 12), m = i % 12 + 1; return `${a}${String(m).padStart(2, "0")}`; };
+  painel(document.getElementById("fig-serie"), [
+    { el: document.getElementById("ch-aps"), altura: 260, series: [
       { pts: A.mensal.map(d => ({ i: idx(d.cmp), v: d.placebo })), cor: "var(--ref)" },
       { pts: A.mensal.map(d => ({ i: idx(d.cmp), v: d.jogo })), cor: "var(--s1)", rotulo: true }] },
-    { el: document.getElementById("ch-aps-trends"), altura: 170, yMax: 100, passoY: 50, series: [trendsSerie] },
-  ], i => { const d = P[i], b = busca[i]; if (!d && b == null) return null; const c = d ? d.cmp : D.serie.trends.find(t => idx(t.cmp) === i).cmp;
-    return `<div><b>${mesLabel(c)}</b></div><div><span class="k">F63.0:</span> <b>${valor(d?.jogo, A.fim, c)}</b></div>
-      <div><span class="k">F63.1–3:</span> <b>${valor(d?.placebo, A.fim, c)}</b></div><div><span class="k">Busca:</span> <b>${b == null ? "—" : fmt(b)}</b></div>`; });
+    { el: document.getElementById("ch-caps"), altura: 230, series: [
+      { pts: D.serie.caps.map(d => ({ i: idx(d.cmp), v: d.placebo })), cor: "var(--ref)" },
+      { pts: D.serie.caps.map(d => ({ i: idx(d.cmp), v: d.f630 })), cor: "var(--caps)", rotulo: true }] },
+    { el: document.getElementById("ch-trends"), altura: 150, yMax: 100, passoY: 50, series: [trendsSerie] },
+  ], i => { if (i < 0 || i > X1) return null; const c = cmpDe(i), p = P[i], d = C[i], b = busca[i];
+    return `<div><b>${mesLabel(c)}</b></div>
+      <div class="k" style="margin-top:.2rem">Atenção primária (atendimentos)</div>
+      <div><span class="k">F63.0:</span> <b>${valor(p?.jogo, A.fim, c)}</b> · <span class="k">F63.1–3:</span> <b>${valor(p?.placebo, A.fim, c)}</b></div>
+      <div class="k" style="margin-top:.2rem">CAPS (pessoas)</div>
+      <div><span class="k">F63.0:</span> <b>${valor(d?.f630, D.corte, c)}</b> · <span class="k">F63.1–3:</span> <b>${valor(d?.placebo, D.corte, c)}</b></div>
+      <div style="margin-top:.2rem"><span class="k">Busca:</span> <b>${b == null ? "—" : fmt(b)}</b></div>`; });
   painel(document.getElementById("fig-aps-taxa"), [
     { el: document.getElementById("ch-aps-taxa"), altura: 240, series: [{ pts: A.mensal.map(d => ({ i: idx(d.cmp), v: d.por10mil })), cor: "var(--s1)", rotulo: true }] },
   ], i => { const d = P[i]; if (!d) return null;
     return `<div><b>${mesLabel(d.cmp)}</b></div><div><span class="k">Jogo patológico a cada 10 mil:</span> <b>${d.por10mil == null ? "—" : fmt(d.por10mil, 1)}</b></div>`; });
   listaMarcos(document.getElementById("marcos-aps-taxa"));
+  mulheresChart(document.getElementById("ch-caps-mulheres"), CP.mulheres, "pacientes de cada mês", "var(--caps)");
+  idadeChart(document.getElementById("ch-caps-idade"), CP.faixas.jogo, CP.faixas.ref, "var(--caps)");
 
   // índice 2022 = 100
   (function indice() {
@@ -636,7 +592,7 @@ function idadeChart(el, J, R) {
     const media = a => capsMes[a] ? capsMes[a].reduce((x, y) => x + y, 0) / capsMes[a].length : null;
     const S = [
       { nome: "Atenção primária", cor: "var(--s1)", v: a => an[a].jogo_mes / an[2022].jogo_mes * 100 },
-      { nome: "CAPS", cor: "var(--ink-2)", v: a => media(a) && media(2022) ? media(a) / media(2022) * 100 : null },
+      { nome: "CAPS", cor: "var(--caps)", v: a => media(a) && media(2022) ? media(a) / media(2022) * 100 : null },
       { nome: "Outros diagnósticos", cor: "var(--ref)", v: a => an[a].ref_mes / an[2022].ref_mes * 100 },
     ];
     const W = 1000, H = 300, m = { l: 52, r: 150, t: 14, b: 24 };
@@ -666,8 +622,8 @@ function idadeChart(el, J, R) {
       hit.addEventListener("pointerleave", () => tp.hide());
     });
   })();
-  mulheresChart(document.getElementById("ch-aps-mulheres"), A.mulheres, "atendimentos");
-  idadeChart(document.getElementById("ch-aps-idade"), A.faixas.jogo, A.faixas.ref);
+  mulheresChart(document.getElementById("ch-aps-mulheres"), A.mulheres, "atendimentos", "var(--s1)");
+  idadeChart(document.getElementById("ch-aps-idade"), A.faixas.jogo, A.faixas.ref, "var(--s1)");
 })();
 
 /* ---------- Congresso ---------- */
@@ -788,8 +744,8 @@ function idadeChart(el, J, R) {
     const x0 = m.l + i * bw + bw * .18, w = bw * .64;
     const n = d.novos ?? 0, j = d.ja ?? 0;
     const yN = y(n), yJ = y(n + j);
-    s("rect", { x: x0, y: yN, width: w, height: y(0) - yN, fill: "var(--s1)" }, svg);
-    if (j) s("path", { d: `M${x0},${yN - 2}V${yJ + 4}q0,-4 4,-4h${w - 8}q4,0 4,4V${yN - 2}Z`, fill: "var(--s1-soft)" }, svg);
+    s("rect", { x: x0, y: yN, width: w, height: y(0) - yN, fill: "var(--caps)" }, svg);
+    if (j) s("path", { d: `M${x0},${yN - 2}V${yJ + 4}q0,-4 4,-4h${w - 8}q4,0 4,4V${yN - 2}Z`, fill: "var(--caps-soft)" }, svg);
     const t = s("text", { x: x0 + w / 2, y: H - 6, "text-anchor": "middle", class: "lbl" }, svg); t.textContent = d.ano + (d.ano === 2026 ? "*" : "");
     const p = pctNovo(d.ano);
     if (p != null) { const l = s("text", { x: x0 + w / 2, y: yJ - 7, "text-anchor": "middle", class: "strong tnum" }, svg); l.textContent = fmt(p) + "%"; }
@@ -814,7 +770,7 @@ function idadeChart(el, J, R) {
   for (const e of [1, 6, 5, 3, 2]) {
     const r = T[e];
     const cel = COLS.map(([c, g]) => g === e ? `<td class="diag">—</td>` :
-      `<td class="c" style="background:color-mix(in srgb, var(--s1) ${Math.round(r[c] / max * 45)}%, transparent)">${fmt(r[c], 1)}</td>`).join("");
+      `<td class="c" style="background:color-mix(in srgb, var(--caps) ${Math.round(r[c] / max * 45)}%, transparent)">${fmt(r[c], 1)}</td>`).join("");
     tb.appendChild(h("tr", e === 1 ? { class: "jogo" } : {}, `<td>${ROT[e]}</td><td class="c">${fmt(r.n)}</td>${cel}<td class="c">${fmt(r.fica, 1)}</td>`));
   }
 })();
@@ -824,9 +780,9 @@ document.querySelectorAll(".lk-cpi").forEach(a => a.href = D.cpi.url);
 
 /* ---------- abas ---------- */
 (function abas() {
-  const nomes = ["aps", "caps", "votacao", "metodo"].filter(n => document.getElementById("aba-" + n));
+  const nomes = ["saude", "votacao", "metodo"].filter(n => document.getElementById("aba-" + n));
   function abrir(nome, rolar) {
-    if (!nomes.includes(nome)) nome = "aps";
+    if (!nomes.includes(nome)) nome = "saude";
     for (const n of nomes) {
       document.getElementById("aba-" + n).hidden = n !== nome;
       document.getElementById("tab-" + n).setAttribute("aria-selected", n === nome ? "true" : "false");

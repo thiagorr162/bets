@@ -14,15 +14,17 @@
   --rule: #dfe2e3;
   --axis: #c3c6c7;
   --accent: #1d5fae;      /* tinta de destaque (texto/links), mais escura que a série */
-  --s1: #2a78d6;          /* série: F63.0 jogo patológico */
+  --s1: #2a78d6;          /* atenção primária (azul) */
+  --caps: #d03b3b;        /* CAPS (vermelho) */
+  --caps-soft: #f1aea8;   /* mesma família: parte "já estava no CAPS" */
   --s1-soft: #9ec5f4;     /* mesma família: parte "já estava no CAPS" */
-  --s2: #eb6834;          /* série: busca por apostas (gráfico próprio) */
+  --s2: #c98500;          /* busca por apostas (âmbar) */
   --ref: #9a9c9e;         /* referência: placebo / saúde mental */
   --pro: #1baf7a;          /* Congresso: proibir o cassino / reforça a proibição */
   --contra: #eda100;       /* Congresso: liberar o cassino / afrouxa a proibição */
   --band-pand: rgba(120,124,128,.13);
   --band-cpi: rgba(98,80,214,.13);   /* CPI das Bets */
-  --mark: #c8352f;        /* marcos regulatórios */
+  --mark: #4c4f52;        /* marcos regulatórios (neutro: o vermelho é do CAPS) */
   --f-display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
   --f-body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
   --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
@@ -30,12 +32,12 @@
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #0f1112; --surface: #17191a; --ink: #eef0f0; --ink-2: #c2c6c8; --muted: #8a8e91; --rule: #2a2d2f; --axis: #3a3e40;
-  --accent: #7fb2f0; --s1: #3987e5; --s1-soft: #1c5cab; --s2: #d95926; --ref: #7c8083; --pro: #199e70; --contra: #c98500;
-  --band-pand: rgba(160,165,170,.12); --band-cpi: rgba(144,133,233,.18); --mark: #e66767; color-scheme: dark } }
+  --accent: #7fb2f0; --s1: #3987e5; --s1-soft: #1c5cab; --caps: #e8615a; --caps-soft: #8a2e2a; --s2: #d9a21f; --ref: #7c8083; --pro: #199e70; --contra: #c98500;
+  --band-pand: rgba(160,165,170,.12); --band-cpi: rgba(144,133,233,.18); --mark: #c2c6c8; color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #0f1112; --surface: #17191a; --ink: #eef0f0; --ink-2: #c2c6c8; --muted: #8a8e91; --rule: #2a2d2f; --axis: #3a3e40;
-  --accent: #7fb2f0; --s1: #3987e5; --s1-soft: #1c5cab; --s2: #d95926; --ref: #7c8083; --pro: #199e70; --contra: #c98500;
-  --band-pand: rgba(160,165,170,.12); --band-cpi: rgba(144,133,233,.18); --mark: #e66767; color-scheme: dark }
+  --accent: #7fb2f0; --s1: #3987e5; --s1-soft: #1c5cab; --caps: #e8615a; --caps-soft: #8a2e2a; --s2: #d9a21f; --ref: #7c8083; --pro: #199e70; --contra: #c98500;
+  --band-pand: rgba(160,165,170,.12); --band-cpi: rgba(144,133,233,.18); --mark: #c2c6c8; color-scheme: dark }
 
 * { box-sizing: border-box }
 body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: var(--s0); line-height: 1.55;
@@ -117,7 +119,7 @@ footer { padding-top: 2rem; border-top: 1px solid var(--rule); font-size: var(--
 .mapa td:first-child, .mapa th:first-child { text-align: left; white-space: normal }
 .mapa td.c { font-variant-numeric: tabular-nums }
 .mapa td.diag { color: var(--muted) }
-.mapa tr.jogo td { font-weight: 700; border-bottom: 2px solid var(--s1) }
+.mapa tr.jogo td { font-weight: 700; border-bottom: 2px solid var(--caps) }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg) }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important } }
 </style>
@@ -131,39 +133,43 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 </header>
 
 <nav class="abas" role="tablist" aria-label="Seções do site">
-  <button type="button" role="tab" id="tab-aps" data-aba="aps" aria-controls="aba-aps" aria-selected="true">Atenção primária</button>
-  <button type="button" role="tab" id="tab-caps" data-aba="caps" aria-controls="aba-caps" aria-selected="false">CAPS</button>
+  <button type="button" role="tab" id="tab-saude" data-aba="saude" aria-controls="aba-saude" aria-selected="true">Saúde mental</button>
   <button type="button" role="tab" data-congresso id="tab-votacao" data-aba="votacao" aria-controls="aba-votacao" aria-selected="false">Votação no Congresso</button>
   <button type="button" role="tab" id="tab-metodo" data-aba="metodo" aria-controls="aba-metodo" aria-selected="false">Como foi feito</button>
 </nav>
 
-<div id="aba-aps" role="tabpanel" aria-labelledby="tab-aps">
+<div id="aba-saude" role="tabpanel" aria-labelledby="tab-saude">
 
-<div class="tiles" id="tiles-aps"></div>
+<div class="tiles" id="tiles"></div>
 
-<section id="serie-aps">
+<section id="serie">
   <div class="prose">
-    <h2>Busca por apostas e procura por atendimento</h2>
-    <p>A atenção primária é a porta de entrada do SUS: as unidades básicas de saúde e as equipes de saúde da família. Ali, os atendimentos com o diagnóstico de jogo patológico ficaram em torno de 10 a 20 por mês até 2022. Começaram a subir em 2023, ainda no pico das buscas por apostas e um ano antes do CAPS, e chegaram a <b id="aps-ultimo"></b> por mês em 2026.</p>
-    <p>Os outros transtornos de impulso (piromania, cleptomania, tricotilomania), que não têm relação com jogo, também cresceram, mas devagar: cerca de 2,5 vezes de 2022 para 2026, no ritmo em que a atenção primária passou a registrar mais diagnósticos em geral. O jogo patológico cresceu mais de 30 vezes.</p>
+    <h2>Busca por apostas e procura por tratamento</h2>
+    <p>O SUS atende o jogo patológico em dois lugares. A atenção primária (unidades básicas de saúde e equipes de saúde da família) é a porta de entrada. Os Centros de Atenção Psicossocial (CAPS) são os serviços especializados em saúde mental, para onde vão os casos mais graves.</p>
+    <p>As buscas por apostas no Google explodiram de 2021 a 2023. Na atenção primária, os atendimentos por jogo patológico começam a subir em 2023, ainda no pico das buscas. No CAPS, a alta vem cerca de um ano depois, em meados de 2024, e acelera em 2025–2026, quando as buscas já estão caindo.</p>
+    <p>Os outros transtornos de impulso (piromania, cleptomania, tricotilomania) não têm relação com jogo e servem de controle. No CAPS, ficaram estáveis. Na atenção primária, cresceram cerca de 2,5 vezes de 2022 para 2026, no ritmo em que ela passou a registrar mais diagnósticos em geral, enquanto o jogo patológico cresceu mais de 30 vezes.</p>
+    <p>A aceleração coincide com a <b>CPI das Bets</b> do Senado (nov/2024 a jun/2025), que deu grande visibilidade ao tema, com depoimentos de donos de casas de apostas e de influenciadoras. Mais atenção pública ao problema pode ter levado mais gente a procurar ajuda.</p>
   </div>
-  <div class="fig" id="fig-aps">
-    <div class="fig-title">Atendimentos na atenção primária, por mês</div>
+  <div class="fig" id="fig-serie">
+    <div class="fig-title">Atenção primária: atendimentos por mês</div>
     <div class="legend"><span><i style="background:var(--s1)"></i>Jogo patológico <span class="cid">F63.0</span></span><span><i style="background:var(--ref)"></i>Outros transtornos de impulso <span class="cid">F63.1–F63.3</span></span><span><i class="box" style="background:var(--band-pand)"></i>Pandemia</span><span><i class="box" style="background:var(--band-cpi)"></i><a href="" class="lk-cpi" target="_blank" rel="noopener">CPI das Bets</a> (Senado, nov/2024–jun/2025)</span></div>
     <div id="ch-aps"></div>
+    <div class="fig-title" style="margin-top:.8rem">CAPS: pessoas em acompanhamento por mês</div>
+    <div class="legend"><span><i style="background:var(--caps)"></i>Jogo patológico <span class="cid">F63.0</span></span><span><i style="background:var(--ref)"></i>Outros transtornos de impulso <span class="cid">F63.1–F63.3</span></span></div>
+    <div id="ch-caps"></div>
     <div class="fig-title" style="margin-top:.8rem">Busca por apostas no Google, Brasil (0–100)</div>
     <div class="legend"><span><i style="background:var(--s2)"></i>bet, apostas, betano, bet365, tigrinho</span></div>
-    <div id="ch-aps-trends"></div>
-    <ol class="marcos" id="marcos-aps"></ol>
+    <div id="ch-trends"></div>
+    <ol class="marcos" id="marcos"></ol>
   </div>
-  <p class="nota">Os dois gráficos usam escalas diferentes e por isso estão separados. Atendimentos individuais registrados no e-SUS APS com o diagnóstico entre os problemas avaliados. É contagem de atendimentos, não de pessoas: quem volta várias vezes conta várias vezes. Meses com menos de 5 atendimentos ficam em branco. Dados até <span class="aps-fim"></span>.</p>
+  <p class="nota">Os gráficos usam escalas diferentes e por isso estão separados. Atenção primária: atendimentos individuais registrados no e-SUS APS com o diagnóstico entre os problemas avaliados; quem volta várias vezes conta várias vezes. CAPS: pessoas distintas por mês, com o diagnóstico principal ou associado. Meses com menos de 5 ficam em branco. Os dados vão até <span class="aps-fim"></span> (atenção primária) e <span class="caps-fim"></span> (CAPS); os efeitos da proibição (MP 1.394) ainda não aparecem.</p>
 </section>
 
-<section id="peso-aps">
+<section id="peso">
   <div class="prose">
     <h2>Não é só o SUS registrando mais</h2>
-    <p>O número de atendimentos registrados na atenção primária cresce todo ano, por qualquer motivo, porque mais unidades passaram a usar o sistema. Para descontar isso, comparamos o jogo patológico com os atendimentos de saúde mental por outros diagnósticos: depressão, ansiedade, estresse, álcool e esquizofrenia.</p>
-    <p>Em 2022, para cada 10 mil desses atendimentos, havia <span id="aps-r22"></span> por jogo patológico. Em 2025 eram <span id="aps-r25"></span>, e em 2026, <span id="aps-r26"></span>. Se a alta fosse só mais registro, essa conta ficaria parada.</p>
+    <p>O número de atendimentos registrados na atenção primária também cresce todo ano, por qualquer motivo, porque mais unidades passaram a usar o sistema. Para descontar isso, comparamos o jogo patológico com os atendimentos de saúde mental por outros diagnósticos: depressão, ansiedade, estresse, álcool e esquizofrenia.</p>
+    <p>Na atenção primária, em 2022, para cada 10 mil desses atendimentos, havia <span id="aps-r22"></span> por jogo patológico. Em 2025 eram <span id="aps-r25"></span>, e em 2026, <span id="aps-r26"></span>. Se a alta fosse só mais registro, essa conta ficaria parada.</p>
   </div>
   <div class="fig" id="fig-aps-taxa">
     <div class="fig-title">Atendimentos por jogo patológico para cada 10 mil atendimentos de saúde mental com outros diagnósticos</div>
@@ -173,87 +179,53 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   </div>
   <div class="fig">
     <div class="fig-title">Crescimento desde 2022 (média mensal de 2022 = 100, escala logarítmica)</div>
-    <div class="legend"><span><i style="background:var(--s1)"></i>Jogo patológico, atenção primária (atendimentos)</span><span><i style="background:var(--ink-2)"></i>Jogo patológico, CAPS (pessoas)</span><span><i style="background:var(--ref)"></i>Outros diagnósticos de saúde mental, atenção primária</span></div>
+    <div class="legend"><span><i style="background:var(--s1)"></i>Jogo patológico, atenção primária (atendimentos)</span><span><i style="background:var(--caps)"></i>Jogo patológico, CAPS (pessoas)</span><span><i style="background:var(--ref)"></i>Outros diagnósticos de saúde mental, atenção primária</span></div>
     <div id="ch-indice"></div>
     <p class="small" style="margin:0">A atenção primária cresceu mais rápido que o CAPS a partir de 2023. 2026: atenção primária até <span class="aps-fim"></span>, CAPS até <span class="caps-fim"></span>. O CAPS conta pessoas por mês e a atenção primária conta atendimentos; por isso a comparação é só do ritmo de crescimento.</p>
   </div>
 </section>
 
-<section id="perfil-aps">
+<section id="perfil">
   <div class="prose">
     <h2>Quem está sendo atendido</h2>
-    <p>Em 2021 e 2022, as mulheres eram cerca de um quinto dos atendimentos por jogo patológico na atenção primária. Desde 2024 são quase metade (<span id="aps-mulheres"></span> em 2026), ainda menos que na saúde mental em geral (<span id="aps-mulheres-ref"></span>). Dois terços dos atendimentos são de pessoas de 25 a 44 anos, mais concentrados nessa faixa que os outros diagnósticos de saúde mental. Menores de 18 anos são <span id="aps-menores"></span>.</p>
+    <p>O perfil é parecido nos dois serviços. Em 2021 e 2022, as mulheres eram cerca de um quinto dos atendimentos por jogo patológico na atenção primária e um terço dos pacientes no CAPS. Desde 2024 são quase metade nos dois. Entre os apostadores, segundo o DataSenado, elas são cerca de 38%: homens apostam mais e procuram menos tratamento.</p>
+    <p>Dois terços são adultos de 25 a 44 anos, uma concentração bem maior que entre os outros pacientes de saúde mental, e há poucos menores de idade (<span id="aps-menores"></span> na atenção primária, <span id="caps-menores"></span> no CAPS).</p>
   </div>
   <div class="duo">
     <div class="fig">
-      <div class="fig-title">Mulheres entre os atendimentos, por ano (%)</div>
+      <div class="fig-title">Atenção primária: mulheres entre os atendimentos (%)</div>
       <div class="legend"><span><i class="box" style="background:var(--s1)"></i>Jogo patológico</span><span><i style="background:var(--ink-2);height:2px"></i>Saúde mental em geral</span></div>
       <div id="ch-aps-mulheres"></div>
       <p class="small" style="margin:0">Antes de 2021 eram cerca de 10 atendimentos por jogo por mês, então a proporção oscila muito.</p>
     </div>
     <div class="fig">
-      <div class="fig-title">Atendimentos por faixa de idade, 2025–2026 (%)</div>
+      <div class="fig-title">Atenção primária: atendimentos por idade, 2025–2026 (%)</div>
       <div class="legend"><span><i class="box" style="background:var(--s1)"></i>Jogo patológico</span><span><i style="background:var(--ink-2);height:2px"></i>Saúde mental em geral</span></div>
       <div id="ch-aps-idade"></div>
     </div>
-  </div>
-  <p class="nota">Saúde mental em geral = atendimentos com CID de depressão, ansiedade, estresse, álcool ou esquizofrenia. Na atenção primária, o diagnóstico pode ser registrado pela CID-10 ou pela CIAP-2, a classificação própria da atenção básica. A CIAP-2 não tem código para jogo, então só aparecem aqui os atendimentos em que o profissional usou a CID. O número real deve ser maior.</p>
-</section>
-
-</div>
-
-<div id="aba-caps" role="tabpanel" aria-labelledby="tab-caps" hidden>
-
-<div class="tiles" id="tiles"></div>
-
-<section id="serie">
-  <div class="prose">
-    <h2>Busca por apostas e procura por tratamento</h2>
-    <p>As buscas por apostas no Google explodiram de 2021 a 2023. No CAPS, o jogo patológico quase não se mexeu nesse período. A alta começa em meados de 2024, cerca de um ano depois do pico das buscas, e acelera em 2025–2026, quando as buscas já estão caindo. Os outros transtornos de impulso (piromania, cleptomania, tricotilomania), que não têm relação com jogo, ficaram estáveis.</p>
-    <p>A aceleração coincide com a <b>CPI das Bets</b> do Senado (nov/2024 a jun/2025), que deu grande visibilidade ao tema, com depoimentos de donos de casas de apostas e de influenciadoras. Mais atenção pública ao problema pode ter levado mais gente a procurar ajuda.</p>
-  </div>
-  <div class="fig" id="fig-serie">
-    <div class="fig-title">Pessoas em acompanhamento nos CAPS, por mês</div>
-    <div class="legend"><span><i style="background:var(--s1)"></i>Jogo patológico <span class="cid">F63.0</span></span><span><i style="background:var(--ref)"></i>Outros transtornos de impulso <span class="cid">F63.1–F63.3</span></span><span><i class="box" style="background:var(--band-pand)"></i>Pandemia</span><span><i class="box" style="background:var(--band-cpi)"></i><a href="" class="lk-cpi" target="_blank" rel="noopener">CPI das Bets</a> (Senado, nov/2024–jun/2025)</span></div>
-    <div id="ch-caps"></div>
-    <div class="fig-title" style="margin-top:.8rem">Busca por apostas no Google, Brasil (0–100)</div>
-    <div class="legend"><span><i style="background:var(--s2)"></i>bet, apostas, betano, bet365, tigrinho</span></div>
-    <div id="ch-trends"></div>
-    <ol class="marcos" id="marcos"></ol>
-  </div>
-  <p class="nota">Os dois gráficos usam escalas diferentes e por isso estão separados. Pessoas distintas por mês, com F63.0 como diagnóstico principal ou associado. Meses com menos de 5 pessoas ficam em branco. Os dados do CAPS vão até jun/2026; os efeitos da proibição (MP 1.394) ainda não aparecem.</p>
-</section>
-
-<section id="perfil">
-  <div class="prose">
-    <h2>Quem está sendo atendido</h2>
-    <p>Em 2025, as mulheres eram <b id="caps-mulheres"></b> dos pacientes de jogo patológico nos CAPS, perto da proporção na saúde mental em geral (<span id="caps-mulheres-ref"></span>). Entre os apostadores, segundo o DataSenado, elas são cerca de 38%: homens apostam mais e procuram menos tratamento. Como na atenção primária, a participação delas caiu em 2021–2022 e voltou a subir desde então.</p>
-    <p>São sobretudo adultos de 25 a 44 anos, uma concentração bem maior que entre os pacientes de saúde mental em geral, e quase não há menores de idade.</p>
-  </div>
-  <div class="duo">
     <div class="fig">
-      <div class="fig-title">Mulheres entre os pacientes, por ano (%)</div>
-      <div class="legend"><span><i class="box" style="background:var(--s1)"></i>Jogo patológico</span><span><i style="background:var(--ink-2);height:2px"></i>Saúde mental em geral</span></div>
+      <div class="fig-title">CAPS: mulheres entre os pacientes (%)</div>
+      <div class="legend"><span><i class="box" style="background:var(--caps)"></i>Jogo patológico</span><span><i style="background:var(--ink-2);height:2px"></i>Saúde mental em geral</span></div>
       <div id="ch-caps-mulheres"></div>
       <p class="small" style="margin:0">Em 2026, só até junho.</p>
     </div>
     <div class="fig">
-      <div class="fig-title">Pacientes por faixa de idade, 2025–2026 (%)</div>
-      <div class="legend"><span><i class="box" style="background:var(--s1)"></i>Jogo patológico</span><span><i style="background:var(--ink-2);height:2px"></i>Saúde mental em geral</span></div>
+      <div class="fig-title">CAPS: pacientes por idade, 2025–2026 (%)</div>
+      <div class="legend"><span><i class="box" style="background:var(--caps)"></i>Jogo patológico</span><span><i style="background:var(--ink-2);height:2px"></i>Saúde mental em geral</span></div>
       <div id="ch-caps-idade"></div>
     </div>
   </div>
-  <p class="nota">Saúde mental em geral = todos os pacientes dos CAPS com diagnóstico do capítulo F da CID-10. Contagem em pacientes-mês: cada pessoa conta uma vez em cada mês em que foi atendida.</p>
+  <p class="nota">Saúde mental em geral: na atenção primária, os atendimentos com CID de depressão, ansiedade, estresse, álcool ou esquizofrenia; no CAPS, todos os pacientes com diagnóstico do capítulo F da CID-10, contados em pacientes-mês. Na atenção primária, o diagnóstico pode ser registrado pela CID-10 ou pela CIAP-2, a classificação própria da atenção básica. A CIAP-2 não tem código para jogo, então só aparecem aqui os atendimentos em que o profissional usou a CID. O número real deve ser maior.</p>
 </section>
 
 <section id="novos">
   <div class="prose">
-    <h2>Gente nova chegando, não diagnóstico trocado</h2>
+    <h2>No CAPS, gente nova chegando, não diagnóstico trocado</h2>
     <p>Uma explicação possível para a alta seria os profissionais passarem a registrar o jogo patológico em quem já estava em tratamento por outro motivo. Os dados não mostram isso. Entre as pessoas que recebem o diagnóstico de <span class="cid">F63.0</span> pela primeira vez, a fração que <b>não tinha nenhum atendimento no CAPS nos 12 meses anteriores</b> subiu de cerca de 60% para quase 80%.</p>
   </div>
   <div class="fig">
     <div class="fig-title">Pessoas que receberam F63.0 pela primeira vez, por ano</div>
-    <div class="legend"><span><i class="box" style="background:var(--s1)"></i>Novas no CAPS</span><span><i class="box" style="background:var(--s1-soft)"></i>Já estavam no CAPS com outro diagnóstico</span></div>
+    <div class="legend"><span><i class="box" style="background:var(--caps)"></i>Novas no CAPS</span><span><i class="box" style="background:var(--caps-soft)"></i>Já estavam no CAPS com outro diagnóstico</span></div>
     <div id="ch-novos"></div>
     <p class="small" style="margin:0">Rótulo acima da barra: % de novas. 2026 vai só até junho. "Novo no CAPS" não quer dizer caso novo de vício: a pessoa pode ter sido tratada antes na rede privada.</p>
   </div>
@@ -261,7 +233,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 
 <section id="trajetoria">
   <div class="prose">
-    <h2>O que aparece depois do diagnóstico</h2>
+    <h2>No CAPS, o que aparece depois do diagnóstico</h2>
     <p>Acompanhamos as <b id="traj-n"></b> pessoas que receberam o diagnóstico de jogo patológico no CAPS entre jan/2019 e jun/2025 e olhamos os 12 meses seguintes. <span id="traj-ans"></span> receberam um diagnóstico novo de ansiedade, <span id="traj-dep"></span> de depressão e <span id="traj-drog"></span> de uso de drogas. "Novo" quer dizer que esse diagnóstico não aparecia nos 12 meses anteriores.</p>
     <p>Para saber se isso é muito ou pouco, comparamos com quem chega ao CAPS por outros motivos, ajustando para a mesma composição de sexo e idade. O jogo patológico fica entre os dois mundos. A ansiedade e a depressão novas aparecem no mesmo patamar de quem já chega por ansiedade ou depressão, bem acima do que acontece com quem chega por álcool ou drogas. Já o uso de drogas novo é o dobro do que se vê entre quem chega por ansiedade ou depressão. A permanência também é a das dependências: só cerca de um terço ainda está no CAPS de 6 a 12 meses depois.</p>
   </div>
@@ -417,7 +389,7 @@ uv run python -m src.politica.congresso
       <li><b>MP 1.394/2026:</b> <a href="https://www12.senado.leg.br/publicacoes/estudos-legislativos/tipos-de-estudos/sumarios-de-proposicoes/mpv1394" target="_blank" rel="noopener">resumo do Senado</a>.</li>
       <li data-congresso><b>Votação de 2023:</b> <a href="https://www12.senado.leg.br/noticias/materias/2023/12/12/plenario-aprova-regulamentacao-das-bets-texto-volta-a-camara" target="_blank" rel="noopener">Agência Senado</a>; <a href="https://www.cnnbrasil.com.br/politica/governo-lula-foi-contra-proibir-do-jogo-do-tigrinho-em-2023/" target="_blank" rel="noopener">CNN Brasil</a>.</li>
       <li><b>CPI das Bets:</b> <a href="https://www12.senado.leg.br/radio/1/noticia/2024/11/12/cpi-das-bets-e-instalada-e-vai-investigar-influenciadores-donos-das-apostas-e-crime-de-lavagem-de-dinheiro" target="_blank" rel="noopener">instalação</a> e <a href="https://www12.senado.leg.br/noticias/materias/2025/06/12/cpi-das-bets-rejeita-relatorio-final" target="_blank" rel="noopener">encerramento</a> (Agência Senado).</li>
-      <li><b>Marcos regulatórios:</b> as notícias de cada marco estão linkadas abaixo dos gráficos das abas Atenção primária e CAPS.</li>
+      <li><b>Marcos regulatórios:</b> as notícias de cada marco estão linkadas abaixo do gráfico da aba Saúde mental.</li>
     </ul>
   </div>
 </section>
@@ -426,7 +398,7 @@ uv run python -m src.politica.congresso
 <footer>Dados: DATASUS (SIA-PS), SISAB, Google Trends, DataSenado<span data-congresso>, Câmara dos Deputados e Senado Federal</span>. <span id="rodape"></span></footer>
 </div>
 
-<script>const D = {"corte":"202606","choques":{"2018-12-12":"Lei 13.756 (legaliza quota fixa)","2023-12-29":"Lei 14.790 (regulação)","2024-10-01":"Bloqueio de sites não autorizados","2025-01-01":"Mercado regulado","2026-09-25":"MP 1.394 (proibição)"},"noticias":{"2018-12-12":["Agência Brasil","https://agenciabrasil.ebc.com.br/politica/noticia/2026-10/origem-das-bets-passa-por-lobby-estrangeiro-e-jabutis-no-congresso"],"2023-12-29":["Agência Senado","https://www12.senado.leg.br/noticias/materias/2024/01/05/regras-para-apostas-veja-o-que-muda-com-a-nova-lei"],"2024-10-01":["Agência Brasil","https://agenciabrasil.ebc.com.br/economia/noticia/2024-10/bets-nao-autorizadas-serao-suspensas-nesta-terca"],"2025-01-01":["CNN Brasil","https://www.cnnbrasil.com.br/economia/money/macroeconomia/mercado-regulado-de-bets-comeca-nesta-quarta-1o-veja-o-que-muda/"],"2026-09-25":["Agência Brasil","https://agenciabrasil.ebc.com.br/economia/noticia/2026-09/mp-proibe-bets-no-brasil-e-determina-devolucao-de-saldo-ao-apostador"]},"pandemia":["2020-03-01","2021-12-31"],"cpi":{"inicio":"2024-11-12","fim":"2025-06-12","url":"https://www12.senado.leg.br/radio/1/noticia/2024/11/12/cpi-das-bets-e-instalada-e-vai-investigar-influenciadores-donos-das-apostas-e-crime-de-lavagem-de-dinheiro"},"serie":{"caps":[{"cmp":"201801","f630":8,"placebo":56},{"cmp":"201802","f630":5,"placebo":63},{"cmp":"201803","f630":9,"placebo":72},{"cmp":"201804","f630":8,"placebo":76},{"cmp":"201805","f630":10,"placebo":74},{"cmp":"201806","f630":12,"placebo":61},{"cmp":"201807","f630":10,"placebo":63},{"cmp":"201808","f630":10,"placebo":63},{"cmp":"201809","f630":9,"placebo":71},{"cmp":"201810","f630":13,"placebo":66},{"cmp":"201811","f630":10,"placebo":81},{"cmp":"201812","f630":6,"placebo":61},{"cmp":"201901","f630":6,"placebo":58},{"cmp":"201902","f630":12,"placebo":71},{"cmp":"201903","f630":8,"placebo":60},{"cmp":"201904","f630":18,"placebo":63},{"cmp":"201905","f630":12,"placebo":58},{"cmp":"201906","f630":14,"placebo":57},{"cmp":"201907","f630":17,"placebo":76},{"cmp":"201908","f630":18,"placebo":71},{"cmp":"201909","f630":18,"placebo":69},{"cmp":"201910","f630":17,"placebo":78},{"cmp":"201911","f630":19,"placebo":71},{"cmp":"201912","f630":7,"placebo":65},{"cmp":"202001","f630":9,"placebo":66},{"cmp":"202002","f630":8,"placebo":71},{"cmp":"202003","f630":8,"placebo":72},{"cmp":"202004","f630":null,"placebo":52},{"cmp":"202005","f630":8,"placebo":58},{"cmp":"202006","f630":13,"placebo":49},{"cmp":"202007","f630":13,"placebo":58},{"cmp":"202008","f630":9,"placebo":58},{"cmp":"202009","f630":13,"placebo":63},{"cmp":"202010","f630":20,"placebo":54},{"cmp":"202011","f630":18,"placebo":63},{"cmp":"202012","f630":10,"placebo":52},{"cmp":"202101","f630":13,"placebo":53},{"cmp":"202102","f630":13,"placebo":60},{"cmp":"202103","f630":17,"placebo":61},{"cmp":"202104","f630":23,"placebo":54},{"cmp":"202105","f630":19,"placebo":51},{"cmp":"202106","f630":18,"placebo":73},{"cmp":"202107","f630":20,"placebo":65},{"cmp":"202108","f630":18,"placebo":70},{"cmp":"202109","f630":18,"placebo":63},{"cmp":"202110","f630":13,"placebo":62},{"cmp":"202111","f630":15,"placebo":61},{"cmp":"202112","f630":15,"placebo":68},{"cmp":"202201","f630":15,"placebo":66},{"cmp":"202202","f630":15,"placebo":66},{"cmp":"202203","f630":22,"placebo":77},{"cmp":"202204","f630":18,"placebo":72},{"cmp":"202205","f630":16,"placebo":66},{"cmp":"202206","f630":19,"placebo":66},{"cmp":"202207","f630":21,"placebo":71},{"cmp":"202208","f630":28,"placebo":84},{"cmp":"202209","f630":19,"placebo":63},{"cmp":"202210","f630":21,"placebo":71},{"cmp":"202211","f630":26,"placebo":73},{"cmp":"202212","f630":19,"placebo":57},{"cmp":"202301","f630":23,"placebo":67},{"cmp":"202302","f630":26,"placebo":57},{"cmp":"202303","f630":32,"placebo":74},{"cmp":"202304","f630":28,"placebo":63},{"cmp":"202305","f630":35,"placebo":68},{"cmp":"202306","f630":24,"placebo":72},{"cmp":"202307","f630":29,"placebo":78},{"cmp":"202308","f630":37,"placebo":70},{"cmp":"202309","f630":32,"placebo":66},{"cmp":"202310","f630":36,"placebo":78},{"cmp":"202311","f630":33,"placebo":69},{"cmp":"202312","f630":24,"placebo":68},{"cmp":"202401","f630":19,"placebo":62},{"cmp":"202402","f630":35,"placebo":79},{"cmp":"202403","f630":28,"placebo":68},{"cmp":"202404","f630":41,"placebo":52},{"cmp":"202405","f630":25,"placebo":60},{"cmp":"202406","f630":43,"placebo":80},{"cmp":"202407","f630":53,"placebo":77},{"cmp":"202408","f630":61,"placebo":74},{"cmp":"202409","f630":76,"placebo":80},{"cmp":"202410","f630":77,"placebo":71},{"cmp":"202411","f630":67,"placebo":54},{"cmp":"202412","f630":68,"placebo":59},{"cmp":"202501","f630":69,"placebo":51},{"cmp":"202502","f630":72,"placebo":46},{"cmp":"202503","f630":80,"placebo":63},{"cmp":"202504","f630":119,"placebo":65},{"cmp":"202505","f630":111,"placebo":67},{"cmp":"202506","f630":117,"placebo":75},{"cmp":"202507","f630":148,"placebo":61},{"cmp":"202508","f630":148,"placebo":74},{"cmp":"202509","f630":194,"placebo":74},{"cmp":"202510","f630":193,"placebo":72},{"cmp":"202511","f630":201,"placebo":62},{"cmp":"202512","f630":182,"placebo":53},{"cmp":"202601","f630":176,"placebo":63},{"cmp":"202602","f630":203,"placebo":63},{"cmp":"202603","f630":275,"placebo":70},{"cmp":"202604","f630":254,"placebo":65},{"cmp":"202605","f630":269,"placebo":74},{"cmp":"202606","f630":280,"placebo":74}],"trends":[{"cmp":"201801","trends":3},{"cmp":"201802","trends":3},{"cmp":"201803","trends":3},{"cmp":"201804","trends":4},{"cmp":"201805","trends":4},{"cmp":"201806","trends":4},{"cmp":"201807","trends":4},{"cmp":"201808","trends":4},{"cmp":"201809","trends":4},{"cmp":"201810","trends":4},{"cmp":"201811","trends":4},{"cmp":"201812","trends":4},{"cmp":"201901","trends":4},{"cmp":"201902","trends":4},{"cmp":"201903","trends":5},{"cmp":"201904","trends":5},{"cmp":"201905","trends":6},{"cmp":"201906","trends":6},{"cmp":"201907","trends":6},{"cmp":"201908","trends":7},{"cmp":"201909","trends":7},{"cmp":"201910","trends":7},{"cmp":"201911","trends":8},{"cmp":"201912","trends":8},{"cmp":"202001","trends":7},{"cmp":"202002","trends":8},{"cmp":"202003","trends":6},{"cmp":"202004","trends":3},{"cmp":"202005","trends":4},{"cmp":"202006","trends":6},{"cmp":"202007","trends":8},{"cmp":"202008","trends":11},{"cmp":"202009","trends":11},{"cmp":"202010","trends":11},{"cmp":"202011","trends":12},{"cmp":"202012","trends":13},{"cmp":"202101","trends":14},{"cmp":"202102","trends":14},{"cmp":"202103","trends":14},{"cmp":"202104","trends":17},{"cmp":"202105","trends":19},{"cmp":"202106","trends":21},{"cmp":"202107","trends":23},{"cmp":"202108","trends":22},{"cmp":"202109","trends":30},{"cmp":"202110","trends":33},{"cmp":"202111","trends":34},{"cmp":"202112","trends":33},{"cmp":"202201","trends":29},{"cmp":"202202","trends":39},{"cmp":"202203","trends":39},{"cmp":"202204","trends":55},{"cmp":"202205","trends":60},{"cmp":"202206","trends":63},{"cmp":"202207","trends":69},{"cmp":"202208","trends":74},{"cmp":"202209","trends":76},{"cmp":"202210","trends":81},{"cmp":"202211","trends":96},{"cmp":"202212","trends":89},{"cmp":"202301","trends":81},{"cmp":"202302","trends":95},{"cmp":"202303","trends":84},{"cmp":"202304","trends":99},{"cmp":"202305","trends":100},{"cmp":"202306","trends":90},{"cmp":"202307","trends":93},{"cmp":"202308","trends":99},{"cmp":"202309","trends":98},{"cmp":"202310","trends":100},{"cmp":"202311","trends":94},{"cmp":"202312","trends":93},{"cmp":"202401","trends":78},{"cmp":"202402","trends":68},{"cmp":"202403","trends":68},{"cmp":"202404","trends":75},{"cmp":"202405","trends":76},{"cmp":"202406","trends":76},{"cmp":"202407","trends":81},{"cmp":"202408","trends":74},{"cmp":"202409","trends":70},{"cmp":"202410","trends":61},{"cmp":"202411","trends":56},{"cmp":"202412","trends":56},{"cmp":"202501","trends":48},{"cmp":"202502","trends":47},{"cmp":"202503","trends":47},{"cmp":"202504","trends":53},{"cmp":"202505","trends":52},{"cmp":"202506","trends":52},{"cmp":"202507","trends":53},{"cmp":"202508","trends":51},{"cmp":"202509","trends":51},{"cmp":"202510","trends":55},{"cmp":"202511","trends":51},{"cmp":"202512","trends":54},{"cmp":"202601","trends":50},{"cmp":"202602","trends":55},{"cmp":"202603","trends":54},{"cmp":"202604","trends":56},{"cmp":"202605","trends":56},{"cmp":"202606","trends":56},{"cmp":"202607","trends":46},{"cmp":"202608","trends":39},{"cmp":"202609","trends":40},{"cmp":"202610","trends":13}]},"anual":[{"ano":2018,"f630":46,"placebo":296,"meses":12},{"ano":2019,"f630":67,"placebo":283,"meses":12},{"ano":2020,"f630":63,"placebo":269,"meses":12},{"ano":2021,"f630":81,"placebo":314,"meses":12},{"ano":2022,"f630":124,"placebo":338,"meses":12},{"ano":2023,"f630":158,"placebo":311,"meses":12},{"ano":2024,"f630":299,"placebo":328,"meses":12},{"ano":2025,"f630":856,"placebo":338,"meses":12},{"ano":2026,"f630":849,"placebo":216,"meses":6}],"novos":[{"ano":2019,"novos":35,"ja":19},{"ano":2020,"novos":20,"ja":20},{"ano":2021,"novos":38,"ja":24},{"ano":2022,"novos":63,"ja":36},{"ano":2023,"novos":80,"ja":41},{"ano":2024,"novos":178,"ja":74},{"ano":2025,"novos":526,"ja":229},{"ano":2026,"novos":495,"ja":140}],"perfil":[{"sexo":"F","faixa":"0-17","f630_2022":11,"f630_2025":17,"mental_2022":361528,"mental_2025":483119,"pct_f630_2025":1.040391676866585,"pct_mental_2025":9.011973272183907,"cresc_f630":1.5454545454545454,"cresc_mental":1.336325263879976},{"sexo":"F","faixa":"18-24","f630_2022":9,"f630_2025":110,"mental_2022":216383,"mental_2025":268314,"pct_f630_2025":6.731946144430845,"pct_mental_2025":5.005057959949314,"cresc_f630":12.222222222222221,"cresc_mental":1.2399957482796709},{"sexo":"F","faixa":"25-34","f630_2022":14,"f630_2025":322,"mental_2022":372100,"mental_2025":479284,"pct_f630_2025":19.7062423500612,"pct_mental_2025":8.940436202644465,"cresc_f630":23.0,"cresc_mental":1.288051599032518},{"sexo":"F","faixa":"35-44","f630_2022":9,"f630_2025":179,"mental_2022":457908,"mental_2025":592479,"pct_f630_2025":10.954712362301102,"pct_mental_2025":11.051945612427266,"cresc_f630":19.88888888888889,"cresc_mental":1.2938821772059017},{"sexo":"F","faixa":"45-59","f630_2022":20,"f630_2025":106,"mental_2022":512208,"mental_2025":669077,"pct_f630_2025":6.487148102815178,"pct_mental_2025":12.480784322357415,"cresc_f630":5.3,"cresc_mental":1.3062603473588854},{"sexo":"F","faixa":"60+","f630_2022":14,"f630_2025":37,"mental_2022":160779,"mental_2025":207661,"pct_f630_2025":2.2643818849449207,"pct_mental_2025":3.873653037191628,"cresc_f630":2.642857142857143,"cresc_mental":1.291592807518395},{"sexo":"M","faixa":"0-17","f630_2022":24,"f630_2025":50,"mental_2022":461167,"mental_2025":701364,"pct_f630_2025":3.0599755201958385,"pct_mental_2025":13.083057429064047,"cresc_f630":2.0833333333333335,"cresc_mental":1.5208460275778624},{"sexo":"M","faixa":"18-24","f630_2022":26,"f630_2025":139,"mental_2022":272071,"mental_2025":316597,"pct_f630_2025":8.50673194614443,"pct_mental_2025":5.905716194257747,"cresc_f630":5.346153846153846,"cresc_mental":1.1636558104318357},{"sexo":"M","faixa":"25-34","f630_2022":38,"f630_2025":309,"mental_2022":390840,"mental_2025":484551,"pct_f630_2025":18.910648714810282,"pct_mental_2025":9.038685419141007,"cresc_f630":8.131578947368421,"cresc_mental":1.2397681915873504},{"sexo":"M","faixa":"35-44","f630_2022":28,"f630_2025":221,"mental_2022":396400,"mental_2025":496533,"pct_f630_2025":13.525091799265606,"pct_mental_2025":9.262194458833727,"cresc_f630":7.892857142857143,"cresc_mental":1.2526059535822403},{"sexo":"M","faixa":"45-59","f630_2022":29,"f630_2025":111,"mental_2022":401383,"mental_2025":512031,"pct_f630_2025":6.7931456548347615,"pct_mental_2025":9.551290026949049,"cresc_f630":3.8275862068965516,"cresc_mental":1.2756668817563275},{"sexo":"M","faixa":"60+","f630_2022":17,"f630_2025":33,"mental_2022":113386,"mental_2025":149847,"pct_f630_2025":2.0195838433292534,"pct_mental_2025":2.795206065000428,"cresc_f630":1.9411764705882353,"cresc_mental":1.3215652726086113}],"mulheres":{"f630_2025":47.184822521419825,"mental_2025":50.363850406754},"caps_perfil":{"mulheres":[{"ano":2018,"pct":47.3,"ref":47.1},{"ano":2019,"pct":43.4,"ref":48.1},{"ano":2020,"pct":51.9,"ref":49.0},{"ano":2021,"pct":36.6,"ref":50.1},{"ano":2022,"pct":32.2,"ref":50.6},{"ano":2023,"pct":38.7,"ref":50.3},{"ano":2024,"pct":45.5,"ref":50.2},{"ano":2025,"pct":47.2,"ref":50.4},{"ano":2026,"pct":43.5,"ref":50.5}],"faixas":{"jogo":{"25-34":40.1,"18-24":14.6,"35-44":25.7,"60+":3.3,"45-59":12.2,"0-17":4.1},"ref":{"60+":6.7,"45-59":22.1,"18-24":10.9,"0-17":22.0,"35-44":20.4,"25-34":18.0}}},"aps":{"mensal":[{"cmp":"201801","jogo":34,"placebo":51,"por10mil":7.58},{"cmp":"201802","jogo":11,"placebo":57,"por10mil":2.51},{"cmp":"201803","jogo":5,"placebo":82,"por10mil":0.95},{"cmp":"201804","jogo":6,"placebo":84,"por10mil":1.22},{"cmp":"201805","jogo":15,"placebo":80,"por10mil":2.9},{"cmp":"201806","jogo":5,"placebo":83,"por10mil":0.95},{"cmp":"201807","jogo":5,"placebo":72,"por10mil":0.89},{"cmp":"201808","jogo":10,"placebo":106,"por10mil":1.55},{"cmp":"201809","jogo":null,"placebo":88,"por10mil":null},{"cmp":"201810","jogo":18,"placebo":94,"por10mil":1.93},{"cmp":"201811","jogo":14,"placebo":80,"por10mil":2.21},{"cmp":"201812","jogo":5,"placebo":61,"por10mil":1.12},{"cmp":"201901","jogo":8,"placebo":81,"por10mil":1.44},{"cmp":"201902","jogo":10,"placebo":112,"por10mil":1.68},{"cmp":"201903","jogo":12,"placebo":76,"por10mil":2.4},{"cmp":"201904","jogo":9,"placebo":76,"por10mil":1.56},{"cmp":"201905","jogo":15,"placebo":88,"por10mil":2.19},{"cmp":"201906","jogo":11,"placebo":106,"por10mil":1.87},{"cmp":"201907","jogo":6,"placebo":107,"por10mil":0.78},{"cmp":"201908","jogo":10,"placebo":119,"por10mil":1.18},{"cmp":"201909","jogo":13,"placebo":93,"por10mil":1.74},{"cmp":"201910","jogo":13,"placebo":151,"por10mil":1.56},{"cmp":"201911","jogo":19,"placebo":94,"por10mil":2.56},{"cmp":"201912","jogo":10,"placebo":72,"por10mil":1.67},{"cmp":"202001","jogo":11,"placebo":98,"por10mil":1.7},{"cmp":"202002","jogo":10,"placebo":78,"por10mil":1.51},{"cmp":"202003","jogo":6,"placebo":71,"por10mil":0.83},{"cmp":"202004","jogo":null,"placebo":29,"por10mil":null},{"cmp":"202005","jogo":7,"placebo":54,"por10mil":1.06},{"cmp":"202006","jogo":6,"placebo":61,"por10mil":0.82},{"cmp":"202007","jogo":12,"placebo":94,"por10mil":1.45},{"cmp":"202008","jogo":9,"placebo":98,"por10mil":1.08},{"cmp":"202009","jogo":10,"placebo":108,"por10mil":1.08},{"cmp":"202010","jogo":12,"placebo":118,"por10mil":1.37},{"cmp":"202011","jogo":14,"placebo":113,"por10mil":1.65},{"cmp":"202012","jogo":12,"placebo":75,"por10mil":1.62},{"cmp":"202101","jogo":17,"placebo":66,"por10mil":2.22},{"cmp":"202102","jogo":15,"placebo":88,"por10mil":1.82},{"cmp":"202103","jogo":16,"placebo":84,"por10mil":1.67},{"cmp":"202104","jogo":15,"placebo":104,"por10mil":1.71},{"cmp":"202105","jogo":17,"placebo":115,"por10mil":1.87},{"cmp":"202106","jogo":15,"placebo":126,"por10mil":1.6},{"cmp":"202107","jogo":18,"placebo":139,"por10mil":1.83},{"cmp":"202108","jogo":22,"placebo":134,"por10mil":1.96},{"cmp":"202109","jogo":13,"placebo":148,"por10mil":1.2},{"cmp":"202110","jogo":7,"placebo":110,"por10mil":0.69},{"cmp":"202111","jogo":14,"placebo":123,"por10mil":1.33},{"cmp":"202112","jogo":16,"placebo":118,"por10mil":1.66},{"cmp":"202201","jogo":15,"placebo":93,"por10mil":1.79},{"cmp":"202202","jogo":21,"placebo":119,"por10mil":2.19},{"cmp":"202203","jogo":12,"placebo":135,"por10mil":1.02},{"cmp":"202204","jogo":17,"placebo":124,"por10mil":1.68},{"cmp":"202205","jogo":20,"placebo":159,"por10mil":1.69},{"cmp":"202206","jogo":10,"placebo":137,"por10mil":0.94},{"cmp":"202207","jogo":12,"placebo":138,"por10mil":1.08},{"cmp":"202208","jogo":24,"placebo":184,"por10mil":1.8},{"cmp":"202209","jogo":30,"placebo":172,"por10mil":2.39},{"cmp":"202210","jogo":28,"placebo":135,"por10mil":2.33},{"cmp":"202211","jogo":19,"placebo":135,"por10mil":1.59},{"cmp":"202212","jogo":20,"placebo":101,"por10mil":1.94},{"cmp":"202301","jogo":32,"placebo":135,"por10mil":2.47},{"cmp":"202302","jogo":28,"placebo":133,"por10mil":2.36},{"cmp":"202303","jogo":27,"placebo":194,"por10mil":1.77},{"cmp":"202304","jogo":33,"placebo":164,"por10mil":2.63},{"cmp":"202305","jogo":60,"placebo":224,"por10mil":4.07},{"cmp":"202306","jogo":52,"placebo":174,"por10mil":3.81},{"cmp":"202307","jogo":76,"placebo":164,"por10mil":5.36},{"cmp":"202308","jogo":101,"placebo":228,"por10mil":5.96},{"cmp":"202309","jogo":97,"placebo":183,"por10mil":6.64},{"cmp":"202310","jogo":72,"placebo":209,"por10mil":4.58},{"cmp":"202311","jogo":59,"placebo":186,"por10mil":3.95},{"cmp":"202312","jogo":59,"placebo":155,"por10mil":4.55},{"cmp":"202401","jogo":76,"placebo":215,"por10mil":4.94},{"cmp":"202402","jogo":77,"placebo":197,"por10mil":5.41},{"cmp":"202403","jogo":79,"placebo":211,"por10mil":5.37},{"cmp":"202404","jogo":100,"placebo":225,"por10mil":5.87},{"cmp":"202405","jogo":64,"placebo":238,"por10mil":4.16},{"cmp":"202406","jogo":97,"placebo":234,"por10mil":6.18},{"cmp":"202407","jogo":132,"placebo":245,"por10mil":7.92},{"cmp":"202408","jogo":153,"placebo":221,"por10mil":8.84},{"cmp":"202409","jogo":170,"placebo":265,"por10mil":10.11},{"cmp":"202410","jogo":186,"placebo":273,"por10mil":10.56},{"cmp":"202411","jogo":163,"placebo":233,"por10mil":10.59},{"cmp":"202412","jogo":136,"placebo":165,"por10mil":10.6},{"cmp":"202501","jogo":176,"placebo":239,"por10mil":10.71},{"cmp":"202502","jogo":164,"placebo":239,"por10mil":9.7},{"cmp":"202503","jogo":162,"placebo":245,"por10mil":10.15},{"cmp":"202504","jogo":230,"placebo":256,"por10mil":12.92},{"cmp":"202505","jogo":245,"placebo":276,"por10mil":13.36},{"cmp":"202506","jogo":238,"placebo":238,"por10mil":13.64},{"cmp":"202507","jogo":384,"placebo":295,"por10mil":18.93},{"cmp":"202508","jogo":372,"placebo":314,"por10mil":18.25},{"cmp":"202509","jogo":375,"placebo":335,"por10mil":16.95},{"cmp":"202510","jogo":423,"placebo":290,"por10mil":19.01},{"cmp":"202511","jogo":362,"placebo":263,"por10mil":18.53},{"cmp":"202512","jogo":292,"placebo":222,"por10mil":16.47},{"cmp":"202601","jogo":374,"placebo":258,"por10mil":18.78},{"cmp":"202602","jogo":449,"placebo":263,"por10mil":23.39},{"cmp":"202603","jogo":636,"placebo":358,"por10mil":26.28},{"cmp":"202604","jogo":503,"placebo":337,"por10mil":22.82},{"cmp":"202605","jogo":543,"placebo":326,"por10mil":23.57},{"cmp":"202606","jogo":557,"placebo":341,"por10mil":24.27},{"cmp":"202607","jogo":748,"placebo":388,"por10mil":29.16},{"cmp":"202608","jogo":862,"placebo":368,"por10mil":34.02},{"cmp":"202609","jogo":824,"placebo":407,"por10mil":33.8}],"anual":[{"ano":2018,"jogo_mes":10.8,"por10mil":1.9,"ref_mes":57376.9,"meses":12},{"ano":2019,"jogo_mes":11.3,"por10mil":1.7,"ref_mes":67002.8,"meses":12},{"ano":2020,"jogo_mes":9.2,"por10mil":1.2,"ref_mes":75819.0,"meses":12},{"ano":2021,"jogo_mes":15.4,"por10mil":1.6,"ref_mes":95866.2,"meses":12},{"ano":2022,"jogo_mes":19.0,"por10mil":1.7,"ref_mes":111277.8,"meses":12},{"ano":2023,"jogo_mes":58.0,"por10mil":4.1,"ref_mes":141959.2,"meses":12},{"ano":2024,"jogo_mes":119.4,"por10mil":7.6,"ref_mes":157545.0,"meses":12},{"ano":2025,"jogo_mes":285.2,"por10mil":15.2,"ref_mes":187646.3,"meses":12},{"ano":2026,"jogo_mes":610.7,"por10mil":26.6,"ref_mes":229688.9,"meses":9}],"faixas":{"jogo":{"18-24":15.0,"60+":2.8,"45-59":11.2,"25-34":39.0,"35-44":26.6,"0-17":5.5},"ref":{"35-44":18.2,"0-17":6.4,"18-24":7.2,"45-59":29.4,"25-34":14.0,"60+":24.9}},"mulheres":[{"ano":2018,"pct":41.9,"ref":69.0},{"ano":2019,"pct":31.1,"ref":70.6},{"ano":2020,"pct":32.4,"ref":70.3},{"ano":2021,"pct":22.2,"ref":70.6},{"ano":2022,"pct":21.9,"ref":70.2},{"ano":2023,"pct":39.2,"ref":70.0},{"ano":2024,"pct":46.1,"ref":70.2},{"ano":2025,"pct":46.5,"ref":70.2},{"ano":2026,"pct":47.9,"ref":70.7}],"fim":"202609"},"trajetorias":{"1":{"n":915,"n6":7.9,"n5":6.9,"n3":4.9,"n2":1.9,"fica":31.8},"2":{"n":401401,"n6":2.4,"n5":3.7,"n3":14.4,"n2":0.0,"fica":34.4},"3":{"n":663591,"n6":1.9,"n5":2.8,"n3":0.0,"n2":7.1,"fica":31.1},"5":{"n":1027401,"n6":7.9,"n5":0.0,"n3":2.3,"n2":1.6,"fica":38.4},"6":{"n":890065,"n6":0.0,"n5":9.0,"n3":1.8,"n2":1.3,"fica":32.6}},"congresso":null};</script>
+<script>const D = {"corte":"202606","choques":{"2018-12-12":"Lei 13.756 (legaliza quota fixa)","2023-12-29":"Lei 14.790 (regulação)","2024-10-01":"Bloqueio de sites não autorizados","2025-01-01":"Mercado regulado","2026-09-25":"MP 1.394 (proibição)"},"noticias":{"2018-12-12":["Agência Brasil","https://agenciabrasil.ebc.com.br/politica/noticia/2026-10/origem-das-bets-passa-por-lobby-estrangeiro-e-jabutis-no-congresso"],"2023-12-29":["Agência Senado","https://www12.senado.leg.br/noticias/materias/2024/01/05/regras-para-apostas-veja-o-que-muda-com-a-nova-lei"],"2024-10-01":["Agência Brasil","https://agenciabrasil.ebc.com.br/economia/noticia/2024-10/bets-nao-autorizadas-serao-suspensas-nesta-terca"],"2025-01-01":["CNN Brasil","https://www.cnnbrasil.com.br/economia/money/macroeconomia/mercado-regulado-de-bets-comeca-nesta-quarta-1o-veja-o-que-muda/"],"2026-09-25":["Agência Brasil","https://agenciabrasil.ebc.com.br/economia/noticia/2026-09/mp-proibe-bets-no-brasil-e-determina-devolucao-de-saldo-ao-apostador"]},"pandemia":["2020-03-01","2021-12-31"],"cpi":{"inicio":"2024-11-12","fim":"2025-06-12","url":"https://www12.senado.leg.br/radio/1/noticia/2024/11/12/cpi-das-bets-e-instalada-e-vai-investigar-influenciadores-donos-das-apostas-e-crime-de-lavagem-de-dinheiro"},"serie":{"caps":[{"cmp":"201801","f630":8,"placebo":56},{"cmp":"201802","f630":5,"placebo":63},{"cmp":"201803","f630":9,"placebo":72},{"cmp":"201804","f630":8,"placebo":76},{"cmp":"201805","f630":10,"placebo":74},{"cmp":"201806","f630":12,"placebo":61},{"cmp":"201807","f630":10,"placebo":63},{"cmp":"201808","f630":10,"placebo":63},{"cmp":"201809","f630":9,"placebo":71},{"cmp":"201810","f630":13,"placebo":66},{"cmp":"201811","f630":10,"placebo":81},{"cmp":"201812","f630":6,"placebo":61},{"cmp":"201901","f630":6,"placebo":58},{"cmp":"201902","f630":12,"placebo":71},{"cmp":"201903","f630":8,"placebo":60},{"cmp":"201904","f630":18,"placebo":63},{"cmp":"201905","f630":12,"placebo":58},{"cmp":"201906","f630":14,"placebo":57},{"cmp":"201907","f630":17,"placebo":76},{"cmp":"201908","f630":18,"placebo":71},{"cmp":"201909","f630":18,"placebo":69},{"cmp":"201910","f630":17,"placebo":78},{"cmp":"201911","f630":19,"placebo":71},{"cmp":"201912","f630":7,"placebo":65},{"cmp":"202001","f630":9,"placebo":66},{"cmp":"202002","f630":8,"placebo":71},{"cmp":"202003","f630":8,"placebo":72},{"cmp":"202004","f630":null,"placebo":52},{"cmp":"202005","f630":8,"placebo":58},{"cmp":"202006","f630":13,"placebo":49},{"cmp":"202007","f630":13,"placebo":58},{"cmp":"202008","f630":9,"placebo":58},{"cmp":"202009","f630":13,"placebo":63},{"cmp":"202010","f630":20,"placebo":54},{"cmp":"202011","f630":18,"placebo":63},{"cmp":"202012","f630":10,"placebo":52},{"cmp":"202101","f630":13,"placebo":53},{"cmp":"202102","f630":13,"placebo":60},{"cmp":"202103","f630":17,"placebo":61},{"cmp":"202104","f630":23,"placebo":54},{"cmp":"202105","f630":19,"placebo":51},{"cmp":"202106","f630":18,"placebo":73},{"cmp":"202107","f630":20,"placebo":65},{"cmp":"202108","f630":18,"placebo":70},{"cmp":"202109","f630":18,"placebo":63},{"cmp":"202110","f630":13,"placebo":62},{"cmp":"202111","f630":15,"placebo":61},{"cmp":"202112","f630":15,"placebo":68},{"cmp":"202201","f630":15,"placebo":66},{"cmp":"202202","f630":15,"placebo":66},{"cmp":"202203","f630":22,"placebo":77},{"cmp":"202204","f630":18,"placebo":72},{"cmp":"202205","f630":16,"placebo":66},{"cmp":"202206","f630":19,"placebo":66},{"cmp":"202207","f630":21,"placebo":71},{"cmp":"202208","f630":28,"placebo":84},{"cmp":"202209","f630":19,"placebo":63},{"cmp":"202210","f630":21,"placebo":71},{"cmp":"202211","f630":26,"placebo":73},{"cmp":"202212","f630":19,"placebo":57},{"cmp":"202301","f630":23,"placebo":67},{"cmp":"202302","f630":26,"placebo":57},{"cmp":"202303","f630":32,"placebo":74},{"cmp":"202304","f630":28,"placebo":63},{"cmp":"202305","f630":35,"placebo":68},{"cmp":"202306","f630":24,"placebo":72},{"cmp":"202307","f630":29,"placebo":78},{"cmp":"202308","f630":37,"placebo":70},{"cmp":"202309","f630":32,"placebo":66},{"cmp":"202310","f630":36,"placebo":78},{"cmp":"202311","f630":33,"placebo":69},{"cmp":"202312","f630":24,"placebo":68},{"cmp":"202401","f630":19,"placebo":62},{"cmp":"202402","f630":35,"placebo":79},{"cmp":"202403","f630":28,"placebo":68},{"cmp":"202404","f630":41,"placebo":52},{"cmp":"202405","f630":25,"placebo":60},{"cmp":"202406","f630":43,"placebo":80},{"cmp":"202407","f630":53,"placebo":77},{"cmp":"202408","f630":61,"placebo":74},{"cmp":"202409","f630":76,"placebo":80},{"cmp":"202410","f630":77,"placebo":71},{"cmp":"202411","f630":67,"placebo":54},{"cmp":"202412","f630":68,"placebo":59},{"cmp":"202501","f630":69,"placebo":51},{"cmp":"202502","f630":72,"placebo":46},{"cmp":"202503","f630":80,"placebo":63},{"cmp":"202504","f630":119,"placebo":65},{"cmp":"202505","f630":111,"placebo":67},{"cmp":"202506","f630":117,"placebo":75},{"cmp":"202507","f630":148,"placebo":61},{"cmp":"202508","f630":148,"placebo":74},{"cmp":"202509","f630":194,"placebo":74},{"cmp":"202510","f630":193,"placebo":72},{"cmp":"202511","f630":201,"placebo":62},{"cmp":"202512","f630":182,"placebo":53},{"cmp":"202601","f630":176,"placebo":63},{"cmp":"202602","f630":203,"placebo":63},{"cmp":"202603","f630":275,"placebo":70},{"cmp":"202604","f630":254,"placebo":65},{"cmp":"202605","f630":269,"placebo":74},{"cmp":"202606","f630":280,"placebo":74}],"trends":[{"cmp":"201801","trends":3},{"cmp":"201802","trends":3},{"cmp":"201803","trends":3},{"cmp":"201804","trends":4},{"cmp":"201805","trends":4},{"cmp":"201806","trends":4},{"cmp":"201807","trends":4},{"cmp":"201808","trends":4},{"cmp":"201809","trends":4},{"cmp":"201810","trends":4},{"cmp":"201811","trends":4},{"cmp":"201812","trends":4},{"cmp":"201901","trends":4},{"cmp":"201902","trends":4},{"cmp":"201903","trends":5},{"cmp":"201904","trends":5},{"cmp":"201905","trends":6},{"cmp":"201906","trends":6},{"cmp":"201907","trends":6},{"cmp":"201908","trends":7},{"cmp":"201909","trends":7},{"cmp":"201910","trends":7},{"cmp":"201911","trends":8},{"cmp":"201912","trends":8},{"cmp":"202001","trends":7},{"cmp":"202002","trends":8},{"cmp":"202003","trends":6},{"cmp":"202004","trends":3},{"cmp":"202005","trends":4},{"cmp":"202006","trends":6},{"cmp":"202007","trends":8},{"cmp":"202008","trends":11},{"cmp":"202009","trends":11},{"cmp":"202010","trends":11},{"cmp":"202011","trends":12},{"cmp":"202012","trends":13},{"cmp":"202101","trends":14},{"cmp":"202102","trends":14},{"cmp":"202103","trends":14},{"cmp":"202104","trends":17},{"cmp":"202105","trends":19},{"cmp":"202106","trends":21},{"cmp":"202107","trends":23},{"cmp":"202108","trends":22},{"cmp":"202109","trends":30},{"cmp":"202110","trends":33},{"cmp":"202111","trends":34},{"cmp":"202112","trends":33},{"cmp":"202201","trends":29},{"cmp":"202202","trends":39},{"cmp":"202203","trends":39},{"cmp":"202204","trends":55},{"cmp":"202205","trends":60},{"cmp":"202206","trends":63},{"cmp":"202207","trends":69},{"cmp":"202208","trends":74},{"cmp":"202209","trends":76},{"cmp":"202210","trends":81},{"cmp":"202211","trends":96},{"cmp":"202212","trends":89},{"cmp":"202301","trends":81},{"cmp":"202302","trends":95},{"cmp":"202303","trends":84},{"cmp":"202304","trends":99},{"cmp":"202305","trends":100},{"cmp":"202306","trends":90},{"cmp":"202307","trends":93},{"cmp":"202308","trends":99},{"cmp":"202309","trends":98},{"cmp":"202310","trends":100},{"cmp":"202311","trends":94},{"cmp":"202312","trends":93},{"cmp":"202401","trends":78},{"cmp":"202402","trends":68},{"cmp":"202403","trends":68},{"cmp":"202404","trends":75},{"cmp":"202405","trends":76},{"cmp":"202406","trends":76},{"cmp":"202407","trends":81},{"cmp":"202408","trends":74},{"cmp":"202409","trends":70},{"cmp":"202410","trends":61},{"cmp":"202411","trends":56},{"cmp":"202412","trends":56},{"cmp":"202501","trends":48},{"cmp":"202502","trends":47},{"cmp":"202503","trends":47},{"cmp":"202504","trends":53},{"cmp":"202505","trends":52},{"cmp":"202506","trends":52},{"cmp":"202507","trends":53},{"cmp":"202508","trends":51},{"cmp":"202509","trends":51},{"cmp":"202510","trends":55},{"cmp":"202511","trends":51},{"cmp":"202512","trends":54},{"cmp":"202601","trends":50},{"cmp":"202602","trends":55},{"cmp":"202603","trends":54},{"cmp":"202604","trends":56},{"cmp":"202605","trends":56},{"cmp":"202606","trends":56},{"cmp":"202607","trends":46},{"cmp":"202608","trends":39},{"cmp":"202609","trends":40},{"cmp":"202610","trends":13}]},"anual":[{"ano":2018,"f630":46,"placebo":296,"meses":12},{"ano":2019,"f630":67,"placebo":283,"meses":12},{"ano":2020,"f630":63,"placebo":269,"meses":12},{"ano":2021,"f630":81,"placebo":314,"meses":12},{"ano":2022,"f630":124,"placebo":338,"meses":12},{"ano":2023,"f630":158,"placebo":311,"meses":12},{"ano":2024,"f630":299,"placebo":328,"meses":12},{"ano":2025,"f630":856,"placebo":338,"meses":12},{"ano":2026,"f630":849,"placebo":216,"meses":6}],"novos":[{"ano":2019,"novos":35,"ja":19},{"ano":2020,"novos":20,"ja":20},{"ano":2021,"novos":38,"ja":24},{"ano":2022,"novos":63,"ja":36},{"ano":2023,"novos":80,"ja":41},{"ano":2024,"novos":178,"ja":74},{"ano":2025,"novos":526,"ja":229},{"ano":2026,"novos":495,"ja":140}],"perfil":[{"sexo":"F","faixa":"0-17","f630_2022":11,"f630_2025":17,"mental_2022":361528,"mental_2025":483119,"pct_f630_2025":1.040391676866585,"pct_mental_2025":9.011973272183907,"cresc_f630":1.5454545454545454,"cresc_mental":1.336325263879976},{"sexo":"F","faixa":"18-24","f630_2022":9,"f630_2025":110,"mental_2022":216383,"mental_2025":268314,"pct_f630_2025":6.731946144430845,"pct_mental_2025":5.005057959949314,"cresc_f630":12.222222222222221,"cresc_mental":1.2399957482796709},{"sexo":"F","faixa":"25-34","f630_2022":14,"f630_2025":322,"mental_2022":372100,"mental_2025":479284,"pct_f630_2025":19.7062423500612,"pct_mental_2025":8.940436202644465,"cresc_f630":23.0,"cresc_mental":1.288051599032518},{"sexo":"F","faixa":"35-44","f630_2022":9,"f630_2025":179,"mental_2022":457908,"mental_2025":592479,"pct_f630_2025":10.954712362301102,"pct_mental_2025":11.051945612427266,"cresc_f630":19.88888888888889,"cresc_mental":1.2938821772059017},{"sexo":"F","faixa":"45-59","f630_2022":20,"f630_2025":106,"mental_2022":512208,"mental_2025":669077,"pct_f630_2025":6.487148102815178,"pct_mental_2025":12.480784322357415,"cresc_f630":5.3,"cresc_mental":1.3062603473588854},{"sexo":"F","faixa":"60+","f630_2022":14,"f630_2025":37,"mental_2022":160779,"mental_2025":207661,"pct_f630_2025":2.2643818849449207,"pct_mental_2025":3.873653037191628,"cresc_f630":2.642857142857143,"cresc_mental":1.291592807518395},{"sexo":"M","faixa":"0-17","f630_2022":24,"f630_2025":50,"mental_2022":461167,"mental_2025":701364,"pct_f630_2025":3.0599755201958385,"pct_mental_2025":13.083057429064047,"cresc_f630":2.0833333333333335,"cresc_mental":1.5208460275778624},{"sexo":"M","faixa":"18-24","f630_2022":26,"f630_2025":139,"mental_2022":272071,"mental_2025":316597,"pct_f630_2025":8.50673194614443,"pct_mental_2025":5.905716194257747,"cresc_f630":5.346153846153846,"cresc_mental":1.1636558104318357},{"sexo":"M","faixa":"25-34","f630_2022":38,"f630_2025":309,"mental_2022":390840,"mental_2025":484551,"pct_f630_2025":18.910648714810282,"pct_mental_2025":9.038685419141007,"cresc_f630":8.131578947368421,"cresc_mental":1.2397681915873504},{"sexo":"M","faixa":"35-44","f630_2022":28,"f630_2025":221,"mental_2022":396400,"mental_2025":496533,"pct_f630_2025":13.525091799265606,"pct_mental_2025":9.262194458833727,"cresc_f630":7.892857142857143,"cresc_mental":1.2526059535822403},{"sexo":"M","faixa":"45-59","f630_2022":29,"f630_2025":111,"mental_2022":401383,"mental_2025":512031,"pct_f630_2025":6.7931456548347615,"pct_mental_2025":9.551290026949049,"cresc_f630":3.8275862068965516,"cresc_mental":1.2756668817563275},{"sexo":"M","faixa":"60+","f630_2022":17,"f630_2025":33,"mental_2022":113386,"mental_2025":149847,"pct_f630_2025":2.0195838433292534,"pct_mental_2025":2.795206065000428,"cresc_f630":1.9411764705882353,"cresc_mental":1.3215652726086113}],"mulheres":{"f630_2025":47.184822521419825,"mental_2025":50.363850406754},"caps_perfil":{"mulheres":[{"ano":2018,"pct":47.3,"ref":47.1},{"ano":2019,"pct":43.4,"ref":48.1},{"ano":2020,"pct":51.9,"ref":49.0},{"ano":2021,"pct":36.6,"ref":50.1},{"ano":2022,"pct":32.2,"ref":50.6},{"ano":2023,"pct":38.7,"ref":50.3},{"ano":2024,"pct":45.5,"ref":50.2},{"ano":2025,"pct":47.2,"ref":50.4},{"ano":2026,"pct":43.5,"ref":50.5}],"faixas":{"jogo":{"25-34":40.1,"35-44":25.7,"45-59":12.2,"18-24":14.6,"60+":3.3,"0-17":4.1},"ref":{"18-24":10.9,"35-44":20.4,"60+":6.7,"0-17":22.0,"45-59":22.1,"25-34":18.0}}},"aps":{"mensal":[{"cmp":"201801","jogo":34,"placebo":51,"por10mil":7.58},{"cmp":"201802","jogo":11,"placebo":57,"por10mil":2.51},{"cmp":"201803","jogo":5,"placebo":82,"por10mil":0.95},{"cmp":"201804","jogo":6,"placebo":84,"por10mil":1.22},{"cmp":"201805","jogo":15,"placebo":80,"por10mil":2.9},{"cmp":"201806","jogo":5,"placebo":83,"por10mil":0.95},{"cmp":"201807","jogo":5,"placebo":72,"por10mil":0.89},{"cmp":"201808","jogo":10,"placebo":106,"por10mil":1.55},{"cmp":"201809","jogo":null,"placebo":88,"por10mil":null},{"cmp":"201810","jogo":18,"placebo":94,"por10mil":1.93},{"cmp":"201811","jogo":14,"placebo":80,"por10mil":2.21},{"cmp":"201812","jogo":5,"placebo":61,"por10mil":1.12},{"cmp":"201901","jogo":8,"placebo":81,"por10mil":1.44},{"cmp":"201902","jogo":10,"placebo":112,"por10mil":1.68},{"cmp":"201903","jogo":12,"placebo":76,"por10mil":2.4},{"cmp":"201904","jogo":9,"placebo":76,"por10mil":1.56},{"cmp":"201905","jogo":15,"placebo":88,"por10mil":2.19},{"cmp":"201906","jogo":11,"placebo":106,"por10mil":1.87},{"cmp":"201907","jogo":6,"placebo":107,"por10mil":0.78},{"cmp":"201908","jogo":10,"placebo":119,"por10mil":1.18},{"cmp":"201909","jogo":13,"placebo":93,"por10mil":1.74},{"cmp":"201910","jogo":13,"placebo":151,"por10mil":1.56},{"cmp":"201911","jogo":19,"placebo":94,"por10mil":2.56},{"cmp":"201912","jogo":10,"placebo":72,"por10mil":1.67},{"cmp":"202001","jogo":11,"placebo":98,"por10mil":1.7},{"cmp":"202002","jogo":10,"placebo":78,"por10mil":1.51},{"cmp":"202003","jogo":6,"placebo":71,"por10mil":0.83},{"cmp":"202004","jogo":null,"placebo":29,"por10mil":null},{"cmp":"202005","jogo":7,"placebo":54,"por10mil":1.06},{"cmp":"202006","jogo":6,"placebo":61,"por10mil":0.82},{"cmp":"202007","jogo":12,"placebo":94,"por10mil":1.45},{"cmp":"202008","jogo":9,"placebo":98,"por10mil":1.08},{"cmp":"202009","jogo":10,"placebo":108,"por10mil":1.08},{"cmp":"202010","jogo":12,"placebo":118,"por10mil":1.37},{"cmp":"202011","jogo":14,"placebo":113,"por10mil":1.65},{"cmp":"202012","jogo":12,"placebo":75,"por10mil":1.62},{"cmp":"202101","jogo":17,"placebo":66,"por10mil":2.22},{"cmp":"202102","jogo":15,"placebo":88,"por10mil":1.82},{"cmp":"202103","jogo":16,"placebo":84,"por10mil":1.67},{"cmp":"202104","jogo":15,"placebo":104,"por10mil":1.71},{"cmp":"202105","jogo":17,"placebo":115,"por10mil":1.87},{"cmp":"202106","jogo":15,"placebo":126,"por10mil":1.6},{"cmp":"202107","jogo":18,"placebo":139,"por10mil":1.83},{"cmp":"202108","jogo":22,"placebo":134,"por10mil":1.96},{"cmp":"202109","jogo":13,"placebo":148,"por10mil":1.2},{"cmp":"202110","jogo":7,"placebo":110,"por10mil":0.69},{"cmp":"202111","jogo":14,"placebo":123,"por10mil":1.33},{"cmp":"202112","jogo":16,"placebo":118,"por10mil":1.66},{"cmp":"202201","jogo":15,"placebo":93,"por10mil":1.79},{"cmp":"202202","jogo":21,"placebo":119,"por10mil":2.19},{"cmp":"202203","jogo":12,"placebo":135,"por10mil":1.02},{"cmp":"202204","jogo":17,"placebo":124,"por10mil":1.68},{"cmp":"202205","jogo":20,"placebo":159,"por10mil":1.69},{"cmp":"202206","jogo":10,"placebo":137,"por10mil":0.94},{"cmp":"202207","jogo":12,"placebo":138,"por10mil":1.08},{"cmp":"202208","jogo":24,"placebo":184,"por10mil":1.8},{"cmp":"202209","jogo":30,"placebo":172,"por10mil":2.39},{"cmp":"202210","jogo":28,"placebo":135,"por10mil":2.33},{"cmp":"202211","jogo":19,"placebo":135,"por10mil":1.59},{"cmp":"202212","jogo":20,"placebo":101,"por10mil":1.94},{"cmp":"202301","jogo":32,"placebo":135,"por10mil":2.47},{"cmp":"202302","jogo":28,"placebo":133,"por10mil":2.36},{"cmp":"202303","jogo":27,"placebo":194,"por10mil":1.77},{"cmp":"202304","jogo":33,"placebo":164,"por10mil":2.63},{"cmp":"202305","jogo":60,"placebo":224,"por10mil":4.07},{"cmp":"202306","jogo":52,"placebo":174,"por10mil":3.81},{"cmp":"202307","jogo":76,"placebo":164,"por10mil":5.36},{"cmp":"202308","jogo":101,"placebo":228,"por10mil":5.96},{"cmp":"202309","jogo":97,"placebo":183,"por10mil":6.64},{"cmp":"202310","jogo":72,"placebo":209,"por10mil":4.58},{"cmp":"202311","jogo":59,"placebo":186,"por10mil":3.95},{"cmp":"202312","jogo":59,"placebo":155,"por10mil":4.55},{"cmp":"202401","jogo":76,"placebo":215,"por10mil":4.94},{"cmp":"202402","jogo":77,"placebo":197,"por10mil":5.41},{"cmp":"202403","jogo":79,"placebo":211,"por10mil":5.37},{"cmp":"202404","jogo":100,"placebo":225,"por10mil":5.87},{"cmp":"202405","jogo":64,"placebo":238,"por10mil":4.16},{"cmp":"202406","jogo":97,"placebo":234,"por10mil":6.18},{"cmp":"202407","jogo":132,"placebo":245,"por10mil":7.92},{"cmp":"202408","jogo":153,"placebo":221,"por10mil":8.84},{"cmp":"202409","jogo":170,"placebo":265,"por10mil":10.11},{"cmp":"202410","jogo":186,"placebo":273,"por10mil":10.56},{"cmp":"202411","jogo":163,"placebo":233,"por10mil":10.59},{"cmp":"202412","jogo":136,"placebo":165,"por10mil":10.6},{"cmp":"202501","jogo":176,"placebo":239,"por10mil":10.71},{"cmp":"202502","jogo":164,"placebo":239,"por10mil":9.7},{"cmp":"202503","jogo":162,"placebo":245,"por10mil":10.15},{"cmp":"202504","jogo":230,"placebo":256,"por10mil":12.92},{"cmp":"202505","jogo":245,"placebo":276,"por10mil":13.36},{"cmp":"202506","jogo":238,"placebo":238,"por10mil":13.64},{"cmp":"202507","jogo":384,"placebo":295,"por10mil":18.93},{"cmp":"202508","jogo":372,"placebo":314,"por10mil":18.25},{"cmp":"202509","jogo":375,"placebo":335,"por10mil":16.95},{"cmp":"202510","jogo":423,"placebo":290,"por10mil":19.01},{"cmp":"202511","jogo":362,"placebo":263,"por10mil":18.53},{"cmp":"202512","jogo":292,"placebo":222,"por10mil":16.47},{"cmp":"202601","jogo":374,"placebo":258,"por10mil":18.78},{"cmp":"202602","jogo":449,"placebo":263,"por10mil":23.39},{"cmp":"202603","jogo":636,"placebo":358,"por10mil":26.28},{"cmp":"202604","jogo":503,"placebo":337,"por10mil":22.82},{"cmp":"202605","jogo":543,"placebo":326,"por10mil":23.57},{"cmp":"202606","jogo":557,"placebo":341,"por10mil":24.27},{"cmp":"202607","jogo":748,"placebo":388,"por10mil":29.16},{"cmp":"202608","jogo":862,"placebo":368,"por10mil":34.02},{"cmp":"202609","jogo":824,"placebo":407,"por10mil":33.8}],"anual":[{"ano":2018,"jogo_mes":10.8,"por10mil":1.9,"ref_mes":57376.9,"meses":12},{"ano":2019,"jogo_mes":11.3,"por10mil":1.7,"ref_mes":67002.8,"meses":12},{"ano":2020,"jogo_mes":9.2,"por10mil":1.2,"ref_mes":75819.0,"meses":12},{"ano":2021,"jogo_mes":15.4,"por10mil":1.6,"ref_mes":95866.2,"meses":12},{"ano":2022,"jogo_mes":19.0,"por10mil":1.7,"ref_mes":111277.8,"meses":12},{"ano":2023,"jogo_mes":58.0,"por10mil":4.1,"ref_mes":141959.2,"meses":12},{"ano":2024,"jogo_mes":119.4,"por10mil":7.6,"ref_mes":157545.0,"meses":12},{"ano":2025,"jogo_mes":285.2,"por10mil":15.2,"ref_mes":187646.3,"meses":12},{"ano":2026,"jogo_mes":610.7,"por10mil":26.6,"ref_mes":229688.9,"meses":9}],"faixas":{"jogo":{"25-34":39.0,"0-17":5.5,"45-59":11.2,"18-24":15.0,"60+":2.8,"35-44":26.6},"ref":{"25-34":14.0,"0-17":6.4,"45-59":29.4,"35-44":18.2,"60+":24.9,"18-24":7.2}},"mulheres":[{"ano":2018,"pct":41.9,"ref":69.0},{"ano":2019,"pct":31.1,"ref":70.6},{"ano":2020,"pct":32.4,"ref":70.3},{"ano":2021,"pct":22.2,"ref":70.6},{"ano":2022,"pct":21.9,"ref":70.2},{"ano":2023,"pct":39.2,"ref":70.0},{"ano":2024,"pct":46.1,"ref":70.2},{"ano":2025,"pct":46.5,"ref":70.2},{"ano":2026,"pct":47.9,"ref":70.7}],"fim":"202609"},"trajetorias":{"1":{"n":915,"n6":7.9,"n5":6.9,"n3":4.9,"n2":1.9,"fica":31.8},"2":{"n":401401,"n6":2.4,"n5":3.7,"n3":14.4,"n2":0.0,"fica":34.4},"3":{"n":663591,"n6":1.9,"n5":2.8,"n3":0.0,"n2":7.1,"fica":31.1},"5":{"n":1027401,"n6":7.9,"n5":0.0,"n3":2.3,"n2":1.6,"fica":38.4},"6":{"n":890065,"n6":0.0,"n5":9.0,"n3":1.8,"n2":1.3,"fica":32.6}},"congresso":null};</script>
 <script>
 (() => {
 const NS = "http://www.w3.org/2000/svg";
@@ -526,7 +498,7 @@ function tiles(el, lista) { for (const [v, d] of lista) el.appendChild(h("div", 
 
 /* ---------- perfil: gráficos comuns às duas abas ---------- */
 // barras = jogo patológico; traço = saúde mental em geral
-function mulheresChart(el, lista, unid) {
+function mulheresChart(el, lista, unid, cor) {
   const W = 520, H = 240, m = { l: 36, r: 8, t: 22, b: 24 }, y = v => H - m.b - v / 80 * (H - m.t - m.b);
   const svg = s("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Mulheres por ano" }, el);
   const f = el.closest(".fig"), tp = tipFor(f);
@@ -535,7 +507,7 @@ function mulheresChart(el, lista, unid) {
   const bw = (W - m.l - m.r) / lista.length;
   lista.forEach((d, i) => {
     const x0 = m.l + i * bw + bw * .2, w = bw * .6;
-    if (d.pct != null) { s("path", { d: `M${x0},${y(0)}V${y(d.pct) + 4}q0,-4 4,-4h${w - 8}q4,0 4,4V${y(0)}Z`, fill: "var(--s1)" }, svg); }
+    if (d.pct != null) { s("path", { d: `M${x0},${y(0)}V${y(d.pct) + 4}q0,-4 4,-4h${w - 8}q4,0 4,4V${y(0)}Z`, fill: cor }, svg); }
     s("line", { x1: x0 - 3, x2: x0 + w + 3, y1: y(d.ref), y2: y(d.ref), stroke: "var(--ink-2)", "stroke-width": 2, "stroke-linecap": "round" }, svg);
     if (d.pct != null) { const yl = Math.abs(y(d.pct) - y(d.ref)) < 14 ? Math.min(y(d.pct), y(d.ref)) - 6 : y(d.pct) - 6;
       const l = s("text", { x: x0 + w / 2, y: yl, "text-anchor": "middle", class: "lbl tnum" }, svg); l.textContent = fmt(d.pct); }
@@ -546,7 +518,7 @@ function mulheresChart(el, lista, unid) {
     hit.addEventListener("pointerleave", () => tp.hide());
   });
 }
-function idadeChart(el, J, R) {
+function idadeChart(el, J, R, cor) {
   const faixas = ["0-17", "18-24", "25-34", "35-44", "45-59", "60+"];
   const W = 520, rowH = 32, m = { l: 56, r: 50, t: 6, b: 24 }, H = m.t + m.b + faixas.length * rowH;
   const x = v => m.l + v / 45 * (W - m.l - m.r);
@@ -557,7 +529,7 @@ function idadeChart(el, J, R) {
   faixas.forEach((fx, r) => {
     const yc = m.t + r * rowH + rowH / 2, j = J[fx], q = R[fx];
     const t = s("text", { x: m.l - 8, y: yc + 4, "text-anchor": "end", class: "lbl" }, svg); t.textContent = fx.replace("-", "–");
-    if (j != null) { const w = x(j) - x(0); s("path", { d: `M${x(0)},${yc - 9}h${Math.max(w - 4, 0)}q4,0 4,4v10q0,4 -4,4h${-Math.max(w - 4, 0)}Z`, fill: "var(--s1)" }, svg); }
+    if (j != null) { const w = x(j) - x(0); s("path", { d: `M${x(0)},${yc - 9}h${Math.max(w - 4, 0)}q4,0 4,4v10q0,4 -4,4h${-Math.max(w - 4, 0)}Z`, fill: cor }, svg); }
     if (q != null) s("line", { x1: x(q), x2: x(q), y1: yc - 13, y2: yc + 13, stroke: "var(--ink-2)", "stroke-width": 2, "stroke-linecap": "round" }, svg);
     const v = s("text", { x: Math.max(x(j ?? 0), x(q ?? 0)) + 6, y: yc + 4, class: "lbl tnum" }, svg); v.textContent = j == null ? "—" : fmt(j, 1) + "%";
     const hit = s("rect", { x: 0, y: yc - rowH / 2, width: W, height: rowH, fill: "transparent" }, svg);
@@ -567,65 +539,49 @@ function idadeChart(el, J, R) {
   });
 }
 
-/* ---------- aba CAPS ---------- */
-(function caps() {
+/* ---------- aba saúde mental ---------- */
+(function saude() {
   const anual = Object.fromEntries(D.anual.map(d => [d.ano, d]));
-  const CP = D.caps_perfil, ult = CP.mulheres.find(d => d.ano === 2025);  // 2026 só tem o 1º semestre
+  const A = D.aps, an = Object.fromEntries(A.anual.map(d => [d.ano, d])), CP = D.caps_perfil;
   document.getElementById("carimbo-dados").textContent = mesLabel(D.corte);
-  document.getElementById("caps-mulheres").textContent = fmt(ult.pct) + "%";
-  document.getElementById("caps-mulheres-ref").textContent = fmt(ult.ref) + "%";
-  tiles(document.getElementById("tiles"), [
-    [fmt(anual[2026].f630), `pessoas atendidas por jogo patológico nos CAPS só no 1º semestre de 2026, quase o total de 2025 (${fmt(anual[2025].f630)})`],
-    [`${fmt(anual[2025].f630 / anual[2022].f630, 1)}<small>×</small>`, `o número de pessoas de 2022 (${fmt(anual[2022].f630)}) para 2025`],
-    [`${fmt(pctNovo(2026))}<small>%</small>`, "das que receberam o diagnóstico em 2026 não tinham passado pelo CAPS no ano anterior"],
-    [`${fmt(ult.pct)}<small>%</small>`, `dos pacientes em ${ult.ano} eram mulheres`],
-  ]);
-  listaMarcos(document.getElementById("marcos"));
-  const C = Object.fromEntries(D.serie.caps.map(d => [idx(d.cmp), d]));
-  painel(document.getElementById("fig-serie"), [
-    { el: document.getElementById("ch-caps"), altura: 300, series: [
-      { pts: D.serie.caps.map(d => ({ i: idx(d.cmp), v: d.placebo })), cor: "var(--ref)" },
-      { pts: D.serie.caps.map(d => ({ i: idx(d.cmp), v: d.f630 })), cor: "var(--s1)", rotulo: true }] },
-    { el: document.getElementById("ch-trends"), altura: 170, yMax: 100, passoY: 50, series: [trendsSerie] },
-  ], i => { const d = C[i], b = busca[i]; if (!d && b == null) return null; const c = d ? d.cmp : D.serie.trends.find(t => idx(t.cmp) === i).cmp;
-    return `<div><b>${mesLabel(c)}</b></div><div><span class="k">F63.0:</span> <b>${valor(d?.f630, D.corte, c)}</b></div>
-      <div><span class="k">F63.1–3:</span> <b>${valor(d?.placebo, D.corte, c)}</b></div><div><span class="k">Busca:</span> <b>${b == null ? "—" : fmt(b)}</b></div>`; });
-  mulheresChart(document.getElementById("ch-caps-mulheres"), CP.mulheres, "pacientes de cada mês");
-  idadeChart(document.getElementById("ch-caps-idade"), CP.faixas.jogo, CP.faixas.ref);
-})();
-
-/* ---------- aba atenção primária ---------- */
-(function aps() {
-  const A = D.aps, an = Object.fromEntries(A.anual.map(d => [d.ano, d]));
-  const ult = A.mulheres.filter(d => d.pct != null).at(-1);
   document.getElementById("carimbo-aps").textContent = mesLabel(A.fim);
   document.querySelectorAll(".aps-fim").forEach(e => e.textContent = mesLabel(A.fim));
   document.querySelectorAll(".caps-fim").forEach(e => e.textContent = mesLabel(D.corte));
-  for (const [id, v] of [["aps-ultimo", fmt(an[2026].jogo_mes)], ["aps-r22", fmt(an[2022].por10mil, 1)], ["aps-r25", fmt(an[2025].por10mil)],
-                         ["aps-r26", fmt(an[2026].por10mil)], ["aps-menores", fmt(A.faixas.jogo["0-17"], 1) + "%"],
-                         ["aps-mulheres", fmt(ult.pct) + "%"], ["aps-mulheres-ref", fmt(ult.ref) + "%"]])
-    document.querySelectorAll("#" + id).forEach(e => e.textContent = v);
-  tiles(document.getElementById("tiles-aps"), [
-    [fmt(an[2026].jogo_mes), `atendimentos por jogo patológico por mês na atenção primária em 2026 (jan–${MESES[+A.fim.slice(4) - 1]})`],
-    [`${fmt(an[2026].jogo_mes / an[2022].jogo_mes)}<small>×</small>`, `a média mensal de 2022 (${fmt(an[2022].jogo_mes)} atendimentos por mês)`],
-    [`${fmt(an[2026].por10mil / an[2022].por10mil)}<small>×</small>`, "o peso do jogo patológico entre os atendimentos de saúde mental, de 2022 para 2026"],
-    [`${fmt(ult.pct)}<small>%</small>`, `dos atendimentos em ${ult.ano} foram de mulheres`],
+  for (const [id, v] of [["aps-r22", fmt(an[2022].por10mil, 1)], ["aps-r25", fmt(an[2025].por10mil)], ["aps-r26", fmt(an[2026].por10mil)],
+                         ["aps-menores", fmt(A.faixas.jogo["0-17"], 1) + "%"], ["caps-menores", fmt(CP.faixas.jogo["0-17"], 1) + "%"]])
+    document.getElementById(id).textContent = v;
+  tiles(document.getElementById("tiles"), [
+    [fmt(an[2026].jogo_mes), `atendimentos por jogo patológico por mês na atenção primária em 2026, ${fmt(an[2026].jogo_mes / an[2022].jogo_mes)} vezes a média de 2022`],
+    [fmt(anual[2026].f630), `pessoas atendidas nos CAPS só no 1º semestre de 2026, quase o total de 2025 (${fmt(anual[2025].f630)})`],
+    [`${fmt(an[2026].por10mil / an[2022].por10mil)}<small>×</small>`, "o peso do jogo patológico entre os atendimentos de saúde mental na atenção primária, de 2022 para 2026"],
+    [`${fmt(pctNovo(2026))}<small>%</small>`, "das pessoas que receberam o diagnóstico no CAPS em 2026 não tinham passado por lá no ano anterior"],
   ]);
-  listaMarcos(document.getElementById("marcos-aps"));
+  listaMarcos(document.getElementById("marcos"));
+  const C = Object.fromEntries(D.serie.caps.map(d => [idx(d.cmp), d]));
   const P = Object.fromEntries(A.mensal.map(d => [idx(d.cmp), d]));
-  painel(document.getElementById("fig-aps"), [
-    { el: document.getElementById("ch-aps"), altura: 300, series: [
+  const cmpDe = i => { const a = 2018 + Math.floor(i / 12), m = i % 12 + 1; return `${a}${String(m).padStart(2, "0")}`; };
+  painel(document.getElementById("fig-serie"), [
+    { el: document.getElementById("ch-aps"), altura: 260, series: [
       { pts: A.mensal.map(d => ({ i: idx(d.cmp), v: d.placebo })), cor: "var(--ref)" },
       { pts: A.mensal.map(d => ({ i: idx(d.cmp), v: d.jogo })), cor: "var(--s1)", rotulo: true }] },
-    { el: document.getElementById("ch-aps-trends"), altura: 170, yMax: 100, passoY: 50, series: [trendsSerie] },
-  ], i => { const d = P[i], b = busca[i]; if (!d && b == null) return null; const c = d ? d.cmp : D.serie.trends.find(t => idx(t.cmp) === i).cmp;
-    return `<div><b>${mesLabel(c)}</b></div><div><span class="k">F63.0:</span> <b>${valor(d?.jogo, A.fim, c)}</b></div>
-      <div><span class="k">F63.1–3:</span> <b>${valor(d?.placebo, A.fim, c)}</b></div><div><span class="k">Busca:</span> <b>${b == null ? "—" : fmt(b)}</b></div>`; });
+    { el: document.getElementById("ch-caps"), altura: 230, series: [
+      { pts: D.serie.caps.map(d => ({ i: idx(d.cmp), v: d.placebo })), cor: "var(--ref)" },
+      { pts: D.serie.caps.map(d => ({ i: idx(d.cmp), v: d.f630 })), cor: "var(--caps)", rotulo: true }] },
+    { el: document.getElementById("ch-trends"), altura: 150, yMax: 100, passoY: 50, series: [trendsSerie] },
+  ], i => { if (i < 0 || i > X1) return null; const c = cmpDe(i), p = P[i], d = C[i], b = busca[i];
+    return `<div><b>${mesLabel(c)}</b></div>
+      <div class="k" style="margin-top:.2rem">Atenção primária (atendimentos)</div>
+      <div><span class="k">F63.0:</span> <b>${valor(p?.jogo, A.fim, c)}</b> · <span class="k">F63.1–3:</span> <b>${valor(p?.placebo, A.fim, c)}</b></div>
+      <div class="k" style="margin-top:.2rem">CAPS (pessoas)</div>
+      <div><span class="k">F63.0:</span> <b>${valor(d?.f630, D.corte, c)}</b> · <span class="k">F63.1–3:</span> <b>${valor(d?.placebo, D.corte, c)}</b></div>
+      <div style="margin-top:.2rem"><span class="k">Busca:</span> <b>${b == null ? "—" : fmt(b)}</b></div>`; });
   painel(document.getElementById("fig-aps-taxa"), [
     { el: document.getElementById("ch-aps-taxa"), altura: 240, series: [{ pts: A.mensal.map(d => ({ i: idx(d.cmp), v: d.por10mil })), cor: "var(--s1)", rotulo: true }] },
   ], i => { const d = P[i]; if (!d) return null;
     return `<div><b>${mesLabel(d.cmp)}</b></div><div><span class="k">Jogo patológico a cada 10 mil:</span> <b>${d.por10mil == null ? "—" : fmt(d.por10mil, 1)}</b></div>`; });
   listaMarcos(document.getElementById("marcos-aps-taxa"));
+  mulheresChart(document.getElementById("ch-caps-mulheres"), CP.mulheres, "pacientes de cada mês", "var(--caps)");
+  idadeChart(document.getElementById("ch-caps-idade"), CP.faixas.jogo, CP.faixas.ref, "var(--caps)");
 
   // índice 2022 = 100
   (function indice() {
@@ -636,7 +592,7 @@ function idadeChart(el, J, R) {
     const media = a => capsMes[a] ? capsMes[a].reduce((x, y) => x + y, 0) / capsMes[a].length : null;
     const S = [
       { nome: "Atenção primária", cor: "var(--s1)", v: a => an[a].jogo_mes / an[2022].jogo_mes * 100 },
-      { nome: "CAPS", cor: "var(--ink-2)", v: a => media(a) && media(2022) ? media(a) / media(2022) * 100 : null },
+      { nome: "CAPS", cor: "var(--caps)", v: a => media(a) && media(2022) ? media(a) / media(2022) * 100 : null },
       { nome: "Outros diagnósticos", cor: "var(--ref)", v: a => an[a].ref_mes / an[2022].ref_mes * 100 },
     ];
     const W = 1000, H = 300, m = { l: 52, r: 150, t: 14, b: 24 };
@@ -666,8 +622,8 @@ function idadeChart(el, J, R) {
       hit.addEventListener("pointerleave", () => tp.hide());
     });
   })();
-  mulheresChart(document.getElementById("ch-aps-mulheres"), A.mulheres, "atendimentos");
-  idadeChart(document.getElementById("ch-aps-idade"), A.faixas.jogo, A.faixas.ref);
+  mulheresChart(document.getElementById("ch-aps-mulheres"), A.mulheres, "atendimentos", "var(--s1)");
+  idadeChart(document.getElementById("ch-aps-idade"), A.faixas.jogo, A.faixas.ref, "var(--s1)");
 })();
 
 /* ---------- Congresso ---------- */
@@ -788,8 +744,8 @@ function idadeChart(el, J, R) {
     const x0 = m.l + i * bw + bw * .18, w = bw * .64;
     const n = d.novos ?? 0, j = d.ja ?? 0;
     const yN = y(n), yJ = y(n + j);
-    s("rect", { x: x0, y: yN, width: w, height: y(0) - yN, fill: "var(--s1)" }, svg);
-    if (j) s("path", { d: `M${x0},${yN - 2}V${yJ + 4}q0,-4 4,-4h${w - 8}q4,0 4,4V${yN - 2}Z`, fill: "var(--s1-soft)" }, svg);
+    s("rect", { x: x0, y: yN, width: w, height: y(0) - yN, fill: "var(--caps)" }, svg);
+    if (j) s("path", { d: `M${x0},${yN - 2}V${yJ + 4}q0,-4 4,-4h${w - 8}q4,0 4,4V${yN - 2}Z`, fill: "var(--caps-soft)" }, svg);
     const t = s("text", { x: x0 + w / 2, y: H - 6, "text-anchor": "middle", class: "lbl" }, svg); t.textContent = d.ano + (d.ano === 2026 ? "*" : "");
     const p = pctNovo(d.ano);
     if (p != null) { const l = s("text", { x: x0 + w / 2, y: yJ - 7, "text-anchor": "middle", class: "strong tnum" }, svg); l.textContent = fmt(p) + "%"; }
@@ -814,7 +770,7 @@ function idadeChart(el, J, R) {
   for (const e of [1, 6, 5, 3, 2]) {
     const r = T[e];
     const cel = COLS.map(([c, g]) => g === e ? `<td class="diag">—</td>` :
-      `<td class="c" style="background:color-mix(in srgb, var(--s1) ${Math.round(r[c] / max * 45)}%, transparent)">${fmt(r[c], 1)}</td>`).join("");
+      `<td class="c" style="background:color-mix(in srgb, var(--caps) ${Math.round(r[c] / max * 45)}%, transparent)">${fmt(r[c], 1)}</td>`).join("");
     tb.appendChild(h("tr", e === 1 ? { class: "jogo" } : {}, `<td>${ROT[e]}</td><td class="c">${fmt(r.n)}</td>${cel}<td class="c">${fmt(r.fica, 1)}</td>`));
   }
 })();
@@ -824,9 +780,9 @@ document.querySelectorAll(".lk-cpi").forEach(a => a.href = D.cpi.url);
 
 /* ---------- abas ---------- */
 (function abas() {
-  const nomes = ["aps", "caps", "votacao", "metodo"].filter(n => document.getElementById("aba-" + n));
+  const nomes = ["saude", "votacao", "metodo"].filter(n => document.getElementById("aba-" + n));
   function abrir(nome, rolar) {
-    if (!nomes.includes(nome)) nome = "aps";
+    if (!nomes.includes(nome)) nome = "saude";
     for (const n of nomes) {
       document.getElementById("aba-" + n).hidden = n !== nome;
       document.getElementById("tab-" + n).setAttribute("aria-selected", n === nome ? "true" : "false");
