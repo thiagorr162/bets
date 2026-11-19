@@ -1,0 +1,260 @@
+Jogo patológico (F63.0) na APS e nos CAPS, Brasil — gerado por artigo/analise/rodar.py em 19/11/2026
+APS: SISAB, fev/2018–set/2026 (104 meses). CAPS: RAAS/SIA-PS, jan/2018–jun/2026 (102 meses). Bootstrap: 999 réplicas.
+
+====================================================================================================
+3. DESCRITIVA (registros por ano)
+====================================================================================================
+Arquivos de RAAS: 2807 de 2808 (faltam: AP, dez/2023)
+
+APS
+| ano  | meses | F63.0 | F63.1–3 | referência | F63.0/10 mil ref | F63.1–3/10 mil ref | F63.0/milhão hab·ano | % mulheres F63.0 |
+|------|-------|-------|---------|------------|------------------|--------------------|----------------------|------------------|
+| 2018 | 11    | 95    | 887     | 643.671    | 1,5              | 13,8               | 0,5                  | 34,7             |
+| 2019 | 12    | 136   | 1175    | 804.034    | 1,7              | 14,6               | 0,6                  | 31,1             |
+| 2020 | 12    | 111   | 997     | 909.828    | 1,2              | 11,0               | 0,5                  | 32,4             |
+| 2021 | 12    | 185   | 1355    | 1.150.395  | 1,6              | 11,8               | 0,9                  | 22,2             |
+| 2022 | 12    | 228   | 1632    | 1.335.334  | 1,7              | 12,2               | 1,1                  | 21,9             |
+| 2023 | 12    | 696   | 2149    | 1.703.510  | 4,1              | 12,6               | 3,3                  | 39,2             |
+| 2024 | 12    | 1433  | 2722    | 1.890.540  | 7,6              | 14,4               | 6,7                  | 46,1             |
+| 2025 | 12    | 3423  | 3212    | 2.251.756  | 15,2             | 14,3               | 16,0                 | 46,5             |
+| 2026 | 9     | 5496  | 3046    | 2.067.200  | 26,6             | 14,7               | 34,2                 | 47,9             |
+
+CAPS
+| ano  | meses | F63.0 | F63.1–3 | referência | F63.0/10 mil ref | F63.1–3/10 mil ref | F63.0/milhão hab·ano | % mulheres F63.0 |
+|------|-------|-------|---------|------------|------------------|--------------------|----------------------|------------------|
+| 2018 | 12    | 335   | 1766    | 6.106.716  | 0,5              | 2,9                | 1,6                  | 72,2             |
+| 2019 | 12    | 670   | 1803    | 7.022.983  | 1,0              | 2,6                | 3,2                  | 70,9             |
+| 2020 | 12    | 623   | 1215    | 4.809.351  | 1,3              | 2,5                | 2,9                  | 79,8             |
+| 2021 | 12    | 486   | 1279    | 5.495.023  | 0,9              | 2,3                | 2,3                  | 39,9             |
+| 2022 | 12    | 921   | 1454    | 6.076.209  | 1,5              | 2,4                | 4,3                  | 58,5             |
+| 2023 | 12    | 967   | 1617    | 7.095.679  | 1,4              | 2,3                | 4,5                  | 36,4             |
+| 2024 | 12    | 1534  | 1687    | 7.152.052  | 2,1              | 2,4                | 7,2                  | 54,6             |
+| 2025 | 12    | 4371  | 1618    | 7.746.603  | 5,6              | 2,1                | 20,5                 | 42,0             |
+| 2026 | 6     | 3768  | 956     | 3.605.492  | 10,5             | 2,7                | 35,2                 | 45,4             |
+
+3b. Perfil por sexo e faixa etária em 2025 (% dos registros de cada grupo; registros sem sexo F/M ou sem idade ficam de fora). APS: atendimentos do SISAB; CAPS: linhas de RAAS.
+| sexo | faixa | APS F63.0 % | APS referência % | CAPS F63.0 % | CAPS referência % |
+|------|-------|-------------|------------------|--------------|-------------------|
+| F    | 0-17  | 1,4         | 4,1              | 1,0          | 5,5               |
+| F    | 18-24 | 4,9         | 4,9              | 5,0          | 4,3               |
+| F    | 25-34 | 18,7        | 9,4              | 17,9         | 8,5               |
+| F    | 35-44 | 12,5        | 12,8             | 8,2          | 12,0              |
+| F    | 45-59 | 7,0         | 21,2             | 6,4          | 14,5              |
+| F    | 60+   | 2,0         | 17,9             | 3,5          | 4,1               |
+| M    | 0-17  | 5,3         | 2,4              | 3,8          | 4,2               |
+| M    | 18-24 | 11,4        | 2,5              | 8,7          | 5,8               |
+| M    | 25-34 | 18,7        | 4,7              | 18,3         | 9,9               |
+| M    | 35-44 | 12,7        | 5,4              | 14,8         | 12,0              |
+| M    | 45-59 | 4,0         | 8,1              | 10,5         | 14,9              |
+| M    | 60+   | 1,4         | 6,7              | 1,9          | 4,2               |
+
+3c. Conduta registrada ao fim do atendimento na APS, jan/2025–set/2026 (% dos atendimentos de cada diagnóstico; um atendimento pode ter mais de uma conduta)
+| diagnóstico | atendimentos | alta | retorno | continuado | especializado | caps |
+|-------------|--------------|------|---------|------------|---------------|------|
+| jogo        | 8919         | 37,6 | 35,2    | 31,4       | 24,2          | 1,9  |
+| ansiedade   | 2.387.047    | 48,6 | 27,9    | 28,7       | 9,9           | 0,2  |
+| depressao   | 753.674      | 48,6 | 27,4    | 29,5       | 11,6          | 0,6  |
+| alcool      | 66.420       | 54,3 | 24,4    | 25,4       | 11,3          | 1,8  |
+
+====================================================================================================
+4. H1 — O REGISTRO DE JOGO PATOLÓGICO CRESCEU ALÉM DO CRESCIMENTO DO SISTEMA?
+====================================================================================================
+
+4a. Crescimento do sistema (denominadores, contagens sem offset; NB, K por BIC)
+
+APS · referência (F32, F33, F41, F43, F10, F20)
+  [binomial negativa; alpha = 0,006; Ljung-Box(12) dos resíduos p = 0,063]
+  segmento 1: fev/2018–set/2026   VPA +19% (IC95% +18%; +20%)
+  VPAM fev/2018–set/2026: +19% (IC95% +18%; +20%)
+
+APS · referência ampliada (CID + CIAP de saúde mental)
+  [binomial negativa; alpha = 0,006; Ljung-Box(12) dos resíduos p = 0,219]
+  segmento 1: fev/2018–ago/2021   VPA +33% (IC95% +27%; +39%)
+  segmento 2: ago/2021–set/2026   VPA +13% (IC95% +11%; +14%)
+  quebra 1: ago/2021 (IC95% jan/2021–out/2022)
+  VPAM fev/2018–set/2026: +21% (IC95% +20%; +22%)
+
+CAPS · referência (F32, F33, F41, F43, F10, F20)
+  [binomial negativa; alpha = 0,006; Ljung-Box(12) dos resíduos p = < 0,001]
+  segmento 1: jan/2018–jun/2019   VPA +19% (IC95% +1%; +44%)
+  segmento 2: jun/2019–jun/2020   VPA −22% (IC95% −31%; +4%)
+  segmento 3: jun/2020–jun/2026   VPA +6% (IC95% +3%; +12%)
+  quebra 1: jun/2019 (IC95% jan/2019–nov/2022)
+  quebra 2: jun/2020 (IC95% mar/2020–jan/2025)
+  VPAM jan/2018–jun/2026: +4% (IC95% +3%; +6%)
+
+CAPS · todas as RAAS
+  [binomial negativa; alpha = 0,006; Ljung-Box(12) dos resíduos p = < 0,001]
+  segmento 1: jan/2018–jun/2019   VPA +22% (IC95% +5%; +46%)
+  segmento 2: jun/2019–jun/2020   VPA −23% (IC95% −31%; +4%)
+  segmento 3: jun/2020–jun/2026   VPA +11% (IC95% +8%; +15%)
+  quebra 1: jun/2019 (IC95% jan/2019–jun/2022)
+  quebra 2: jun/2020 (IC95% mar/2020–mar/2024)
+  VPAM jan/2018–jun/2026: +8% (IC95% +6%; +10%)
+
+4b. Modelo principal: F63.0 com offset log(referência) — tendência da taxa de F63.0 por registro de referência, já descontado o crescimento do sistema
+IC95% por bootstrap de blocos (inclui a incerteza sobre a posição das quebras; K fixo nas réplicas). A existência da quebra é decidida pelo BIC.
+
+APS · F63.0 / referência
+  [binomial negativa; alpha = 0,010; Ljung-Box(12) dos resíduos p = 0,009]
+  K = 0: BIC =     963,0   quebras: —
+  K = 1: BIC =     831,8   quebras: jun/2022   <- escolhido
+  K = 2: BIC =     832,3   quebras: jul/2022, jul/2023
+  segmento 1: fev/2018–jun/2022   VPA +4% (IC95% −26%; +15%)
+  segmento 2: jun/2022–set/2026   VPA +100% (IC95% +91%; +110%)
+  quebra 1: jun/2022 (IC95% abr/2021–dez/2022)
+  VPAM fev/2018–set/2026: +44% (IC95% +38%; +48%)
+
+CAPS · F63.0 / referência
+  [binomial negativa; alpha = 0,121; Ljung-Box(12) dos resíduos p = 0,043]
+  K = 0: BIC =   1.110,3   quebras: —
+  K = 1: BIC =   1.053,9   quebras: mai/2024   <- escolhido
+  K = 2: BIC =   1.054,7   quebras: jul/2020, jan/2024
+  segmento 1: jan/2018–mai/2024   VPA +18% (IC95% +8%; +25%)
+  segmento 2: mai/2024–jun/2026   VPA +181% (IC95% +107%; +367%)
+  quebra 1: mai/2024 (IC95% jun/2023–jan/2025)
+  VPAM jan/2018–jun/2026: +46% (IC95% +38%; +55%)
+
+4c. Magnitude: registros acima da linha de base pré-inflexão (descritivo)
+Linha de base principal = o segmento anterior à quebra final prolongado (mesmo modelo, sem a última mudança de inclinação): supõe que, sem a inflexão, a taxa seguiria a tendência que já tinha. Alternativa = taxa congelada no nível da quebra. As duas incluem o crescimento do sistema (offset) e a sazonalidade. Janelas = anos de calendário, as mesmas em todas as réplicas; o IC95% bootstrap é a incerteza da linha de base (β e posição da quebra refeitos em cada réplica; observado fixo). Não é estimativa do efeito de uma lei: a quebra é estimada, não uma data de intervenção.
+| modelo                           | janela            | observado | esperado (IC95%)     | excesso (IC95%)      | % do observado (IC95%) | taxa congelada: excesso (%) |
+|----------------------------------|-------------------|-----------|----------------------|----------------------|------------------------|-----------------------------|
+| APS · F63.0                      | jan/2023–dez/2023 | 696       | 315 (78; 448)        | 381 (248; 618)       | 55% (36; 89)           | 394 (57%)                   |
+| APS · F63.0                      | jan/2024–dez/2024 | 1.433     | 363 (64; 560)        | 1.070 (873; 1.369)   | 75% (61; 96)           | 1.098 (77%)                 |
+| APS · F63.0                      | jan/2025–dez/2025 | 3.423     | 451 (57; 761)        | 2.972 (2.662; 3.366) | 87% (78; 98)           | 3.023 (88%)                 |
+| APS · F63.0                      | jan/2026–set/2026 | 5.496     | 426 (40; 778)        | 5.070 (4.718; 5.456) | 92% (86; 99)           | 5.130 (93%)                 |
+| CAPS · F63.0                     | jan/2023–dez/2023 | 967       | 1.073 (786; 1.283)   | −106 (−316; 181)     | −11% (−33; 19)         | −106 (−11%)                 |
+| CAPS · F63.0                     | jan/2024–dez/2024 | 1.534     | 1.270 (873; 1.586)   | 264 (−52; 661)       | 17% (−3; 43)           | 309 (20%)                   |
+| CAPS · F63.0                     | jan/2025–dez/2025 | 4.371     | 1.622 (1.033; 2.129) | 2.749 (2.242; 3.338) | 63% (51; 76)           | 3.031 (69%)                 |
+| CAPS · F63.0                     | jan/2026–jun/2026 | 3.768     | 719 (418; 990)       | 3.049 (2.778; 3.350) | 81% (74; 89)           | 3.238 (86%)                 |
+| CAPS · F63.0 + F63, F63.8, F63.9 | jan/2023–dez/2023 | 6.167     | 5.901 (5.340; 6.288) | 266 (−121; 827)      | 4% (−2; 13)            | 268 (4%)                    |
+| CAPS · F63.0 + F63, F63.8, F63.9 | jan/2024–dez/2024 | 8.126     | 6.349 (5.620; 6.891) | 1.777 (1.235; 2.506) | 22% (15; 31)           | 2.039 (25%)                 |
+| CAPS · F63.0 + F63, F63.8, F63.9 | jan/2025–dez/2025 | 15.322    | 7.354 (6.349; 8.151) | 7.968 (7.171; 8.973) | 52% (47; 59)           | 8.727 (57%)                 |
+| CAPS · F63.0 + F63, F63.8, F63.9 | jan/2026–jun/2026 | 9.144     | 3.523 (2.986; 4.006) | 5.621 (5.138; 6.158) | 61% (56; 67)           | 6.136 (67%)                 |
+Quebra final: APS jun/2022; CAPS mai/2024; CAPS com F63 sem especificação nov/2023. No recorte com F63 sem especificação, o excesso absoluto é maior porque esses códigos também crescem desde out/2021 (seção 5a); compare pela % do observado.
+
+====================================================================================================
+5. ESPECIFICIDADE — CONTROLE NEGATIVO (F63.1–F63.3: piromania, cleptomania, tricotilomania)
+====================================================================================================
+
+5a. Controle com o mesmo modelo do H1 (esperado: sem alta)
+
+APS · F63.1–F63.3 / referência
+  [binomial negativa; alpha = 0,005; Ljung-Box(12) dos resíduos p = 0,004]
+  K = 0: BIC =     983,2   quebras: —
+  K = 1: BIC =     976,2   quebras: mai/2020   <- escolhido
+  K = 2: BIC =     978,9   quebras: abr/2019, abr/2020
+  segmento 1: fev/2018–mai/2020   VPA −11% (IC95% −30%; +0%)
+  segmento 2: mai/2020–set/2026   VPA +4% (IC95% +1%; +14%)
+  quebra 1: mai/2020 (IC95% fev/2019–jun/2025)
+  VPAM fev/2018–set/2026: −1% (IC95% −3%; +2%)
+
+CAPS · F63.1–F63.3 / referência
+  [binomial negativa; alpha = 0,017; Ljung-Box(12) dos resíduos p = 0,471]
+  K = 0: BIC =     983,4   quebras: —
+  K = 1: BIC =     981,1   quebras: jul/2025   <- escolhido
+  K = 2: BIC =     988,7   quebras: jun/2024, jul/2025
+  segmento 1: jan/2018–jul/2025   VPA −4% (IC95% −11%; −2%)
+  segmento 2: jul/2025–jun/2026   VPA +35% (IC95% −1%; +61%)
+  quebra 1: jul/2025 (IC95% fev/2020–jul/2025)
+  VPAM jan/2018–jun/2026: −0% (IC95% −3%; +2%)
+
+Códigos F63 sem especificação (F63, F63.8, F63.9; só CAPS). Não são controle: podem conter casos de jogo. Se crescem junto, parte da alta de F63.0 pode ser só codificação mais específica (F63 → F63.0).
+
+CAPS · F63, F63.8, F63.9 / referência
+  [binomial negativa; alpha = 0,022; Ljung-Box(12) dos resíduos p = 0,144]
+  segmento 1: jan/2018–out/2021   VPA −4% (IC95% −13%; +5%)
+  segmento 2: out/2021–jun/2026   VPA +30% (IC95% +25%; +39%)
+  quebra 1: out/2021 (IC95% jan/2021–abr/2023)
+  VPAM jan/2018–jun/2026: +14% (IC95% +12%; +16%)
+  F63.0: 7% dos registros de jan/2022 a jun/2026 em menores de 18 anos
+  F63, F63.8, F63.9: 36% dos registros de jan/2022 a jun/2026 em menores de 18 anos
+
+5b. Jogo contra controle: binomial F63.0/(F63.0 + F63.1–3). A inclinação é a diferença entre as taxas de crescimento do jogo e do controle (VPA = crescimento anual da razão F63.0 : controle)
+
+APS · F63.0 vs F63.1–F63.3
+  [binomial (logit); phi = 1,9; Ljung-Box(12) dos resíduos p = 0,177]
+  K = 0: QBIC =     324,8   quebras: —
+  K = 1: QBIC =     167,0   quebras: jun/2022   <- escolhido
+  K = 2: QBIC =     173,0   quebras: jul/2022, jul/2023
+  segmento 1: fev/2018–jun/2022   VPA +7% (IC95% −25%; +18%)
+  segmento 2: jun/2022–set/2026   VPA +91% (IC95% +84%; +99%)
+  quebra 1: jun/2022 (IC95% fev/2021–jan/2023)
+  VPAM fev/2018–set/2026: +43% (IC95% +36%; +47%)
+
+CAPS · F63.0 vs F63.1–F63.3
+  [binomial (logit); phi = 7,1; Ljung-Box(12) dos resíduos p = 0,288]
+  K = 0: QBIC =     257,3   quebras: —
+  K = 1: QBIC =     172,3   quebras: fev/2024
+  K = 2: QBIC =     168,5   quebras: jul/2020, dez/2023   <- escolhido
+  segmento 1: jan/2018–jul/2020   VPA +91% (IC95% +40%; +344%)
+  segmento 2: jul/2020–dez/2023   VPA −5% (IC95% −37%; +16%)
+  segmento 3: dez/2023–jun/2026   VPA +151% (IC95% +120%; +204%)
+  quebra 1: jul/2020 (IC95% jan/2019–mar/2022)
+  quebra 2: dez/2023 (IC95% mai/2023–jun/2024)
+  VPAM jan/2018–jun/2026: +56% (IC95% +49%; +70%)
+
+====================================================================================================
+6. ROBUSTEZ — VPA DO SEGMENTO FINAL EM CADA CENÁRIO (estimativa pontual; IC95% bootstrap só na análise principal)
+====================================================================================================
+| modelo                      | cenario                              | K | quebra_final | vpa | li   | ls   |
+|-----------------------------|--------------------------------------|---|--------------|-----|------|------|
+| APS · F63.0 / referência    | principal                            | 1 | jun/2022     | 100 | 91   | 110  |
+| APS · F63.0 / referência    | até 3 quebras                        | 1 | jun/2022     | 100 | null | null |
+| APS · F63.0 / referência    | 1 quebra (fixo)                      | 1 | jun/2022     | 100 | null | null |
+| APS · F63.0 / referência    | sem meses da pandemia                | 1 | jun/2022     | 100 | null | null |
+| APS · F63.0 / referência    | até dez/2025                         | 1 | jun/2022     | 103 | null | null |
+| APS · F63.0 / referência    | série completa (com jan/2018)        | 2 | jun/2022     | 101 | null | null |
+| APS · F63.0 / referência    | log(referência) como covariável      | 1 | jun/2022     | 104 | null | null |
+| APS · F63.0 / referência    | referência ampliada (CID + CIAP)     | 2 | jul/2023     | 101 | null | null |
+| CAPS · F63.0 / referência   | principal                            | 1 | mai/2024     | 181 | 107  | 367  |
+| CAPS · F63.0 / referência   | até 3 quebras                        | 3 | nov/2023     | 164 | null | null |
+| CAPS · F63.0 / referência   | 1 quebra (fixo)                      | 1 | mai/2024     | 181 | null | null |
+| CAPS · F63.0 / referência   | sem meses da pandemia                | 1 | mai/2024     | 175 | null | null |
+| CAPS · F63.0 / referência   | até dez/2025                         | 1 | mai/2024     | 171 | null | null |
+| CAPS · F63.0 / referência   | log(referência) como covariável      | 1 | mai/2024     | 189 | null | null |
+| CAPS · F63.0 / referência   | referência = capítulo F inteiro      | 1 | mai/2024     | 166 | null | null |
+| CAPS · F63.0 / referência   | no máx. 10 registros por CAPS-mês    | 1 | mar/2024     | 145 | null | null |
+| CAPS · F63.0 / referência   | desfecho = F63.0 + F63, F63.8, F63.9 | 1 | nov/2023     | 62  | 51   | 78   |
+| CAPS · F63.0 / referência   | só RAAS iniciadas no mês             | 1 | jan/2024     | 237 | null | null |
+| APS · F63.0 vs F63.1–F63.3  | principal                            | 1 | jun/2022     | 91  | 84   | 99   |
+| APS · F63.0 vs F63.1–F63.3  | até 3 quebras                        | 1 | jun/2022     | 91  | null | null |
+| APS · F63.0 vs F63.1–F63.3  | 1 quebra (fixo)                      | 1 | jun/2022     | 91  | null | null |
+| APS · F63.0 vs F63.1–F63.3  | sem meses da pandemia                | 1 | jun/2022     | 91  | null | null |
+| APS · F63.0 vs F63.1–F63.3  | até dez/2025                         | 1 | jun/2022     | 93  | null | null |
+| APS · F63.0 vs F63.1–F63.3  | série completa (com jan/2018)        | 1 | out/2021     | 91  | null | null |
+| APS · F63.0 vs F63.1–F63.3  | controle = só F63.3                  | 1 | jun/2022     | 93  | null | null |
+| CAPS · F63.0 vs F63.1–F63.3 | principal                            | 2 | dez/2023     | 151 | 120  | 204  |
+| CAPS · F63.0 vs F63.1–F63.3 | até 3 quebras                        | 3 | nov/2023     | 153 | null | null |
+| CAPS · F63.0 vs F63.1–F63.3 | 1 quebra (fixo)                      | 1 | fev/2024     | 144 | null | null |
+| CAPS · F63.0 vs F63.1–F63.3 | sem meses da pandemia                | 1 | mar/2024     | 147 | null | null |
+| CAPS · F63.0 vs F63.1–F63.3 | até dez/2025                         | 2 | jan/2024     | 175 | null | null |
+| CAPS · F63.0 vs F63.1–F63.3 | controle = só F63.3                  | 2 | jan/2024     | 160 | null | null |
+| CAPS · F63.0 vs F63.1–F63.3 | comparador = F63, F63.8, F63.9       | 2 | mar/2024     | 106 | null | null |
+| CAPS · F63.0 vs F63.1–F63.3 | no máx. 10 registros por CAPS-mês    | 1 | fev/2024     | 129 | null | null |
+
+====================================================================================================
+7. SECUNDÁRIO — A ALTA COMEÇOU NA APS ANTES DO CAPS? (início do segmento final; bootstrap conjunto)
+====================================================================================================
+Réplicas pareadas: a réplica b da APS e a do CAPS reamostram os mesmos meses de calendário.
+
+F63.0 / referência (modelo principal)
+  APS:  jun/2022 (IC95% abr/2021 – dez/2022)
+  CAPS: mai/2024 (IC95% jun/2023 – jan/2025)
+  defasagem CAPS − APS: 23 meses (IC95% bootstrap 11 a 39); CAPS depois da APS em 995/999 réplicas
+
+F63.0 vs controle (sensibilidade)
+  APS:  jun/2022 (IC95% fev/2021 – jan/2023)
+  CAPS: dez/2023 (IC95% mai/2023 – jun/2024)
+  defasagem CAPS − APS: 18 meses (IC95% bootstrap 8 a 35); CAPS depois da APS em 999/999 réplicas
+
+====================================================================================================
+8. SECUNDÁRIO (DESCRITIVO) — PORCENTAGEM DE MULHERES POR ANO, JOGO E REFERÊNCIA
+====================================================================================================
+Sem IC: registros de uma mesma pessoa não são independentes.
+
+APS
+  % mulheres por ano (jogo | referência): 2022: 22 | 70  2023: 39 | 70  2024: 46 | 70  2025: 47 | 70  2026: 48 | 71
+
+CAPS
+  % mulheres por ano (jogo | referência): 2022: 59 | 48  2023: 36 | 48  2024: 55 | 48  2025: 42 | 49  2026: 45 | 50
