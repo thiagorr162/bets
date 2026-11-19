@@ -1,0 +1,147 @@
+% Macros e ambientes compartilhados. Carregar apos os pacotes no main.tex.
+
+% Ambientes e numeracao
+\newcounter{dummy}
+\numberwithin{dummy}{section}
+\newtheorem{theorem}[dummy]{Theorem}
+\newtheorem{proposition}[dummy]{Proposition}
+\newtheorem{corollary}[dummy]{Corollary}
+\newtheorem{lemma}[dummy]{Lemma}
+\newtheorem{question}[dummy]{Question}
+\newtheorem{conjecture}[dummy]{Conjecture}
+\newenvironment{claim}[1]{\par\noindent\underline{Afirma\c{c}\~ao:}\space#1}{}
+\newenvironment{claimproof}[1]{\par\noindent\underline{Prova da afirma\c{c}\~ao:}\space#1}{\hfill $\blacksquare$}
+
+\theoremstyle{definition}
+\newtheorem{definition}[dummy]{Definition}
+\newtheorem{example}[dummy]{Example}
+\newtheorem{xca}[dummy]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{remark}[dummy]{Remark}
+
+\numberwithin{equation}{section}
+
+% Conjuntos e categorias
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\catname}[1]{{\normalfont\textbf{#1}}}
+\newcommand{\Set}{\catname{Set}}
+\newcommand{\Top}{\catname{Top}}
+\newcommand{\Rel}{\catname{Rel}}
+
+% Notacao caligrafica
+\newcommand{\X}{\mathcal{X}}
+\newcommand{\Y}{\mathcal{Y}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\F}{\mathcal{F}}
+\renewcommand{\L}{\mathcal{L}}
+\newcommand{\cH}{\mathcal{H}}
+\newcommand{\W}{\mathcal{W}}
+\newcommand{\Sss}{{\mathcal{S}}}
+\newcommand{\LL}{{\mathcal{L}}}
+\newcommand{\LLl}{\mathbb{L}}
+\newcommand{\QQ}{{\mathcal{Q}}}
+\newcommand{\Aa}{{\mathcal{A}}}
+\newcommand{\VV}{{\mathcal{V}}}
+\newcommand{\BB}{\mathcal{B}}
+\newcommand{\MMM}{{\mathcal{M}}}
+\newcommand{\CO}{{\mathcal{O}}}
+\newcommand{\CW}{{\mathcal{W}}}
+\newcommand{\CB}{{\mathcal{B}}}
+\newcommand{\CH}{{\mathcal{H}}}
+\newcommand{\Ol}{\mathcal{O}}
+
+% Outros simbolos e alfabetos
+\newcommand{\Ss}{{\mathfrak{S}}}
+\newcommand{\BBB}{{\mathfrak{B}}}
+\newcommand{\TTT}{{\mathfrak{T}}}
+\newcommand{\Lab}{\underline{\Lambda}}
+\newcommand{\PP}{{\mathsf{P}}}
+\newcommand{\HH}{{\mathrm{H}}}
+\newcommand{\KK}{{\mathrm{K}}}
+\newcommand{\Gg}{{\mathsf{G}}}
+\newcommand{\Ff}{{\mathsf{F}}}
+\newcommand{\EE}{{\mathrm{E}}}
+\newcommand{\MM}{{\mathrm{M}}}
+\newcommand{\XX}{{\mathrm{X}}}
+\newcommand{\ZZ}{{\mathrm{Z}}}
+\newcommand{\MMs}{\small{\MM}}
+\newcommand{\III}{{\mathfrak{I}}}
+\newcommand{\ff}{\mathfrak{F}}
+\newcommand{\RR}{\mathrm{R}}
+\newcommand{\TT}{{\mathrm{T}}}
+\newcommand{\NN}{{\mathfrak{N}}_0}
+\newcommand{\DD}{\mbox{D}}
+\newcommand{\Kk}{\mathsf{K}}
+\newcommand{\OO}{{\mathrm{O}}}
+\newcommand{\Sol}{{\mathfrak{S}}}
+\newcommand{\mm}{{\mathsf{m}}}
+\newcommand{\ha}{\small{\mathrm{ha}}}
+
+% Calculo e analise
+\newcommand{\dd}{{\mathrm{d}}}
+\newcommand{\ddt}{\partial_t}
+\newcommand{\ddxk}{\frac{\partial}{\partial x_k}}
+\newcommand{\Ci}{{\mathcal{C}}^\infty}
+\newcommand{\Cci}{{\mathcal{C}}^\infty}
+\newcommand{\Dli}{{\mathcal{D}}'}
+\newcommand{\Eli}{{\mathcal{E}}'}
+\newcommand{\sql}{{\ell^{1/2}}}
+\newcommand{\ssql}{{\ell^{1/4}}}
+\newcommand{\cl}{\mathrm{Cl}\,}
+\newcommand{\bmo}{\small \mathrm{bmo}}
+\newcommand{\loc}{\small \mathrm{loc}}
+\newcommand{\sxi}{\sqrt{\xi}}
+\newcommand{\dbar}{\overline{\partial}}
+\newcommand{\sS}{\subset\!\!\subset}
+\newcommand{\eeps}{\widehat{\otimes}}
+\newcommand{\Ome}{{\Omega^\eps}}
+\newcommand{\trb}{|||}
+\newcommand{\til}{\widetilde}
+\newcommand{\brr}{\overline}
+\newcommand{\iprod}{\mathbin{\lrcorner}}
+\newcommand{\TP}{\ ^t P}
+\newcommand{\TK}{\ ^t K}
+\newcommand{\Tt}{\ ^tT}
+\newcommand{\tr}[1]{\mathrm{tr}\left\{#1\right\}}
+
+% Operadores
+\newcommand{\sgn}{\mbox{sgn}}
+\newcommand{\Div}{\mbox{div}}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\spn}{span}
+\DeclareMathOperator{\pr}{pr}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\ran}{ran}
+\DeclareMathOperator{\aut}{aut}
+\DeclareMathOperator{\Hol}{Hol}
+\DeclareMathOperator{\hol}{hol}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\intr}{int}
+\DeclareMathOperator{\Jac}{Jac}
+\DeclareMathOperator{\ddleb}{\dd \mathrm{m}}
+\DeclareMathOperator{\RE}{Re}
+\DeclareMathOperator{\IM}{Im}
+\DeclareMathOperator{\vol}{vol}
+\DeclareMathOperator{\RI}{RI}
+\DeclareMathOperator{\dvol}{dvol}
+
+% Probabilidade
+\newcommand{\Ind}[1]{\mathbb{I}\left\lbrace#1\right\rbrace}
+\newcommand{\Var}[1]{\mathrm{Var}\left[#1\right]}
+\newcommand{\Varx}[2]{\mathrm{Var}_{#1}\left[#2\right]}
+\newcommand{\Cov}[1]{\mathrm{Cov}\left(#1\right)}
+\newcommand{\E}[1]{\mathbb{E}\left[#1\right]}
+\newcommand{\Ex}[2]{\mathbb{E}_{#1}\left[#2\right]}
+\renewcommand{\Pr}[1]{\mathbb{P}\left(#1\right)}
+\newcommand{\Prx}[2]{\mathbb{P}_{#1}\left(#2\right)}
+
+
+
+\newcommand{\thiago}[1]{{\color{red} Thiago:  #1}}
+\newcommand{\vini}[1]{{\color{blue} Vini:  #1}}

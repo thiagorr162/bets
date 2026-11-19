@@ -1,0 +1,10 @@
+# arquivos de compilação do LaTeX (o Overleaf gera os seus)
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+main.pdf
